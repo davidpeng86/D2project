@@ -26,10 +26,10 @@ public class spawn : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if(is_spawning == false)
-		{
-			if(Input.GetKeyDown(KeyCode.UpArrow))
+		
+			if(Input.GetKeyDown(KeyCode.UpArrow) && is_spawning == false)
 				{
+					is_spawning = true;
 					Transform child = Instantiate(prefab, this.transform.position, this.transform.rotation);
 					StartCoroutine( Move(child , "up"));
 					Move_self("up");
@@ -38,8 +38,9 @@ public class spawn : MonoBehaviour {
 					}
 					
 				}
-			if(Input.GetKeyDown(KeyCode.DownArrow))
+			if(Input.GetKeyDown(KeyCode.DownArrow) && is_spawning == false)
 				{	
+					is_spawning = true;
 					Transform child = Instantiate(prefab, this.transform.position, this.transform.rotation);
 					StartCoroutine( Move(child , "down"));
 					Move_self("down");
@@ -47,17 +48,19 @@ public class spawn : MonoBehaviour {
 						record2history("down",child);
 					}
 				}
-			if(Input.GetKeyDown(KeyCode.LeftArrow))
+			if(Input.GetKeyDown(KeyCode.LeftArrow) && is_spawning == false)
 			{
-				Transform child = Instantiate(prefab, this.transform.position, this.transform.rotation);
+				is_spawning = true;
+				Transform child = Instantiate(prefab, this.transform.position, this.transform.rotation);	
 				StartCoroutine( Move(child , "left"));
 				Move_self("left");
 				if (cube_exist == false){
 					record2history("left",child);
 				}
 			}
-			if(Input.GetKeyDown(KeyCode.RightArrow))
+			if(Input.GetKeyDown(KeyCode.RightArrow) && is_spawning == false)
 			{	
+				is_spawning = true;
 				Transform child = Instantiate(prefab, this.transform.position, this.transform.rotation);
 				StartCoroutine( Move(child , "right"));
 				Move_self("right");
@@ -65,7 +68,7 @@ public class spawn : MonoBehaviour {
 					record2history("right",child);
 				}
 			}
-		}
+		
 		
 		if(Input.GetKeyDown(KeyCode.F)){
 			gen = GameObject.FindGameObjectsWithTag("generated");
@@ -111,7 +114,7 @@ public class spawn : MonoBehaviour {
         float F = 0f;
 		
 		float spawn_speed = 0.09f;
-		is_spawning = true;
+		
 		int n = history.Count - 1;
         Vector3 V3 = Vector3.zero;
         switch(I){
