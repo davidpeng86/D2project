@@ -77,8 +77,8 @@ public class spawn : MonoBehaviour {
 			{
 				gen[i].transform.parent = group.transform;
 			}
-            group.AddComponent<Rigidbody>();
-			group.transform.Translate(new Vector2(1.35f,0),Space.World);
+            group.AddComponent<Rigidbody2D>();
+			transform.position = transform.parent.position;
 		}
 	}
 
