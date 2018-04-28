@@ -26,6 +26,8 @@ public class spawn : MonoBehaviour
     int cubeCount =0;
     bool Xcheck=true;
     bool CanMoveCheck =false;
+    bool CanRelease;
+    public bool released;
     public bool right;
     public bool left;
     public bool up;
@@ -113,17 +115,22 @@ public class spawn : MonoBehaviour
 
 
 
-    //方塊吐出.收回.防回堵控制
+    //方塊丟出.伸出.收回.防回堵
     void Spawncube()
     {
 
 
 
-        //伸出方塊
-        if (Input.GetKey(KeyCode.Z) && player.GetComponent<Player>().grounded)
+        //伸出方塊 同時判定周邊是否可以伸出方塊 且伸出時刪除既有丟出方塊
+        if (Input.GetKey(KeyCode.Z) && player.GetComponent<Player>().grounded || Input.GetKey(KeyCode.Z) &&CanRelease)
         {
+
             if (Input.GetKeyDown(KeyCode.UpArrow) && is_spawning == false && upCheck == false)
-            {
+            {   
+                if (released)
+                {
+                    Destroy(GameObject.Find("blocks"));
+                }
                 is_spawning = true;
                 Transform child = Instantiate(prefab, this.transform.position, this.transform.rotation);
                 child.transform.parent = player.transform;
@@ -134,9 +141,14 @@ public class spawn : MonoBehaviour
                     record2history("up", child);
                 }
 
+
             }
             if (Input.GetKeyDown(KeyCode.DownArrow) && is_spawning == false && downCheck == false)
             {
+                if (released)
+                {
+                    Destroy(GameObject.Find("blocks"));
+                }
                 is_spawning = true;
                 Transform child = Instantiate(prefab, this.transform.position, this.transform.rotation);
                 child.transform.parent = player.transform;
@@ -149,6 +161,10 @@ public class spawn : MonoBehaviour
             }
             if (Input.GetKeyDown(KeyCode.LeftArrow) && is_spawning == false && leftCheck == false)
             {
+                if (released)
+                {
+                    Destroy(GameObject.Find("blocks"));
+                }
                 is_spawning = true;
                 Transform child = Instantiate(prefab, this.transform.position, this.transform.rotation);
                 child.transform.parent = player.transform;
@@ -161,6 +177,10 @@ public class spawn : MonoBehaviour
             }
             if (Input.GetKeyDown(KeyCode.RightArrow) && is_spawning == false && rightCheck == false)
             {
+                if (released)
+                {
+                    Destroy(GameObject.Find("blocks"));
+                }
                 is_spawning = true;
                 Transform child = Instantiate(prefab, this.transform.position, this.transform.rotation);
                 child.transform.parent = player.transform;
@@ -231,9 +251,21 @@ public class spawn : MonoBehaviour
             }
         }
 
-        //方塊釋出
-        /*if (Input.GetKeyDown(KeyCode.F))
+
+        //判定是否有方塊伸出，可不可以丟出來
+        if (history.Count - 1 > 0)
         {
+            CanRelease = true;
+        }
+        else
+        {
+            CanRelease = false;
+        }
+
+        //方塊丟出
+        if (Input.GetKeyDown(KeyCode.F) && CanRelease)
+        {
+            released = true;
             gen = GameObject.FindGameObjectsWithTag("generated");
             GameObject group = new GameObject("blocks");
             for (int i = 0; i < gen.Length; i++)
@@ -241,16 +273,30 @@ public class spawn : MonoBehaviour
                 gen[i].transform.parent = group.transform;
             }
             group.AddComponent<Rigidbody2D>();
-            group.transform.Translate(new Vector2(1.35f, 0), Space.World);
+            group.GetComponent<Rigidbody2D>().AddForce(new Vector2(1,2)*2,ForceMode2D.Impulse);
+            for (int i = history.Count - 1; i > 0; i--)
+            {
+                history.RemoveAt(i);
+            }
             transform.position = transform.parent.position;
-        }*/
+        }
 
     }
 
+
+
+
+
+
+    //紀錄list
     void record2history(string direction, Transform child_position)
     {
         history.Add(new child(direction, child_position));
     }
+
+
+
+
 
     //generator位置控制
     void Move_self(string dir)
@@ -294,6 +340,14 @@ public class spawn : MonoBehaviour
     void PlayerMovetoLast()
     {   
         Rigidbody2D rb = player.GetComponent<Rigidbody2D>();
+        if (history.Count-1 > 0)
+        {
+            Xcheck = true;
+        }
+        else
+        {
+            Xcheck = false;
+        }
         if (Input.GetKeyDown(KeyCode.X)&&Xcheck)
         {
             CanMoveCheck = true;
@@ -315,7 +369,6 @@ public class spawn : MonoBehaviour
             cubeCount = 0;
            rb.gravityScale = 2;
            CanMoveCheck = false;
-           Xcheck = true;
            for (int i = history.Count - 1; i > 0;i-- )
            {
                history.RemoveAt(i);
