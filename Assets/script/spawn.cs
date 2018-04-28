@@ -21,8 +21,11 @@ public class spawn : MonoBehaviour
     public bool cube_exist = false;
     List<child> history;
     public GameObject[] gen;
-    public Transform player;
+    public GameObject player;
     public LayerMask cubeLayer;
+    int cubeCount =0;
+    bool Xcheck=true;
+    bool CanMoveCheck =false;
     public bool right;
     public bool left;
     public bool up;
@@ -99,29 +102,31 @@ public class spawn : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        test = upCheck;
-        test = downCheck;
-        test = leftCheck;
-        test = rightCheck;
         Spawncube();
+        PlayerMovetoLast();
 
 
 
 
     }
+
+
+
+
+    //方塊吐出.收回.防回堵控制
     void Spawncube()
     {
 
 
 
         //伸出方塊
-        if (Input.GetKey(KeyCode.Z))
+        if (Input.GetKey(KeyCode.Z) && player.GetComponent<Player>().grounded)
         {
             if (Input.GetKeyDown(KeyCode.UpArrow) && is_spawning == false && upCheck == false)
             {
                 is_spawning = true;
                 Transform child = Instantiate(prefab, this.transform.position, this.transform.rotation);
-                child.transform.parent = player;
+                child.transform.parent = player.transform;
                 StartCoroutine(Move(child, "up"));
                 Move_self("up");
                 if (cube_exist == false)
@@ -134,7 +139,7 @@ public class spawn : MonoBehaviour
             {
                 is_spawning = true;
                 Transform child = Instantiate(prefab, this.transform.position, this.transform.rotation);
-                child.transform.parent = player;
+                child.transform.parent = player.transform;
                 StartCoroutine(Move(child, "down"));
                 Move_self("down");
                 if (cube_exist == false)
@@ -146,7 +151,7 @@ public class spawn : MonoBehaviour
             {
                 is_spawning = true;
                 Transform child = Instantiate(prefab, this.transform.position, this.transform.rotation);
-                child.transform.parent = player;
+                child.transform.parent = player.transform;
                 StartCoroutine(Move(child, "left"));
                 Move_self("left");
                 if (cube_exist == false)
@@ -158,7 +163,7 @@ public class spawn : MonoBehaviour
             {
                 is_spawning = true;
                 Transform child = Instantiate(prefab, this.transform.position, this.transform.rotation);
-                child.transform.parent = player;
+                child.transform.parent = player.transform;
                 StartCoroutine(Move(child, "right"));
                 Move_self("right");
                 if (cube_exist == false)
@@ -166,15 +171,6 @@ public class spawn : MonoBehaviour
                     record2history("right", child);
                 }
             }
-
-
-
-
-
-
-
-
-
 
 
 
@@ -188,7 +184,7 @@ public class spawn : MonoBehaviour
             {
                 is_spawning = true;
                 Transform child = Instantiate(prefab, this.transform.position, this.transform.rotation);
-                child.transform.parent = player;
+                child.transform.parent = player.transform;
                 StartCoroutine(Move(child, "up"));
                 Move_self("up");
                 if (cube_exist == false)
@@ -201,7 +197,7 @@ public class spawn : MonoBehaviour
             {
                 is_spawning = true;
                 Transform child = Instantiate(prefab, this.transform.position, this.transform.rotation);
-                child.transform.parent = player;
+                child.transform.parent = player.transform;
                 StartCoroutine(Move(child, "down"));
                 Move_self("down");
                 if (cube_exist == false)
@@ -213,7 +209,7 @@ public class spawn : MonoBehaviour
             {
                 is_spawning = true;
                 Transform child = Instantiate(prefab, this.transform.position, this.transform.rotation);
-                child.transform.parent = player;
+                child.transform.parent = player.transform;
                 StartCoroutine(Move(child, "left"));
                 Move_self("left");
                 if (cube_exist == false)
@@ -225,7 +221,7 @@ public class spawn : MonoBehaviour
             {
                 is_spawning = true;
                 Transform child = Instantiate(prefab, this.transform.position, this.transform.rotation);
-                child.transform.parent = player;
+                child.transform.parent = player.transform;
                 StartCoroutine(Move(child, "right"));
                 Move_self("right");
                 if (cube_exist == false)
@@ -233,15 +229,10 @@ public class spawn : MonoBehaviour
                     record2history("right", child);
                 }
             }
-
-
-
-
-
         }
 
-
-        if (Input.GetKeyDown(KeyCode.F))
+        //方塊釋出
+        /*if (Input.GetKeyDown(KeyCode.F))
         {
             gen = GameObject.FindGameObjectsWithTag("generated");
             GameObject group = new GameObject("blocks");
@@ -252,7 +243,7 @@ public class spawn : MonoBehaviour
             group.AddComponent<Rigidbody2D>();
             group.transform.Translate(new Vector2(1.35f, 0), Space.World);
             transform.position = transform.parent.position;
-        }
+        }*/
 
     }
 
@@ -261,7 +252,7 @@ public class spawn : MonoBehaviour
         history.Add(new child(direction, child_position));
     }
 
-    //move generator after spawning cube
+    //generator位置控制
     void Move_self(string dir)
     {
         Vector3 position = transform.position;
@@ -286,13 +277,72 @@ public class spawn : MonoBehaviour
         transform.position = position;
     }
 
-    //move the spawned cube
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //玩家移動至最後一個方塊
+    void PlayerMovetoLast()
+    {   
+        Rigidbody2D rb = player.GetComponent<Rigidbody2D>();
+        if (Input.GetKeyDown(KeyCode.X)&&Xcheck)
+        {
+            CanMoveCheck = true;
+            Xcheck = false;
+            cubeCount = 0;
+            rb.gravityScale = 0;
+            gen = GameObject.FindGameObjectsWithTag("generated");
+            for (int i = 0; i < gen.Length; i++)
+            {
+                gen[i].transform.parent = null;
+                gen[i].GetComponent<Collider2D>().isTrigger = true;
+            }
+
+            
+            transform.position = player.transform.position;
+        }
+        if (cubeCount == history.Count-1)
+        {
+            cubeCount = 0;
+           rb.gravityScale = 2;
+           CanMoveCheck = false;
+           Xcheck = true;
+           for (int i = history.Count - 1; i > 0;i-- )
+           {
+               history.RemoveAt(i);
+           }
+        }
+        if (CanMoveCheck)
+        {
+           StartCoroutine(MoveToLast(history.ElementAt(cubeCount+1).direction, cubeCount));
+        }
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+    //生成方塊移動控制
     IEnumerator Move(Transform T, string I)
     {
         float F = 0f;
-
         float spawn_speed = 0.09f;
-
         int n = history.Count - 1;
         Vector3 V3 = Vector3.zero;
         switch (I)
@@ -347,6 +397,7 @@ public class spawn : MonoBehaviour
             T.position += V3;
             yield return new WaitForSeconds(0.01f);
         }
+
         T.position = transform.position;
         is_spawning = false;
 
@@ -357,6 +408,62 @@ public class spawn : MonoBehaviour
         }
 
     }
+
+
+
+
+
+
+
+
+
+    //移動至最後一個方塊
+
+
+
+    IEnumerator MoveToLast(string direction,int cube)
+    {
+        CanMoveCheck = false;
+        float moveTime = 0;
+        float moveSpeed = 0.09f;
+        Vector3 directionCheck=Vector3.zero;
+        switch (direction)
+        {
+            case "up":
+                directionCheck = Vector3.up * moveSpeed;
+                break;
+            case "down":
+                directionCheck = Vector3.down * moveSpeed;
+                break;
+            case "left":
+                directionCheck = Vector3.left * moveSpeed;
+                break;
+            case "right":
+                directionCheck = Vector3.right * moveSpeed;
+                break;
+        }
+        while (moveTime < 1.35f)
+        {
+            moveTime += moveSpeed;
+            player.transform.Translate(directionCheck);
+            yield return new WaitForSeconds(0.01f);
+        }
+        Destroy(gen[cubeCount]);
+        CanMoveCheck = true;
+        cubeCount += 1;
+        
+       
+       
+    }
+
+
+
+
+
+
+
+
+
 
 
 

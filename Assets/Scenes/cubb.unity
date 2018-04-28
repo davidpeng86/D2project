@@ -523,7 +523,7 @@ MonoBehaviour:
   prefab: {fileID: 4062195374133892, guid: fb4085c479eeb5e4f8327130bf0a95d7, type: 2}
   cube_exist: 0
   gen: []
-  player: {fileID: 724049913}
+  player: {fileID: 724049910}
   cubeLayer:
     serializedVersion: 2
     m_Bits: 512
