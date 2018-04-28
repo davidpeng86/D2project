@@ -478,7 +478,7 @@ public class spawn : MonoBehaviour
     {
         CanMoveCheck = false;
         float moveTime = 0;
-        float moveSpeed = 0.09f;
+        float moveSpeed = 0.135f;
         Vector3 directionCheck=Vector3.zero;
         switch (direction)
         {

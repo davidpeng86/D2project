@@ -21,6 +21,7 @@ public class Player : MonoBehaviour
     public float distance;
     [Header("偵測地板射線起點")]
     public Transform groundCheck;
+    public Transform groundCheck2;
     public LayerMask groundLayer;
     public bool grounded;
     bool Isground
@@ -28,9 +29,19 @@ public class Player : MonoBehaviour
         get
         {
             Vector2 start = groundCheck.position;
+            Vector2 start2 = groundCheck2.position;
             Vector2 end = new Vector2(start.x, start.y - distance);
+            Vector2 end2 = new Vector2(start2.x, start.y - distance);
             Debug.DrawLine(start, end, Color.blue);
-            grounded = Physics2D.Linecast(start, end, groundLayer);
+            Debug.DrawLine(start2, end2, Color.blue);
+            if (Physics2D.Linecast(start, end, groundLayer) || Physics2D.Linecast(start2, end2, groundLayer))
+            {
+                grounded = true;
+            }
+            else
+            {
+                grounded = false;
+            }
             return grounded;
         }
     }
