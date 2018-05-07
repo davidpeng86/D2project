@@ -107,9 +107,6 @@ public class spawn : MonoBehaviour
         Spawncube();
         PlayerMovetoLast();
 
-
-
-
     }
 
 

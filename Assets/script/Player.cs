@@ -4,14 +4,13 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public float walk_speed = 100.0f;
     bool b_spawn;
     float horizontalDirection;
-    public float maxSpeedX = 10.0f;
+    public float maxSpeedX = 5.0f;
     float maxSpeedY;
     public float speedX;
     public float speedY;
-    [Range(400, 600)]
+    [Range(400, 10000)]
     public float xForce;
     [Range(0, 200)]
     public float yForce;
@@ -60,19 +59,10 @@ public class Player : MonoBehaviour
 
     void MovementX()
     {
-        if (Input.GetKeyDown(KeyCode.Z))
-        {
-            b_spawn = true;
-        }
-        if (Input.GetKeyUp(KeyCode.Z))
-        {
-            b_spawn = false;
-        }
+
         horizontalDirection = Input.GetAxis("Horizontal");
-        if (b_spawn == false)
-        {
-            rb.AddForce(new Vector2(horizontalDirection * xForce * Time.deltaTime, 0));
-        }
+        rb.AddForce(new Vector2(horizontalDirection * xForce * Time.deltaTime,0),ForceMode2D.Force);
+
     }
     public void ControlSpeed()
     {
@@ -80,6 +70,11 @@ public class Player : MonoBehaviour
         speedY = rb.velocity.y;
         float newspeedX = Mathf.Clamp(speedX, -maxSpeedX, maxSpeedX);
         rb.velocity = new Vector2(newspeedX, speedY);
+
+        if (Input.GetKeyUp(KeyCode.RightArrow) || Input.GetKeyUp(KeyCode.LeftArrow))
+        {
+            rb.velocity = new Vector2(0, speedY);
+        }
     }
 
     // Update is called once per frame
