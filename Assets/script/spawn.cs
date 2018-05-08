@@ -26,13 +26,13 @@ public class spawn : MonoBehaviour
     int cubeCount =0;
     bool Xcheck=true;
     bool CanMoveCheck =false;
-    bool CanRelease;
+    public bool movingTolastCube =false; 
+    public bool CanRelease;
     public bool released;
     public bool right;
     public bool left;
     public bool up;
     public bool down;
-    public bool test;
     [Range(0, 2.0f)]
     [Header("感應四周距離")]
     public float distance;
@@ -271,6 +271,7 @@ public class spawn : MonoBehaviour
             }
             group.AddComponent<Rigidbody2D>();
             group.GetComponent<Rigidbody2D>().AddForce(new Vector2(1,2)*2,ForceMode2D.Impulse);
+            group.GetComponent<Rigidbody2D>().freezeRotation = true;
             for (int i = history.Count - 1; i > 0; i--)
             {
                 history.RemoveAt(i);
@@ -337,7 +338,8 @@ public class spawn : MonoBehaviour
     void PlayerMovetoLast()
     {   
         Rigidbody2D rb = player.GetComponent<Rigidbody2D>();
-        if (history.Count-1 > 0)
+
+        if (history.Count-1 > 0)//確認是否有伸出方塊,有的話才打開
         {
             Xcheck = true;
         }
@@ -345,11 +347,12 @@ public class spawn : MonoBehaviour
         {
             Xcheck = false;
         }
-        if (Input.GetKeyDown(KeyCode.X)&&Xcheck)
+        if (Input.GetKeyDown(KeyCode.X)&&Xcheck)//在已確認可移動的情況下 按下X後開啟移動至最後一個方塊的StartCoroutine 並且關閉重力以及所生成出的方塊的碰撞
         {
+            movingTolastCube = true;
             CanMoveCheck = true;
             Xcheck = false;
-            cubeCount = 0;
+            cubeCount = 0;//cubecount是記錄Player已走到第幾個方塊 
             rb.gravityScale = 0;
             gen = GameObject.FindGameObjectsWithTag("generated");
             for (int i = 0; i < gen.Length; i++)
@@ -361,17 +364,18 @@ public class spawn : MonoBehaviour
             
             transform.position = player.transform.position;
         }
-        if (cubeCount == history.Count-1)
+        if (cubeCount == history.Count-1)//當移動至最後一個方塊後"移動至最後一個方塊"的狀態解除,重設重力並且關閉StartCoroutine,最後把List內的所有元素刪除
         {
-            cubeCount = 0;
+           movingTolastCube = false;
+           cubeCount = 0;
            rb.gravityScale = 2;
            CanMoveCheck = false;
-           for (int i = history.Count - 1; i > 0;i-- )
-           {
+           for (int i = history.Count - 1; i > 0;i--) 
+            {
                history.RemoveAt(i);
            }
         }
-        if (CanMoveCheck)
+        if (CanMoveCheck)//開始StartCoroutine
         {
            StartCoroutine(MoveToLast(history.ElementAt(cubeCount+1).direction, cubeCount));
         }
@@ -392,7 +396,7 @@ public class spawn : MonoBehaviour
     IEnumerator Move(Transform T, string I)
     {
         float F = 0f;
-        float spawn_speed = 0.09f;
+        float spawn_speed = 0.135f;
         int n = history.Count - 1;
         Vector3 V3 = Vector3.zero;
         switch (I)
@@ -475,9 +479,9 @@ public class spawn : MonoBehaviour
     {
         CanMoveCheck = false;
         float moveTime = 0;
-        float moveSpeed = 0.135f;
+        float moveSpeed = 0.27f;
         Vector3 directionCheck=Vector3.zero;
-        switch (direction)
+        switch (direction)//判斷下一顆方塊位置給予不同方向的位移量
         {
             case "up":
                 directionCheck = Vector3.up * moveSpeed;
@@ -492,15 +496,15 @@ public class spawn : MonoBehaviour
                 directionCheck = Vector3.right * moveSpeed;
                 break;
         }
-        while (moveTime < 1.35f)
+        while (moveTime < 1.35f)//每0.01秒移動0.135單位執行0.1秒 總計執行10次
         {
             moveTime += moveSpeed;
             player.transform.Translate(directionCheck);
             yield return new WaitForSeconds(0.01f);
         }
-        Destroy(gen[cubeCount]);
-        CanMoveCheck = true;
-        cubeCount += 1;
+        Destroy(gen[cubeCount]);//刪除已移動過後的軌跡方塊
+        CanMoveCheck = true;//重啟StartCoroutine直至已移動至最後一個方塊
+        cubeCount += 1;//計算移動至第幾塊方塊
         
        
        

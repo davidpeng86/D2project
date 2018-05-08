@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    bool b_spawn;
     float horizontalDirection;
     public float maxSpeedX = 5.0f;
     float maxSpeedY;
@@ -15,14 +14,52 @@ public class Player : MonoBehaviour
     [Range(0, 200)]
     public float yForce;
     Rigidbody2D rb;
+    public GameObject Generator;
     [Range(0, 0.5f)]
     [Header("感應地板距離")]
     public float distance;
     [Header("偵測地板射線起點")]
     public Transform groundCheck;
     public Transform groundCheck2;
+    [Header("偵測左右是否貼牆的射線起點")]
+    public Transform RightWallCheck;
+    public Transform LeftWallCheck;
     public LayerMask groundLayer;
+    bool StuckwallCheck;
     public bool grounded;
+    static PlayerState _state;
+    public enum PlayerState
+    {
+        s_idle,
+        s_groundedHoldingidle,
+        s_Holdingidle,
+        s_movingTolastCube,
+        s_moving,
+        s_jumping,
+        s_spawning,
+    }
+
+    bool wallchecker
+    {
+        get
+        {
+            Vector2 start = RightWallCheck.position;
+            Vector2 start2 = LeftWallCheck.position;
+            Vector2 end = new Vector2(start.x+distance, start.y);
+            Vector2 end2 = new Vector2(start2.x-distance, start.y);
+            Debug.DrawLine(start, end, Color.blue);
+            Debug.DrawLine(start2, end2, Color.blue);
+            if (Physics2D.Linecast(start, end, groundLayer) || Physics2D.Linecast(start2, end2, groundLayer))
+            {
+                StuckwallCheck = true;
+            }
+            else
+            {
+                StuckwallCheck = false;
+            }
+            return StuckwallCheck;
+        }
+    }
     bool Isground
     {
         get
@@ -47,9 +84,45 @@ public class Player : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        _state = PlayerState.s_idle;
         rb = GetComponent<Rigidbody2D>();
     }
-    void jump()
+ 
+
+    // Update is called once per frame
+    void Update()
+    {
+        ChangeState();
+        switch (_state)
+        {
+            case PlayerState.s_idle:
+                break;
+            case PlayerState.s_moving:
+                MovementX();
+                break;
+            case PlayerState.s_jumping:
+                MovementX();
+                jump();
+                break;
+            case PlayerState.s_spawning:
+                break;
+            case PlayerState.s_groundedHoldingidle:
+                MovementX();
+                jump();
+                break;
+            case PlayerState.s_Holdingidle:
+                break;
+            case PlayerState.s_movingTolastCube:
+                break;
+
+        }
+        //move control
+
+        ControlSpeed();
+        Debug.Log(_state);
+    }
+
+   void jump()
     {
         if (Isground && Input.GetKeyDown(KeyCode.Space))
         {
@@ -60,7 +133,8 @@ public class Player : MonoBehaviour
     void MovementX()
     {
 
-        horizontalDirection = Input.GetAxis("Horizontal");
+        horizontalDirection = Input.GetAxisRaw("Horizontal");
+        if (wallchecker == true && Isground == true || wallchecker==false)
         rb.AddForce(new Vector2(horizontalDirection * xForce * Time.deltaTime,0),ForceMode2D.Force);
 
     }
@@ -77,15 +151,37 @@ public class Player : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
+
+    void ChangeState()
     {
-
-        //move control
-        MovementX();
-        ControlSpeed();
-        jump();
-
+        if (rb.velocity == Vector2.zero)
+        {
+            _state = PlayerState.s_idle;
+        }
+        if (rb.velocity.y ==0 &&Input.GetAxisRaw("Horizontal")!=0)
+        {
+            _state = PlayerState.s_moving;
+        }
+        if (rb.velocity.y!=0|| Isground && Input.GetKeyDown(KeyCode.Space)||Isground==false)
+        {
+            _state = PlayerState.s_jumping;
+        }
+        if (Generator.GetComponent<spawn>().CanRelease == true && Isground==false)
+        {
+            _state = PlayerState.s_Holdingidle;
+        }
+        if (Generator.GetComponent<spawn>().CanRelease == true &&Isground)
+        {
+            _state = PlayerState.s_groundedHoldingidle;
+        }
+        if (Generator.GetComponent<spawn>().movingTolastCube == true)
+        {
+            _state = PlayerState.s_movingTolastCube;
+        }
+        if (Input.GetKey(KeyCode.Z))
+        {
+            _state = PlayerState.s_spawning;
+        }
 
     }
 }
