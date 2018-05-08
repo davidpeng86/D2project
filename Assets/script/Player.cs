@@ -22,9 +22,10 @@ public class Player : MonoBehaviour
     public Transform groundCheck;
     public Transform groundCheck2;
     [Header("偵測左右是否貼牆的射線起點")]
-    public Transform RightWallCheck;
-    public Transform LeftWallCheck;
+    public Transform rightWallcheck;
+    public Transform leftWallcheck;
     public LayerMask groundLayer;
+    public LayerMask cubeLayer;
     bool StuckwallCheck;
     public bool grounded;
     static PlayerState _state;
@@ -43,12 +44,12 @@ public class Player : MonoBehaviour
     {
         get
         {
-            Vector2 start = RightWallCheck.position;
-            Vector2 start2 = LeftWallCheck.position;
+            Vector2 start = rightWallcheck.position;
+            Vector2 start2 = leftWallcheck.position;
             Vector2 end = new Vector2(start.x+distance, start.y);
             Vector2 end2 = new Vector2(start2.x-distance, start.y);
-            Debug.DrawLine(start, end, Color.blue);
-            Debug.DrawLine(start2, end2, Color.blue);
+            Debug.DrawLine(start, end, Color.yellow);
+            Debug.DrawLine(start2, end2, Color.yellow);
             if (Physics2D.Linecast(start, end, groundLayer) || Physics2D.Linecast(start2, end2, groundLayer))
             {
                 StuckwallCheck = true;
@@ -166,13 +167,14 @@ public class Player : MonoBehaviour
         {
             _state = PlayerState.s_jumping;
         }
+
+        if (Generator.GetComponent<spawn>().CanRelease == true)//上次進度 要想好這個狀態的條件
+        {
+            _state = PlayerState.s_groundedHoldingidle;
+        }
         if (Generator.GetComponent<spawn>().CanRelease == true && Isground==false)
         {
             _state = PlayerState.s_Holdingidle;
-        }
-        if (Generator.GetComponent<spawn>().CanRelease == true &&Isground)
-        {
-            _state = PlayerState.s_groundedHoldingidle;
         }
         if (Generator.GetComponent<spawn>().movingTolastCube == true)
         {

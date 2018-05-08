@@ -272,6 +272,7 @@ public class spawn : MonoBehaviour
             group.AddComponent<Rigidbody2D>();
             group.GetComponent<Rigidbody2D>().AddForce(new Vector2(1,2)*2,ForceMode2D.Impulse);
             group.GetComponent<Rigidbody2D>().freezeRotation = true;
+            group.GetComponent<Rigidbody2D>().gravityScale = 2;
             for (int i = history.Count - 1; i > 0; i--)
             {
                 history.RemoveAt(i);
@@ -347,7 +348,7 @@ public class spawn : MonoBehaviour
         {
             Xcheck = false;
         }
-        if (Input.GetKeyDown(KeyCode.X)&&Xcheck)//在已確認可移動的情況下 按下X後開啟移動至最後一個方塊的StartCoroutine 並且關閉重力以及所生成出的方塊的碰撞
+        if (Input.GetKeyDown(KeyCode.X)&& Xcheck&&movingTolastCube==false)//在已確認可移動的情況下 按下X後開啟移動至最後一個方塊的StartCoroutine 並且關閉重力以及所生成出的方塊的碰撞
         {
             movingTolastCube = true;
             CanMoveCheck = true;
@@ -368,7 +369,7 @@ public class spawn : MonoBehaviour
         {
            movingTolastCube = false;
            cubeCount = 0;
-           rb.gravityScale = 2;
+           rb.gravityScale = 3;
            CanMoveCheck = false;
            for (int i = history.Count - 1; i > 0;i--) 
             {
@@ -396,7 +397,7 @@ public class spawn : MonoBehaviour
     IEnumerator Move(Transform T, string I)
     {
         float F = 0f;
-        float spawn_speed = 0.135f;
+        float spawn_speed = 0.09f;
         int n = history.Count - 1;
         Vector3 V3 = Vector3.zero;
         switch (I)
@@ -479,7 +480,7 @@ public class spawn : MonoBehaviour
     {
         CanMoveCheck = false;
         float moveTime = 0;
-        float moveSpeed = 0.27f;
+        float moveSpeed = 0.135f;
         Vector3 directionCheck=Vector3.zero;
         switch (direction)//判斷下一顆方塊位置給予不同方向的位移量
         {
@@ -496,7 +497,7 @@ public class spawn : MonoBehaviour
                 directionCheck = Vector3.right * moveSpeed;
                 break;
         }
-        while (moveTime < 1.35f)//每0.01秒移動0.135單位執行0.1秒 總計執行10次
+        while (moveTime < 1.35f)
         {
             moveTime += moveSpeed;
             player.transform.Translate(directionCheck);
