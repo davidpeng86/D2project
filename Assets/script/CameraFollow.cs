@@ -8,24 +8,47 @@ public class CameraFollow : MonoBehaviour {
     public float smoothTimeY;
     float distanceX;
     float distanceY;
-    // Use this for initialization
+    float posXR;
+    float posXL;
     public GameObject Player;
+
+    // Use this for initialization
+
 	void Start () {
 	}
 	
 	// Update is called once per frame
 	void FixedUpdate ()
     {
+
         distanceX = transform.position.x - Player.transform.position.x;
-        distanceY = Mathf.Abs(transform.position.y - Player.transform.position.y);
-        float posX = Mathf.SmoothDamp(transform.position.x, Player.transform.position.x, ref velocity.x, smoothTimeX);
-        float posY = Mathf.SmoothDamp(transform.position.y, Player.transform.position.y, ref velocity.y, smoothTimeY);
-        transform.position = new Vector3(transform.position.x, posY+1 , transform.position.z);
-        if (distanceX>4.5f)
-        transform.position = new Vector3(Player.transform.position.x + 4.5f, transform.position.y, transform.position.z);
-        if (distanceX < -4.5f)
-        transform.position = new Vector3(Player.transform.position.x - 4.5f, transform.position.y, transform.position.z);
+        posXR = Mathf.SmoothDamp(transform.position.x, Player.transform.position.x, ref velocity.x, smoothTimeX);
+        posXL = Mathf.SmoothDamp(transform.position.x, Player.transform.position.x+6.0f , ref velocity.x, smoothTimeX);
+        if (Player.GetComponent<Player>().direction)
+        {
+            if (Player.transform.position.x > transform.position.x)
+            {
+                transform.position = new Vector3(posXR, transform.position.y, transform.position.z);
+            }
+        }
+        else
+        {
+            if (Player.transform.position.x < transform.position.x - 6.0f)
+                transform.position = new Vector3(posXL, transform.position.y, transform.position.z);
 
+        }
 
+        if (Input.GetKey(KeyCode.Z))
+        {
+            if (Player.GetComponent<Player>().direction)
+            {
+                transform.position = new Vector3(Mathf.SmoothDamp(transform.position.x, Player.transform.position.x+8.0f, ref velocity.x, smoothTimeX), transform.position.y, transform.position.z);
+            }
+            else
+            {
+                transform.position = new Vector3(Mathf.SmoothDamp(transform.position.x , Player.transform.position.x, ref velocity.x, smoothTimeX), transform.position.y, transform.position.z);
+            }
+
+        }
     }
 }

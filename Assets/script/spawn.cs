@@ -262,6 +262,7 @@ public class spawn : MonoBehaviour
         //方塊丟出
         if (Input.GetKeyDown(KeyCode.F) && CanRelease)
         {
+            StopAllCoroutines();
             released = true;
             gen = GameObject.FindGameObjectsWithTag("generated");
             GameObject group = new GameObject("blocks");
