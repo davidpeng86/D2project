@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+
 public class Player : MonoBehaviour
 {
+    
     float horizontalDirection;
     public float maxSpeedX = 5.0f;
     float maxSpeedY;
@@ -29,8 +32,8 @@ public class Player : MonoBehaviour
     public bool grounded;
     bool groundedHoldingCheck;
     public bool direction;
-    static PlayerState _state;
-    public enum PlayerState
+    public PlayerState _state;
+    public  enum PlayerState
     {
         s_idle,
         s_groundedHoldingidle,
@@ -146,15 +149,18 @@ public class Player : MonoBehaviour
         switch (_state)
         {
             case PlayerState.s_idle:
-                break;
-            case PlayerState.s_moving:
-                MovementX();
-                break;
-            case PlayerState.s_jumping:
                 MovementX();
                 jump();
                 break;
+            case PlayerState.s_moving:
+                MovementX();
+                jump();
+                break;
+            case PlayerState.s_jumping:
+                MovementX();
+                break;
             case PlayerState.s_spawning:
+                rb.velocity = new Vector2(0, rb.velocity.y);
                 break;
             case PlayerState.s_Holdingidle:
                 break;
@@ -171,6 +177,7 @@ public class Player : MonoBehaviour
 
         ControlSpeed();
         Debug.Log(_state);
+
     }
 
    void jump()
@@ -185,9 +192,12 @@ public class Player : MonoBehaviour
     {
 
         horizontalDirection = Input.GetAxisRaw("Horizontal");
-        if (Rightwallchecker== false && Leftwallchecker == false )
+ 
+        if (Rightwallchecker == false && Leftwallchecker == false)
+        {
             rb.AddForce(new Vector2(horizontalDirection * xForce * Time.deltaTime, 0), ForceMode2D.Force);
-        else if (Leftwallchecker == true &&horizontalDirection == 1)
+        }
+        else if (Leftwallchecker == true && horizontalDirection == 1)
         {
             rb.AddForce(new Vector2(horizontalDirection * xForce * Time.deltaTime, 0), ForceMode2D.Force);
         }
@@ -236,18 +246,19 @@ public class Player : MonoBehaviour
         {
             _state = PlayerState.s_moving;
         }
-        if (rb.velocity.y!=0|| Isground && Input.GetKeyDown(KeyCode.Space)||Isground==false)
-        {
-            _state = PlayerState.s_jumping;
-        }
 
-        if (Generator.GetComponent<spawn>().CanRelease == true  )
+
+        if (Generator.GetComponent<spawn>().cubeCheck == true  )
         {
             _state = PlayerState.s_groundedHoldingidle;
         }
-        if (Generator.GetComponent<spawn>().CanRelease == true&& groundedHoldingbool==true)
+        if (Generator.GetComponent<spawn>().cubeCheck == true&& groundedHoldingbool==true)
         {
             _state = PlayerState.s_Holdingidle;
+        }
+        if (Isground==false && rb.velocity.y!=0)
+        {
+            _state = PlayerState.s_jumping;
         }
         if (Generator.GetComponent<spawn>().movingTolastCube == true)
         {
@@ -259,4 +270,5 @@ public class Player : MonoBehaviour
         }
 
     }
+
 }

@@ -20,8 +20,8 @@ public class CameraFollow : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate ()
     {
-
         distanceX = transform.position.x - Player.transform.position.x;
+        
         posXR = Mathf.SmoothDamp(transform.position.x, Player.transform.position.x, ref velocity.x, smoothTimeX);
         posXL = Mathf.SmoothDamp(transform.position.x, Player.transform.position.x+10.15f , ref velocity.x, smoothTimeX);
         if (Player.GetComponent<Player>().direction)
@@ -35,9 +35,15 @@ public class CameraFollow : MonoBehaviour {
         {
             if (Player.transform.position.x < transform.position.x - 10.15f)
                 transform.position = new Vector3(posXL, transform.position.y, transform.position.z);
-
         }
-
+        if (transform.position.y <Player.transform.position.y+2.82f)
+        {
+            transform.position = new Vector3(transform.position.x, Mathf.SmoothDamp(transform.position.y, Player.transform.position.y+2.82f, ref velocity.y, smoothTimeY), transform.position.z);
+        }
+        if (transform.position.y > Player.transform.position.y+1.82f )
+        {
+            transform.position = new Vector3(transform.position.x, Mathf.SmoothDamp(transform.position.y, Player.transform.position.y+1.82f, ref velocity.y, smoothTimeY), transform.position.z);
+        }
         if (Input.GetKey(KeyCode.Z))
         {
             if (Player.GetComponent<Player>().direction)

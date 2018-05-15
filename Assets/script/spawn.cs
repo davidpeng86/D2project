@@ -16,6 +16,7 @@ public class child
 
 public class spawn : MonoBehaviour
 {
+    Player Player;
     public Transform prefab;
     bool is_spawning;
     public bool cube_exist = false;
@@ -24,10 +25,10 @@ public class spawn : MonoBehaviour
     public GameObject player;
     public LayerMask cubeLayer;
     int cubeCount =0;
-    bool Xcheck=true;
+    public bool cubeCheck=true;
     bool CanMoveCheck =false;
+    bool spawnCheck = true;
     public bool movingTolastCube =false; 
-    public bool CanRelease;
     public bool released;
     public bool right;
     public bool left;
@@ -104,22 +105,57 @@ public class spawn : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Spawncube();
-        PlayerMovetoLast();
+        switch (player.GetComponent<Player>()._state)
+        {
+            case Player.PlayerState.s_idle:
+                
+                break;
+            case Player.PlayerState.s_moving:
+                break;
+            case Player.PlayerState.s_jumping:
+                break;
+            case Player.PlayerState.s_spawning:
+                Spawncube();
+                break;
+            case Player.PlayerState.s_Holdingidle:
+                PlayerMovetoLast();
+                break;
+            case Player.PlayerState.s_groundedHoldingidle:
+                ThrowCube();
+                PlayerMovetoLast();
+                break;
 
+            case Player.PlayerState.s_movingTolastCube:
+                PlayerMovetoLast();
+                break;
+
+        }
+        
+ 
+        //判定是否有方塊伸出，可不可以丟出來
+        if (history.Count - 1 > 0)
+        {
+            cubeCheck = true;
+        }
+        else
+        {
+            cubeCheck = false;
+        }
+        if (Input.GetKeyUp(KeyCode.Z) && cubeCheck == true)
+        {
+            Debug.Log("123");
+            spawnCheck = false;
+        }
     }
 
 
 
 
-    //方塊丟出.伸出.收回.防回堵
+    //方塊伸出.收回.防回堵
     void Spawncube()
     {
-
-
-
         //伸出方塊 同時判定周邊是否可以伸出方塊 且伸出時刪除既有丟出方塊
-        if (Input.GetKey(KeyCode.Z) && player.GetComponent<Player>().grounded || Input.GetKey(KeyCode.Z) &&CanRelease)
+        if (Input.GetKey(KeyCode.Z) && player.GetComponent<Player>().grounded && spawnCheck)
         {
 
             if (Input.GetKeyDown(KeyCode.UpArrow) && is_spawning == false && upCheck == false)
@@ -249,19 +285,19 @@ public class spawn : MonoBehaviour
         }
 
 
-        //判定是否有方塊伸出，可不可以丟出來
-        if (history.Count - 1 > 0)
-        {
-            CanRelease = true;
-        }
-        else
-        {
-            CanRelease = false;
-        }
+
+    }
+
+
+    void ThrowCube()
+    {
+       
+
 
         //方塊丟出
-        if (Input.GetKeyDown(KeyCode.F) && CanRelease)
+        if (Input.GetKeyDown(KeyCode.F) && cubeCheck)
         {
+            spawnCheck = true;
             StopAllCoroutines();
             released = true;
             gen = GameObject.FindGameObjectsWithTag("generated");
@@ -271,7 +307,15 @@ public class spawn : MonoBehaviour
                 gen[i].transform.parent = group.transform;
             }
             group.AddComponent<Rigidbody2D>();
-            group.GetComponent<Rigidbody2D>().AddForce(new Vector2(1,2)*2,ForceMode2D.Impulse);
+            group.AddComponent<Blocks>();
+            if (player.GetComponent<Player>().direction == true)
+            {
+                group.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 3.5f);
+            }
+            else
+            {
+                group.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 3.5f);
+            }
             group.GetComponent<Rigidbody2D>().freezeRotation = true;
             group.GetComponent<Rigidbody2D>().gravityScale = 2;
             for (int i = history.Count - 1; i > 0; i--)
@@ -280,7 +324,6 @@ public class spawn : MonoBehaviour
             }
             transform.position = transform.parent.position;
         }
-
     }
 
 
@@ -305,19 +348,19 @@ public class spawn : MonoBehaviour
         switch (dir)
         {
             case "up":
-                position.y += 1.35f;
+                position.y += 1.28f;
                 break;
 
             case "down":
-                position.y -= 1.35f;
+                position.y -= 1.28f;
                 break;
 
             case "left":
-                position.x -= 1.35f;
+                position.x -= 1.28f;
                 break;
 
             case "right":
-                position.x += 1.35f;
+                position.x += 1.28f;
                 break;
         }
         transform.position = position;
@@ -341,21 +384,14 @@ public class spawn : MonoBehaviour
     {   
         Rigidbody2D rb = player.GetComponent<Rigidbody2D>();
 
-        if (history.Count-1 > 0)//確認是否有伸出方塊,有的話才打開
-        {
-            Xcheck = true;
-        }
-        else
-        {
-            Xcheck = false;
-        }
-        if (Input.GetKeyDown(KeyCode.X)&& Xcheck&&movingTolastCube==false)//在已確認可移動的情況下 按下X後開啟移動至最後一個方塊的StartCoroutine 並且關閉重力以及所生成出的方塊的碰撞
+        if (Input.GetKeyDown(KeyCode.X)&& cubeCheck&&movingTolastCube==false)//在已確認可移動的情況下 按下X後開啟移動至最後一個方塊的StartCoroutine 並且關閉重力以及所生成出的方塊的碰撞
         {
             movingTolastCube = true;
             CanMoveCheck = true;
-            Xcheck = false;
+            cubeCheck = false;
             cubeCount = 0;//cubecount是記錄Player已走到第幾個方塊 
             rb.gravityScale = 0;
+            player.GetComponent<Collider2D>().isTrigger = true;
             gen = GameObject.FindGameObjectsWithTag("generated");
             for (int i = 0; i < gen.Length; i++)
             {
@@ -368,12 +404,14 @@ public class spawn : MonoBehaviour
         }
         if (cubeCount == history.Count-1)//當移動至最後一個方塊後"移動至最後一個方塊"的狀態解除,重設重力並且關閉StartCoroutine,最後把List內的所有元素刪除
         {
+            spawnCheck = true;
            movingTolastCube = false;
            cubeCount = 0;
            rb.gravityScale = 3;
            CanMoveCheck = false;
+           player.GetComponent<Collider2D>().isTrigger = false;
            for (int i = history.Count - 1; i > 0;i--) 
-            {
+           {
                history.RemoveAt(i);
            }
         }
@@ -398,7 +436,7 @@ public class spawn : MonoBehaviour
     IEnumerator Move(Transform T, string I)
     {
         float F = 0f;
-        float spawn_speed = 0.09f;
+        float spawn_speed = 0.0853f;
         int n = history.Count - 1;
         Vector3 V3 = Vector3.zero;
         switch (I)
@@ -447,7 +485,7 @@ public class spawn : MonoBehaviour
 
                 break;
         }
-        while (F < 1.35f)
+        while (F < 1.28f)
         {
             F += spawn_speed;
             T.position += V3;
@@ -481,7 +519,7 @@ public class spawn : MonoBehaviour
     {
         CanMoveCheck = false;
         float moveTime = 0;
-        float moveSpeed = 0.135f;
+        float moveSpeed = 0.128f;
         Vector3 directionCheck=Vector3.zero;
         switch (direction)//判斷下一顆方塊位置給予不同方向的位移量
         {
@@ -498,7 +536,7 @@ public class spawn : MonoBehaviour
                 directionCheck = Vector3.right * moveSpeed;
                 break;
         }
-        while (moveTime < 1.35f)
+        while (moveTime < 1.28f)
         {
             moveTime += moveSpeed;
             player.transform.Translate(directionCheck);
@@ -511,19 +549,5 @@ public class spawn : MonoBehaviour
        
        
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 }

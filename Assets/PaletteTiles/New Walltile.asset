@@ -34,12 +34,12 @@ MonoBehaviour:
   m_Flags: 1
   m_ColliderType: 1
   wallSprites:
-  - {fileID: 21300000, guid: b361d343565d3a043a891090fa6b7a05, type: 3}
-  - {fileID: 21300000, guid: 308f07cdcc2417b4db4d4553c148b34d, type: 3}
-  - {fileID: 21300000, guid: 65cf8e804ed0cc946941f88c65b729e3, type: 3}
-  - {fileID: 21300000, guid: 255dff722ed37f747bc9d5e71a83154c, type: 3}
-  - {fileID: 21300000, guid: 3eafcebcadff75049abe2d6aab3dca05, type: 3}
-  - {fileID: 21300000, guid: 88558065da536334fa66bd14fde1a270, type: 3}
-  - {fileID: 21300000, guid: 3fa622044f5ee0245a75fe2332b31c38, type: 3}
-  - {fileID: 21300000, guid: 29af6a81038d3e5448dd71d75e42bc0f, type: 3}
+  - {fileID: 21300000, guid: ab08ca06ab949c24eba464a6220ed117, type: 3}
+  - {fileID: 21300000, guid: ab08ca06ab949c24eba464a6220ed117, type: 3}
+  - {fileID: 21300000, guid: ab08ca06ab949c24eba464a6220ed117, type: 3}
+  - {fileID: 21300000, guid: ab08ca06ab949c24eba464a6220ed117, type: 3}
+  - {fileID: 21300000, guid: ab08ca06ab949c24eba464a6220ed117, type: 3}
+  - {fileID: 21300000, guid: ab08ca06ab949c24eba464a6220ed117, type: 3}
+  - {fileID: 21300000, guid: ab08ca06ab949c24eba464a6220ed117, type: 3}
+  - {fileID: 21300000, guid: ab08ca06ab949c24eba464a6220ed117, type: 3}
   preview: {fileID: 0}
