@@ -192,18 +192,21 @@ public class Player : MonoBehaviour
     {
 
         horizontalDirection = Input.GetAxisRaw("Horizontal");
- 
+        if(rb.velocity.y==0)//防止滑行
+        {
+            rb.velocity = new Vector2(0,rb.velocity.y);
+        }
         if (Rightwallchecker == false && Leftwallchecker == false)
         {
-            rb.AddForce(new Vector2(horizontalDirection * xForce * Time.deltaTime, 0), ForceMode2D.Force);
+           rb.velocity = new Vector2(5*horizontalDirection,rb.velocity.y);
         }
         else if (Leftwallchecker == true && horizontalDirection == 1)
         {
-            rb.AddForce(new Vector2(horizontalDirection * xForce * Time.deltaTime, 0), ForceMode2D.Force);
+            rb.velocity = new Vector2(5*horizontalDirection,rb.velocity.y);
         }
         else if (Rightwallchecker == true && horizontalDirection == -1)
         {
-            rb.AddForce(new Vector2(horizontalDirection * xForce * Time.deltaTime, 0), ForceMode2D.Force);
+            rb.velocity = new Vector2(5*horizontalDirection,rb.velocity.y);
         }
         directionCheck();
 
