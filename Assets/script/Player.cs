@@ -6,33 +6,35 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    
-    float horizontalDirection;
+    public GameObject Generator;
+
     public float maxSpeedX = 5.0f;
-    float maxSpeedY;
     public float speedX;
     public float speedY;
+    [Header("右:true左:false")]
+    public bool direction;
+    [Header("施力大小")]
     [Range(400, 10000)]
     public float xForce;
     [Range(0, 200)]
     public float yForce;
-    Rigidbody2D rb;
-    public GameObject Generator;
     [Range(0, 0.5f)]
     [Header("感應地板距離")]
     public float distance;
     [Header("偵測地板射線起點")]
     public Transform groundCheck;
     public Transform groundCheck2;
-    [Header("偵測左右是否貼牆的射線起點")]
-    public Transform rightWallcheck;
+    [Header("偵測上下左右是否貼牆的射線起點")]
+    public Transform upWallcheck;
+    public Transform downWallcheck;
     public Transform leftWallcheck;
+    public Transform rightWallcheck;
     public LayerMask groundLayer;
     public LayerMask cubeLayer;
-    public bool grounded;
-    bool groundedHoldingCheck;
-    public bool direction;
+    [Header("玩家狀態")]
     public PlayerState _state;
+    Rigidbody2D rb;
+    float horizontalDirection;
     public  enum PlayerState
     {
         s_idle,
@@ -43,13 +45,12 @@ public class Player : MonoBehaviour
         s_jumping,
         s_spawning,
     }
-
-    bool Rightwallchecker
+    public bool Upwallchecker
     {
         get
         {
-            Vector2 start = rightWallcheck.position;
-            Vector2 end = new Vector2(start.x+distance, start.y);
+            Vector2 start = upWallcheck.position;
+            Vector2 end = new Vector2(start.x, start.y+distance);
             Debug.DrawLine(start, end, Color.yellow);
             if (Physics2D.Linecast(start, end, groundLayer))
             {
@@ -59,10 +60,28 @@ public class Player : MonoBehaviour
             {
                 return false;
             }
-            
+
         }
     }
-    bool Leftwallchecker
+    public bool Downwallchecker
+    {
+        get
+        {
+            Vector2 start = downWallcheck.position;
+            Vector2 end = new Vector2(start.x, start.y-distance);
+            Debug.DrawLine(start, end, Color.yellow);
+            if (Physics2D.Linecast(start, end, groundLayer))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+        }
+    }
+    public bool Leftwallchecker
     {
         get
         {
@@ -80,7 +99,25 @@ public class Player : MonoBehaviour
 
         }
     }
-    bool Isground
+    public bool Rightwallchecker
+    {
+        get
+        {
+            Vector2 start = rightWallcheck.position;
+            Vector2 end = new Vector2(start.x+distance, start.y);
+            Debug.DrawLine(start, end, Color.yellow);
+            if (Physics2D.Linecast(start, end, groundLayer))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+            
+        }
+    }
+    public bool Isground
     {
         get
         {
@@ -92,13 +129,13 @@ public class Player : MonoBehaviour
             Debug.DrawLine(start2, end2, Color.blue);
             if (Physics2D.Linecast(start, end, groundLayer) || Physics2D.Linecast(start2, end2, groundLayer)||Physics2D.Linecast(start, end, cubeLayer) || Physics2D.Linecast(start2, end2, cubeLayer))
             {
-                grounded = true;
+               return true; 
             }
             else
             {
-                grounded = false;
+                return false;
             }
-            return grounded;
+            
         }
     }
     bool groundedHoldingbool
@@ -116,22 +153,20 @@ public class Player : MonoBehaviour
             Debug.DrawLine(left, end3, Color.black);
             if (Physics2D.Linecast(bottom, end, cubeLayer))
             {
-                groundedHoldingCheck = true;
+                return true;
             }
             else if (Physics2D.Linecast(right, end2, cubeLayer) && Isground == false)
             {
-                groundedHoldingCheck = true;
+                return true;
             }
             else if (Physics2D.Linecast(left, end3, cubeLayer) && Isground == false)
             {
-                groundedHoldingCheck = true;
+                return true;
             }
             else
             {
-                groundedHoldingCheck = false;
+                return false;
             }
-
-            return groundedHoldingCheck;
         }
     }
     // Use this for initialization
@@ -145,6 +180,7 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         ChangeState();
         switch (_state)
         {
@@ -158,6 +194,7 @@ public class Player : MonoBehaviour
                 break;
             case PlayerState.s_jumping:
                 MovementX();
+                jump();
                 break;
             case PlayerState.s_spawning:
                 rb.velocity = new Vector2(0, rb.velocity.y);
@@ -190,7 +227,6 @@ public class Player : MonoBehaviour
 
     void MovementX()
     {
-
         horizontalDirection = Input.GetAxisRaw("Horizontal");
         if(rb.velocity.y==0)//防止滑行
         {
@@ -249,8 +285,6 @@ public class Player : MonoBehaviour
         {
             _state = PlayerState.s_moving;
         }
-
-
         if (Generator.GetComponent<spawn>().cubeCheck == true  )
         {
             _state = PlayerState.s_groundedHoldingidle;
@@ -258,6 +292,10 @@ public class Player : MonoBehaviour
         if (Generator.GetComponent<spawn>().cubeCheck == true&& groundedHoldingbool==true)
         {
             _state = PlayerState.s_Holdingidle;
+        }
+        if (Input.GetKey(KeyCode.Z))
+        {
+            _state = PlayerState.s_spawning;
         }
         if (Isground==false && rb.velocity.y!=0)
         {
@@ -267,11 +305,6 @@ public class Player : MonoBehaviour
         {
             _state = PlayerState.s_movingTolastCube;
         }
-        if (Input.GetKey(KeyCode.Z))
-        {
-            _state = PlayerState.s_spawning;
-        }
-
     }
 
 }

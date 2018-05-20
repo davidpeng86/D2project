@@ -16,82 +16,163 @@ public class child
 
 public class spawn : MonoBehaviour
 {
-    Player Player;
-    public Transform prefab;
-    bool is_spawning;
-    public bool cube_exist = false;
-    List<child> history;
-    public GameObject[] gen;
-    public GameObject player;
-    public LayerMask cubeLayer;
-    int cubeCount =0;
-    public bool cubeCheck=true;
-    bool CanMoveCheck =false;
-    bool spawnCheck = true;
-    public bool movingTolastCube =false; 
-    public bool released;
-    public bool right;
-    public bool left;
-    public bool up;
-    public bool down;
+    Player Player;//Player的Script
+    [Header("方塊伸出數量限制")]
+    public float maxCube = 1;
+    [Header("方塊使用數量限制")]
+    public float maxUsedcube = 30;
     [Range(0, 2.0f)]
     [Header("感應四周距離")]
     public float distance;
     [Header("偵測四周射線起點")]
-    public Transform upCubeCheck;
-    public Transform downCubeCheck;
-    public Transform leftCubeCheck;
-    public Transform rightCubeCheck;
-    bool leftCheck
+    public Transform upCheck;
+    public Transform downCheck;
+    public Transform leftCheck;
+    public Transform rightCheck;
+    public Transform prefab;
+    List<child> history;//紀錄方塊位置的表單
+    public GameObject[] gen;//用來儲存丟出的方塊
+    public GameObject player;
+    public LayerMask cubeLayer;
+    public LayerMask groundLayer;
+    public bool cube_exist = false;//紀錄方塊的開關
+    public bool cubeCheck=true;//判定是否有方塊伸出
+    public bool movingTolastCube = false; //是否處於正在移動至最後一個方塊的狀態
+    public bool released;//方塊是否丟出
+    int cubeCount =0;//移動至最後一個方塊的函式 的計步器
+    bool is_spawning; //生成或回收的動畫冷卻
+    bool CanMoveCheck =false;//重置移動至最後一個方塊的函式的變數
+    bool spawnCheck = true;//已生成後得丟出或移動至最後一個之後才能再生成
+
+    bool leftCubecheck
     {
         get
         {
-            Vector2 start = leftCubeCheck.position;
+            Vector2 start = leftCheck.position;
             Vector2 end = new Vector2(start.x - distance, start.y);
             Debug.DrawLine(start, end, Color.blue);
-            left = Physics2D.Linecast(start, end, cubeLayer);
-            return left;
+            if (Physics2D.Linecast(start, end, cubeLayer))
+            {
+                return true;
+            }
+            else
+                return false;
+            
         }
     }
-    bool rightCheck
+    bool rightCubecheck
     {
         get
         {
-            Vector2 start = rightCubeCheck.position;
+            Vector2 start = rightCheck.position;
             Vector2 end = new Vector2(start.x + distance, start.y);
             Debug.DrawLine(start, end, Color.blue);
-            right = Physics2D.Linecast(start, end, cubeLayer);
-            return right;
+            if (Physics2D.Linecast(start, end, cubeLayer))
+            {
+                return true;
+            }
+            else
+                return false;
         }
     }
-    bool upCheck
+    bool upCubecheck
     {
         get
         {
-            Vector2 start = upCubeCheck.position;
+            Vector2 start = upCheck.position;
             Vector2 end = new Vector2(start.x, start.y + distance);
             Debug.DrawLine(start, end, Color.blue);
-            up = Physics2D.Linecast(start, end, cubeLayer);
-            return up;
+            if (Physics2D.Linecast(start, end, cubeLayer))
+            {
+                return true;
+            }
+            else
+                return false;
         }
     }
-    bool downCheck
+    bool downCubecheck
     {
         get
         {
-            Vector2 start = downCubeCheck.position;
+            Vector2 start = downCheck.position;
             Vector2 end = new Vector2(start.x, start.y - distance);
             Debug.DrawLine(start, end, Color.blue);
-            down = Physics2D.Linecast(start, end, cubeLayer);
-            return down;
+            if (Physics2D.Linecast(start, end, cubeLayer))
+            {
+                return true;
+            }
+            else
+                return false;
         }
     }
-
-
-
-
-
-
+    bool Upwallchecker
+    {
+        get
+        {
+            Vector2 start = upCheck.position;
+            Vector2 end = new Vector2(start.x, start.y + distance);
+            Debug.DrawLine(start, end, Color.yellow);
+            if (Physics2D.Linecast(start, end, groundLayer))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+    }
+    bool Downwallchecker
+    {
+        get
+        {
+            Vector2 start = downCheck.position;
+            Vector2 end = new Vector2(start.x, start.y - distance);
+            Debug.DrawLine(start, end, Color.yellow);
+            if (Physics2D.Linecast(start, end, groundLayer))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+    }
+    bool Leftwallchecker
+    {
+        get
+        {
+            Vector2 start2 = leftCheck.position;
+            Vector2 end2 = new Vector2(start2.x - distance, start2.y);
+            Debug.DrawLine(start2, end2, Color.yellow);
+            if (Physics2D.Linecast(start2, end2, groundLayer))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+    }
+    bool Rightwallchecker
+    {
+        get
+        {
+            Vector2 start = rightCheck.position;
+            Vector2 end = new Vector2(start.x + distance, start.y);
+            Debug.DrawLine(start, end, Color.yellow);
+            if (Physics2D.Linecast(start, end, groundLayer))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+    }
 
 
 
@@ -143,7 +224,6 @@ public class spawn : MonoBehaviour
         }
         if (Input.GetKeyUp(KeyCode.Z) && cubeCheck == true)
         {
-            Debug.Log("123");
             spawnCheck = false;
         }
     }
@@ -155,10 +235,11 @@ public class spawn : MonoBehaviour
     void Spawncube()
     {
         //伸出方塊 同時判定周邊是否可以伸出方塊 且伸出時刪除既有丟出方塊
-        if (Input.GetKey(KeyCode.Z) && player.GetComponent<Player>().grounded && spawnCheck)
+        if (Input.GetKey(KeyCode.Z)  && spawnCheck)
         {
 
-            if (Input.GetKeyDown(KeyCode.UpArrow) && is_spawning == false && upCheck == false)
+            if (Input.GetKeyDown(KeyCode.UpArrow) && is_spawning == false && upCubecheck == false && (history.Count - 1) < maxCube && player.GetComponent<Player>().Downwallchecker ==false||
+                Input.GetKeyDown(KeyCode.UpArrow) && is_spawning == false && upCubecheck == false && (history.Count - 1) < maxCube && Upwallchecker ==false)
             {   
                 if (released)
                 {
@@ -176,7 +257,8 @@ public class spawn : MonoBehaviour
 
 
             }
-            if (Input.GetKeyDown(KeyCode.DownArrow) && is_spawning == false && downCheck == false)
+            if (Input.GetKeyDown(KeyCode.DownArrow) && is_spawning == false && downCubecheck == false && (history.Count - 1) < maxCube && player.GetComponent<Player>().Upwallchecker == false ||
+                Input.GetKeyDown(KeyCode.DownArrow) && is_spawning == false && downCubecheck == false && (history.Count - 1) < maxCube && Downwallchecker == false)
             {
                 if (released)
                 {
@@ -192,7 +274,8 @@ public class spawn : MonoBehaviour
                     record2history("down", child);
                 }
             }
-            if (Input.GetKeyDown(KeyCode.LeftArrow) && is_spawning == false && leftCheck == false)
+            if (Input.GetKeyDown(KeyCode.LeftArrow) && is_spawning == false && leftCubecheck == false && (history.Count - 1) < maxCube && player.GetComponent<Player>().Rightwallchecker == false||
+                Input.GetKeyDown(KeyCode.LeftArrow) && is_spawning == false && leftCubecheck == false && (history.Count - 1) < maxCube && Leftwallchecker == false)
             {
                 if (released)
                 {
@@ -208,7 +291,8 @@ public class spawn : MonoBehaviour
                     record2history("left", child);
                 }
             }
-            if (Input.GetKeyDown(KeyCode.RightArrow) && is_spawning == false && rightCheck == false)
+            if (Input.GetKeyDown(KeyCode.RightArrow) && is_spawning == false && rightCubecheck == false && (history.Count - 1) < maxCube && player.GetComponent<Player>().Leftwallchecker== false||
+                Input.GetKeyDown(KeyCode.RightArrow) && is_spawning == false && rightCubecheck == false && (history.Count - 1) < maxCube && Rightwallchecker == false)
             {
                 if (released)
                 {
@@ -233,7 +317,7 @@ public class spawn : MonoBehaviour
 
             //回收方塊
 
-            if (Input.GetKeyDown(KeyCode.UpArrow) && is_spawning == false && upCheck && history.ElementAt(history.Count - 1).direction == "down")
+            if (Input.GetKeyDown(KeyCode.UpArrow) && is_spawning == false && upCubecheck && history.ElementAt(history.Count - 1).direction == "down")
             {
                 is_spawning = true;
                 Transform child = Instantiate(prefab, this.transform.position, this.transform.rotation);
@@ -246,7 +330,7 @@ public class spawn : MonoBehaviour
                 }
 
             }
-            if (Input.GetKeyDown(KeyCode.DownArrow) && is_spawning == false && downCheck && history.ElementAt(history.Count - 1).direction == "up")
+            if (Input.GetKeyDown(KeyCode.DownArrow) && is_spawning == false && downCubecheck && history.ElementAt(history.Count - 1).direction == "up")
             {
                 is_spawning = true;
                 Transform child = Instantiate(prefab, this.transform.position, this.transform.rotation);
@@ -258,7 +342,7 @@ public class spawn : MonoBehaviour
                     record2history("down", child);
                 }
             }
-            if (Input.GetKeyDown(KeyCode.LeftArrow) && is_spawning == false && leftCheck && history.ElementAt(history.Count - 1).direction == "right")
+            if (Input.GetKeyDown(KeyCode.LeftArrow) && is_spawning == false &&leftCubecheck && history.ElementAt(history.Count - 1).direction == "right")
             {
                 is_spawning = true;
                 Transform child = Instantiate(prefab, this.transform.position, this.transform.rotation);
@@ -270,7 +354,7 @@ public class spawn : MonoBehaviour
                     record2history("left", child);
                 }
             }
-            if (Input.GetKeyDown(KeyCode.RightArrow) && is_spawning == false && rightCheck && history.ElementAt(history.Count - 1).direction == "left")
+            if (Input.GetKeyDown(KeyCode.RightArrow) && is_spawning == false && rightCubecheck && history.ElementAt(history.Count - 1).direction == "left")
             {
                 is_spawning = true;
                 Transform child = Instantiate(prefab, this.transform.position, this.transform.rotation);
@@ -283,12 +367,7 @@ public class spawn : MonoBehaviour
                 }
             }
         }
-
-
-
     }
-
-
     void ThrowCube()
     {
        
@@ -329,16 +408,11 @@ public class spawn : MonoBehaviour
 
 
 
-
-
     //紀錄list
     void record2history(string direction, Transform child_position)
     {
         history.Add(new child(direction, child_position));
     }
-
-
-
 
 
     //generator位置控制
@@ -365,17 +439,6 @@ public class spawn : MonoBehaviour
         }
         transform.position = position;
     }
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -421,17 +484,6 @@ public class spawn : MonoBehaviour
         }
 
     }
-
-
-
-
-
-
-
-
-
-
-
     //生成方塊移動控制
     IEnumerator Move(Transform T, string I)
     {
@@ -503,14 +555,6 @@ public class spawn : MonoBehaviour
 
     }
 
-
-
-
-
-
-
-
-
     //移動至最後一個方塊
 
 
@@ -545,8 +589,6 @@ public class spawn : MonoBehaviour
         Destroy(gen[cubeCount]);//刪除已移動過後的軌跡方塊
         CanMoveCheck = true;//重啟StartCoroutine直至已移動至最後一個方塊
         cubeCount += 1;//計算移動至第幾塊方塊
-        
-       
        
     }
 
