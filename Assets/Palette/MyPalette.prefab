@@ -160,7 +160,7 @@ Tilemap:
   - m_RefCount: 0
     m_Data: {fileID: 0}
   - m_RefCount: 1
-    m_Data: {fileID: 21300000, guid: 29af6a81038d3e5448dd71d75e42bc0f, type: 3}
+    m_Data: {fileID: 21300000, guid: cb7a4e01a80a3894e8ba8fb512b02a76, type: 3}
   m_TileMatrixArray:
   - m_RefCount: 1
     m_Data:
@@ -212,4 +212,4 @@ Tilemap:
   - serializedVersion: 1
     m_DirtyIndex: 1
   - serializedVersion: 1
-    m_DirtyIndex: 0
+    m_DirtyIndex: 6
