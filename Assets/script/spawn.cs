@@ -30,7 +30,7 @@ public class spawn : MonoBehaviour
     public Transform leftCheck;
     public Transform rightCheck;
     public Transform prefab;
-    List<child> history;//紀錄方塊位置的表單
+    public List<child> history;//紀錄方塊位置的表單
     public GameObject[] gen;//用來儲存丟出的方塊
     public GameObject player;
     public LayerMask cubeLayer;
@@ -237,10 +237,12 @@ public class spawn : MonoBehaviour
         //伸出方塊 同時判定周邊是否可以伸出方塊 且伸出時刪除既有丟出方塊
         if (Input.GetKey(KeyCode.Z)  && spawnCheck)
         {
+            Debug.Log("123");
 
             if (Input.GetKeyDown(KeyCode.UpArrow) && is_spawning == false && upCubecheck == false && (history.Count - 1) < maxCube && player.GetComponent<Player>().Downwallchecker ==false||
                 Input.GetKeyDown(KeyCode.UpArrow) && is_spawning == false && upCubecheck == false && (history.Count - 1) < maxCube && Upwallchecker ==false)
             {   
+
                 if (released)
                 {
                     Destroy(GameObject.Find("blocks"));

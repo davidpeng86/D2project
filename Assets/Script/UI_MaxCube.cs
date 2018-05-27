@@ -5,10 +5,9 @@ using UnityEngine.UI;
 
 public class UI_MaxCube : MonoBehaviour {
     public Text text;
-    GameObject Generator;
+    public GameObject Generator;
     // Use this for initialization
     void Start () {
-        Generator = GameObject.FindGameObjectWithTag("GameController");
         text.GetComponent<Text>();
 		
 	}

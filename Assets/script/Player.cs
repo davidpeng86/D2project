@@ -35,6 +35,7 @@ public class Player : MonoBehaviour
     public PlayerState _state;
     Rigidbody2D rb;
     float horizontalDirection;
+    Animator anim_;
     public  enum PlayerState
     {
         s_idle,
@@ -86,7 +87,7 @@ public class Player : MonoBehaviour
         get
         {
             Vector2 start2 = leftWallcheck.position;
-            Vector2 end2 = new Vector2(start2.x - distance, start2.y);
+            Vector2 end2 = new Vector2(start2.x - 0.05f, start2.y);
             Debug.DrawLine(start2, end2, Color.yellow);
             if (Physics2D.Linecast(start2, end2, groundLayer))
             {
@@ -104,7 +105,7 @@ public class Player : MonoBehaviour
         get
         {
             Vector2 start = rightWallcheck.position;
-            Vector2 end = new Vector2(start.x+distance, start.y);
+            Vector2 end = new Vector2(start.x+0.05f, start.y);
             Debug.DrawLine(start, end, Color.yellow);
             if (Physics2D.Linecast(start, end, groundLayer))
             {
@@ -138,7 +139,7 @@ public class Player : MonoBehaviour
             
         }
     }
-    bool groundedHoldingbool
+    bool Holdingbool
     {
         get
         {
@@ -172,6 +173,7 @@ public class Player : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        anim_ = GetComponent<Animator>();
         _state = PlayerState.s_idle;
         rb = GetComponent<Rigidbody2D>();
     }
@@ -191,6 +193,7 @@ public class Player : MonoBehaviour
             case PlayerState.s_moving:
                 MovementX();
                 jump();
+                
                 break;
             case PlayerState.s_jumping:
                 MovementX();
@@ -228,6 +231,14 @@ public class Player : MonoBehaviour
     void MovementX()
     {
         horizontalDirection = Input.GetAxisRaw("Horizontal");
+        if(horizontalDirection !=0)
+        {
+            anim_.SetBool("Move",true);
+        }
+        else
+        {
+            anim_.SetBool("Move",false);
+        }
         if(rb.velocity.y==0)//防止滑行
         {
             rb.velocity = new Vector2(0,rb.velocity.y);
@@ -243,6 +254,10 @@ public class Player : MonoBehaviour
         else if (Rightwallchecker == true && horizontalDirection == -1)
         {
             rb.velocity = new Vector2(5*horizontalDirection,rb.velocity.y);
+        }
+        else
+        {
+            rb.velocity = new Vector2(0,rb.velocity.y); 
         }
         directionCheck();
 
@@ -262,16 +277,18 @@ public class Player : MonoBehaviour
 
     void directionCheck()
     {
-        if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow))
+        if (Input.GetAxisRaw("Horizontal") > 0 && Generator.GetComponent<spawn>().history.Count <=1)
         {
-            if (Input.GetAxisRaw("Horizontal") == 1)
-            {
                 direction = true;
-            }
-            else if (Input.GetAxisRaw("Horizontal") < 0)
-            {
+                transform.localScale =new Vector3(1,1,1);
+        }
+        else if (Input.GetAxisRaw("Horizontal") < 0 && Generator.GetComponent<spawn>().history.Count <=1)
+        {
                 direction = false;
-            }
+                
+                transform.localScale =new Vector3(-1,1,1);
+
+                
         }
     }
 
@@ -289,7 +306,7 @@ public class Player : MonoBehaviour
         {
             _state = PlayerState.s_groundedHoldingidle;
         }
-        if (Generator.GetComponent<spawn>().cubeCheck == true&& groundedHoldingbool==true)
+        if (Generator.GetComponent<spawn>().cubeCheck == true&& Holdingbool==true)
         {
             _state = PlayerState.s_Holdingidle;
         }

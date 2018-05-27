@@ -19,7 +19,7 @@ public class Background : MonoBehaviour {
         cameraTransform = Camera.main.transform;
         lastCameraX = cameraTransform.position.x;
         layers = new Transform[transform.childCount];
-        for (int i = 0; i <= transform.childCount; i++)
+        for (int i = 0; i < transform.childCount; i++)
         {
             layers[i] = transform.GetChild(i);
             leftIndex = 0;

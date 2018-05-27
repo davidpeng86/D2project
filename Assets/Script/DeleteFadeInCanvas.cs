@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class DeleteFadeInCanvas : MonoBehaviour {
-
+	
 	public Animator fadeOut;
 	bool playing;
 	// Use this for initialization
