@@ -13,16 +13,17 @@ public class DoorSwitch : MonoBehaviour {
 	{
         //sprite.GetComponent<SpriteRenderer>();
 	}
-    private void OnTriggerEnter2D(Collider2D col)
+    private void OnTriggerStay2D(Collider2D col)
     {
 		this.GetComponent<SpriteRenderer>().sprite = touched;
-		Door.GetComponent<Animator>().SetBool("On",true);
-		Door.GetComponent<Animator>().SetBool("Off", false);
+		Door.GetComponent<Door>().open = true;
+		Door.GetComponent<Door>().close = false;
+		
 	}
     private void OnTriggerExit2D(Collider2D collision)
     {
 		this.GetComponent<SpriteRenderer>().sprite = touch;
-		Door.GetComponent<Animator>().SetBool("Off", true);
-		Door.GetComponent<Animator>().SetBool("On", false);
+		Door.GetComponent<Door>().open = false;
+		Door.GetComponent<Door>().close = true;
 	}
 }

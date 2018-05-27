@@ -111,7 +111,7 @@ public class spawn : MonoBehaviour
         {
             Vector2 start = upCheck.position;
             Vector2 end = new Vector2(start.x, start.y + distance);
-            Debug.DrawLine(start, end, Color.yellow);
+            Debug.DrawLine(start, end, Color.red);
             if (Physics2D.Linecast(start, end, groundLayer))
             {
                 return true;
@@ -128,7 +128,7 @@ public class spawn : MonoBehaviour
         {
             Vector2 start = downCheck.position;
             Vector2 end = new Vector2(start.x, start.y - distance);
-            Debug.DrawLine(start, end, Color.yellow);
+            Debug.DrawLine(start, end, Color.red);
             if (Physics2D.Linecast(start, end, groundLayer))
             {
                 return true;
@@ -145,7 +145,7 @@ public class spawn : MonoBehaviour
         {
             Vector2 start2 = leftCheck.position;
             Vector2 end2 = new Vector2(start2.x - distance, start2.y);
-            Debug.DrawLine(start2, end2, Color.yellow);
+            Debug.DrawLine(start2, end2, Color.red);
             if (Physics2D.Linecast(start2, end2, groundLayer))
             {
                 return true;
@@ -162,7 +162,7 @@ public class spawn : MonoBehaviour
         {
             Vector2 start = rightCheck.position;
             Vector2 end = new Vector2(start.x + distance, start.y);
-            Debug.DrawLine(start, end, Color.yellow);
+            Debug.DrawLine(start, end, Color.red);
             if (Physics2D.Linecast(start, end, groundLayer))
             {
                 return true;
@@ -186,6 +186,13 @@ public class spawn : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Debug.Log(Upwallchecker);
+        Debug.Log(player.GetComponent<Player>().Downwallchecker);
+        Debug.Log(upCubecheck);
+        if(Upwallchecker||Downwallchecker||Leftwallchecker||Rightwallchecker)
+        {
+            
+        }
 		directionCheck();
 		switch (player.GetComponent<Player>()._state)
         {
@@ -278,7 +285,6 @@ public class spawn : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.LeftArrow) && is_spawning == false && leftCubecheck == false && (history.Count - 1) < maxCube && player.GetComponent<Player>().Rightwallchecker == false||
                 Input.GetKeyDown(KeyCode.LeftArrow) && is_spawning == false && leftCubecheck == false && (history.Count - 1) < maxCube && Leftwallchecker == false)
             {
-				Debug.Log("123");
 				if (released)
                 {
                     Destroy(GameObject.Find("blocks"));
