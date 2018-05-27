@@ -186,7 +186,8 @@ public class spawn : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        switch (player.GetComponent<Player>()._state)
+		directionCheck();
+		switch (player.GetComponent<Player>()._state)
         {
             case Player.PlayerState.s_idle:
                 
@@ -208,11 +209,8 @@ public class spawn : MonoBehaviour
 
             case Player.PlayerState.s_movingTolastCube:
                 PlayerMovetoLast();
-                break;
-
+				break;
         }
-        
- 
         //判定是否有方塊伸出，可不可以丟出來
         if (history.Count - 1 > 0)
         {
@@ -226,6 +224,7 @@ public class spawn : MonoBehaviour
         {
             spawnCheck = false;
         }
+
     }
 
 
@@ -237,7 +236,7 @@ public class spawn : MonoBehaviour
         //伸出方塊 同時判定周邊是否可以伸出方塊 且伸出時刪除既有丟出方塊
         if (Input.GetKey(KeyCode.Z)  && spawnCheck)
         {
-            Debug.Log("123");
+            
 
             if (Input.GetKeyDown(KeyCode.UpArrow) && is_spawning == false && upCubecheck == false && (history.Count - 1) < maxCube && player.GetComponent<Player>().Downwallchecker ==false||
                 Input.GetKeyDown(KeyCode.UpArrow) && is_spawning == false && upCubecheck == false && (history.Count - 1) < maxCube && Upwallchecker ==false)
@@ -279,7 +278,8 @@ public class spawn : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.LeftArrow) && is_spawning == false && leftCubecheck == false && (history.Count - 1) < maxCube && player.GetComponent<Player>().Rightwallchecker == false||
                 Input.GetKeyDown(KeyCode.LeftArrow) && is_spawning == false && leftCubecheck == false && (history.Count - 1) < maxCube && Leftwallchecker == false)
             {
-                if (released)
+				Debug.Log("123");
+				if (released)
                 {
                     Destroy(GameObject.Find("blocks"));
                 }
@@ -407,11 +407,22 @@ public class spawn : MonoBehaviour
         }
     }
 
+	void directionCheck()
+	{
+		if (player.transform.localScale.x == 1)
+		{
+			transform.localScale = new Vector3(1, 1, 1);
+		}
+		else if (player.transform.localScale.x == -1)
+		{
+			transform.localScale = new Vector3(-1, 1, 1);
+		}
+	}
 
 
 
-    //紀錄list
-    void record2history(string direction, Transform child_position)
+	//紀錄list
+	void record2history(string direction, Transform child_position)
     {
         history.Add(new child(direction, child_position));
     }
