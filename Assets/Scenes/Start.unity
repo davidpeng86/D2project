@@ -834,8 +834,8 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1096272123}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 328, y: 184.5, z: 0}
-  m_LocalScale: {x: 0.82, y: 0.82, z: 0.82}
+  m_LocalPosition: {x: 327, y: 159, z: 0}
+  m_LocalScale: {x: 0.8175, y: 0.8175, z: 0.8175}
   m_Children:
   - {fileID: 184276447}
   - {fileID: 1355081641}
@@ -943,7 +943,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1355081640}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.33000183, y: -62.56591, z: 0}
+  m_LocalPosition: {x: -0.33000183, y: -62.895912, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 714003938}
@@ -1103,7 +1103,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1506382501}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 213.78499, y: -62.56591, z: 0}
+  m_LocalPosition: {x: 213.78499, y: -62.895912, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2109689272}
@@ -1512,6 +1512,18 @@ MonoBehaviour:
     source: {fileID: 0}
   - name: jump
     clip: {fileID: 8300000, guid: cdf857e1a79c8aa44adfee36c0eaf6cd, type: 3}
+    volume: 0.2
+    pitch: 2
+    loop: 0
+    source: {fileID: 0}
+  - name: cube_born
+    clip: {fileID: 8300000, guid: f90783faee147974bb511f9906f01224, type: 3}
+    volume: 0.2
+    pitch: 2
+    loop: 0
+    source: {fileID: 0}
+  - name: cube_put
+    clip: {fileID: 8300000, guid: c1d815fded5114a44ac22aaf703ad59c, type: 3}
     volume: 0.2
     pitch: 2
     loop: 0

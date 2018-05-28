@@ -186,13 +186,6 @@ public class spawn : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(Upwallchecker);
-        Debug.Log(player.GetComponent<Player>().Downwallchecker);
-        Debug.Log(upCubecheck);
-        if(Upwallchecker||Downwallchecker||Leftwallchecker||Rightwallchecker)
-        {
-            
-        }
 		directionCheck();
 		switch (player.GetComponent<Player>()._state)
         {
@@ -207,6 +200,7 @@ public class spawn : MonoBehaviour
                 Spawncube();
                 break;
             case Player.PlayerState.s_Holdingidle:
+                ThrowCube();
                 PlayerMovetoLast();
                 break;
             case Player.PlayerState.s_groundedHoldingidle:
@@ -317,12 +311,6 @@ public class spawn : MonoBehaviour
                 }
             }
 
-
-
-
-
-
-
             //回收方塊
 
             if (Input.GetKeyDown(KeyCode.UpArrow) && is_spawning == false && upCubecheck && history.ElementAt(history.Count - 1).direction == "down")
@@ -378,14 +366,14 @@ public class spawn : MonoBehaviour
     }
     void ThrowCube()
     {
-       
-
-
         //方塊丟出
         if (Input.GetKeyDown(KeyCode.F) && cubeCheck)
         {
+            
+
             spawnCheck = true;
-            StopAllCoroutines();
+            //StopAllCoroutines();
+            StartCoroutine(landingSound());
             released = true;
             gen = GameObject.FindGameObjectsWithTag("generated");
             GameObject group = new GameObject("blocks");
@@ -411,6 +399,13 @@ public class spawn : MonoBehaviour
             }
             transform.position = transform.parent.position;
         }
+    }
+    
+    IEnumerator landingSound(){
+        yield return new WaitForSeconds(0.05f);
+        //play audio
+        FindObjectOfType<AudioManager>().play("cube_put");
+        StopCoroutine(landingSound());
     }
 
 	void directionCheck()
@@ -510,6 +505,9 @@ public class spawn : MonoBehaviour
         float spawn_speed = 0.0853f;
         int n = history.Count - 1;
         Vector3 V3 = Vector3.zero;
+        // play sound (AudioManager來自start scene,需要從startscene 開始才存取的到)
+        FindObjectOfType<AudioManager>().play("cube_born");
+
         switch (I)
         {
             case "up":
@@ -571,7 +569,7 @@ public class spawn : MonoBehaviour
             Destroy(T.gameObject);
             cube_exist = false;
         }
-
+        StopCoroutine(Move(T,I));
     }
 
     //移動至最後一個方塊
@@ -608,7 +606,7 @@ public class spawn : MonoBehaviour
         Destroy(gen[cubeCount]);//刪除已移動過後的軌跡方塊
         CanMoveCheck = true;//重啟StartCoroutine直至已移動至最後一個方塊
         cubeCount += 1;//計算移動至第幾塊方塊
-       
+       StopCoroutine(MoveToLast(direction,cube));
     }
-
+    
 }

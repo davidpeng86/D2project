@@ -226,8 +226,10 @@ public class Player : MonoBehaviour
 
    void jump()
     {
+        
         if (Isground && Input.GetKeyDown(KeyCode.Space))
         {
+            FindObjectOfType<AudioManager>().play("jump");
             rb.AddForce(Vector2.up * yForce, ForceMode2D.Impulse);
         }
     }
