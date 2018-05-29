@@ -43,7 +43,7 @@ public class CameraFollow : MonoBehaviour {
                 transform.position = new Vector3(posXL, transform.position.y, transform.position.z);
             }
         }
-        if(transform.position.y>-3.5f)
+        if(transform.position.y>-5.5f)
         {
             if (Player.transform.position.y+1.82f<transform.position.y)
             {
