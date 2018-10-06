@@ -11,7 +11,6 @@ public class CameraFollow : MonoBehaviour {
     float posXL;
     public GameObject Player;
     bool spawnMove;
-    public Transform CameraTestX;
 
 
     // Use this for initialization
@@ -23,7 +22,7 @@ public class CameraFollow : MonoBehaviour {
 	void FixedUpdate ()
     {
         Debug.DrawLine(transform.position+new Vector3(0,8,0), transform.position + new Vector3(0, -8, 0),Color.green);
-        Debug.DrawLine(CameraTestX.position + new Vector3(0, 8, 0), CameraTestX.position + new Vector3(0, -8, 0), Color.green);
+		Debug.DrawLine(this.transform.position + new Vector3(-7.8f, 8, 0), this.transform.position + new Vector3(-7.8f, -8, 0), Color.green);
         Debug.DrawLine(Player.transform.position + new Vector3(-10, 0.82f, 0), Player.transform.position + new Vector3(+10, 0.82f, 0), Color.red);
         Debug.DrawLine(Player.transform.position + new Vector3(-10, 1.82f, 0), Player.transform.position + new Vector3(+10, 1.82f, 0), Color.red);
         posXR = Mathf.SmoothDamp(transform.position.x, Player.transform.position.x, ref velocity.x, smoothTimeX);

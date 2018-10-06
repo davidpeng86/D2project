@@ -21,14 +21,6 @@ public class Player : MonoBehaviour
     [Range(0, 0.5f)]
     [Header("感應地板距離")]
     public float distance;
-    [Header("偵測地板射線起點")]
-    public Transform groundCheck;
-    public Transform groundCheck2;
-    [Header("偵測上下左右是否貼牆的射線起點")]
-    public Transform upWallcheck;
-    public Transform downWallcheck;
-    public Transform leftWallcheck;
-    public Transform rightWallcheck;
     public LayerMask groundLayer;
     public LayerMask cubeLayer;
     [Header("玩家狀態")]
@@ -50,7 +42,7 @@ public class Player : MonoBehaviour
     {
         get
         {
-            Vector2 start = upWallcheck.position;
+			Vector2 start = new Vector2(this.transform.position.x,this.transform.position.y+0.6f);
             Vector2 end = new Vector2(start.x, start.y+distance);
             Debug.DrawLine(start, end, Color.yellow);
             if (Physics2D.Linecast(start, end, groundLayer))
@@ -68,7 +60,7 @@ public class Player : MonoBehaviour
     {
         get
         {
-            Vector2 start = downWallcheck.position;
+			Vector2 start = new Vector2(this.transform.position.x,this.transform.position.y-0.6f);
             Vector2 end = new Vector2(start.x, start.y-distance);
             Debug.DrawLine(start, end, Color.yellow);
             if (Physics2D.Linecast(start, end, groundLayer))
@@ -86,7 +78,7 @@ public class Player : MonoBehaviour
     {
         get
         {
-            Vector2 start2 = leftWallcheck.position;
+			Vector2 start2 = new Vector2(this.transform.position.x-0.6f,this.transform.position.y);
             Vector2 end2 = new Vector2(start2.x - 0.05f, start2.y);
             Debug.DrawLine(start2, end2, Color.yellow);
             if (Physics2D.Linecast(start2, end2, groundLayer))
@@ -104,7 +96,7 @@ public class Player : MonoBehaviour
     {
         get
         {
-            Vector2 start = rightWallcheck.position;
+			Vector2 start = new Vector2(this.transform.position.x+0.6f,this.transform.position.y);
             Vector2 end = new Vector2(start.x+0.05f, start.y);
             Debug.DrawLine(start, end, Color.yellow);
             if (Physics2D.Linecast(start, end, groundLayer))
@@ -122,8 +114,8 @@ public class Player : MonoBehaviour
     {
         get
         {
-            Vector2 start = groundCheck.position;
-            Vector2 start2 = groundCheck2.position;
+			Vector2 start = new Vector2(this.transform.position.x-0.6f,this.transform.position.y-0.61f);
+			Vector2 start2 = new Vector2(this.transform.position.x+0.6f,this.transform.position.y-0.61f);
             Vector2 end = new Vector2(start.x, start.y - distance);
             Vector2 end2 = new Vector2(start2.x, start.y - distance);
             Debug.DrawLine(start, end, Color.blue);
@@ -231,6 +223,9 @@ public class Player : MonoBehaviour
         {
             FindObjectOfType<AudioManager>().play("jump");
             rb.AddForce(Vector2.up * yForce, ForceMode2D.Impulse);
+			/*if (Mathf.Abs (rb.velocity.x) > 3) {
+				rb.velocity=new Vector2
+			}*/
         }
     }
 
@@ -316,14 +311,14 @@ public class Player : MonoBehaviour
         {
             _state = PlayerState.s_Holdingidle;
         }
-        if (Input.GetKey(KeyCode.Z))
-        {
-            _state = PlayerState.s_spawning;
-        }
         if (Isground==false && rb.velocity.y!=0)
         {
             _state = PlayerState.s_jumping;
         }
+		if (Input.GetKey(KeyCode.Z))
+		{
+			_state = PlayerState.s_spawning;
+		}
         if (Generator.GetComponent<spawn>().movingTolastCube == true)
         {
             _state = PlayerState.s_movingTolastCube;
