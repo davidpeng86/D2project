@@ -3,15 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class DeathZone : MonoBehaviour {
-	public GameObject deathFade;
+public class Trap : MonoBehaviour {
 
-	void OnTriggerEnter2D(Collider2D Col)
+	// Use this for initialization
+	void Start () {
+		
+	}
+	
+	// Update is called once per frame
+	void Update () {
+		
+	}
+	void OnCollisionEnter2D(Collision2D col)
 	{
-
-		if(Col.tag == "Player")
+		if(col.collider.tag == "Player")
 		{
-			deathFade.SetActive(true);
+
 			StartCoroutine(wait(0.5f));
 		}
 	}
@@ -19,5 +26,6 @@ public class DeathZone : MonoBehaviour {
 	{
 		yield return new WaitForSecondsRealtime(time);
 		SceneManager.LoadScene("cubb");
+
 	}
 }

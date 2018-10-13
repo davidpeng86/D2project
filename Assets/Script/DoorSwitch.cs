@@ -8,6 +8,7 @@ public class DoorSwitch : MonoBehaviour {
     public Sprite touched;
     public Sprite touch;
     SpriteRenderer sprite;
+	public bool DS_open;
 	// Use this for initialization
 	void Start ()
 	{
@@ -16,14 +17,13 @@ public class DoorSwitch : MonoBehaviour {
     private void OnTriggerStay2D(Collider2D col)
     {
 		this.GetComponent<SpriteRenderer>().sprite = touched;
-		Door.GetComponent<Door>().open = true;
-		Door.GetComponent<Door>().close = false;
+		DS_open = true;
 		
 	}
     private void OnTriggerExit2D(Collider2D collision)
     {
 		this.GetComponent<SpriteRenderer>().sprite = touch;
-		Door.GetComponent<Door>().open = false;
-		Door.GetComponent<Door>().close = true;
+		DS_open = false;
+
 	}
 }

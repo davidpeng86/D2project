@@ -6,6 +6,7 @@ public class Blocks : MonoBehaviour {
     Rigidbody2D rb;
 	// Use this for initialization
 	void Start () {
+		rb = this.GetComponent<Rigidbody2D> ();
        
 	}
 	

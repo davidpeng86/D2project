@@ -174,11 +174,6 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Upwallchecker||Downwallchecker||Leftwallchecker||Rightwallchecker)
-        {
-            
-        }
-
         ChangeState();
         switch (_state)
         {
@@ -293,7 +288,7 @@ public class Player : MonoBehaviour
         }
     }
 
-        void ChangeState()
+    void ChangeState()
     {
         if (rb.velocity == Vector2.zero)
         {
@@ -303,7 +298,7 @@ public class Player : MonoBehaviour
         {
             _state = PlayerState.s_moving;
         }
-        if (Generator.GetComponent<spawn>().cubeCheck == true  )
+        if (Generator.GetComponent<spawn>().cubeCheck == true)
         {
             _state = PlayerState.s_groundedHoldingidle;
         }
@@ -315,7 +310,7 @@ public class Player : MonoBehaviour
         {
             _state = PlayerState.s_jumping;
         }
-		if (Input.GetKey(KeyCode.Z))
+		if (Input.GetKey(KeyCode.Z) && Generator.GetComponent<spawn>().spawnCheck||Generator.GetComponent<spawn>().is_spawning )
 		{
 			_state = PlayerState.s_spawning;
 		}

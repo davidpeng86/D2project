@@ -10,12 +10,14 @@ public class CameraFollow : MonoBehaviour {
     float posXR;
     float posXL;
     public GameObject Player;
+	public GameObject Generator;
     bool spawnMove;
 
 
     // Use this for initialization
 
 	void Start () {
+		
 	}
 	
 	// Update is called once per frame
@@ -58,7 +60,7 @@ public class CameraFollow : MonoBehaviour {
         
         
         
-        if (Input.GetKey(KeyCode.Z))
+		if (Input.GetKey(KeyCode.Z) && Generator.GetComponent<spawn>().spawnCheck)
         {
             spawnMove =true;
         }
