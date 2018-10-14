@@ -27,32 +27,31 @@ public class spawn : MonoBehaviour
 	[Range (0, 2.0f)]
 	[Header ("感應四周距離")]
 	public float distance;
-	[Header ("偵測四周射線起點")]
 	public Transform prefab;
+	[Header ("紀錄方塊位置的表單 ")]
 	public List<child> history;
-	//紀錄方塊位置的表單
+	[Header ("用來儲存丟出的方塊")]
 	private GameObject[] gen;
-	//用來儲存丟出的方塊
 	public GameObject player;
+
 	public LayerMask cubeLayer;
 	public LayerMask groundLayer;
-	public bool cube_exist = false;
 	//紀錄方塊的開關
+	public bool cube_exist = false;
+	[Header ("判定是否有方塊伸出")]
 	public bool cubeCheck = true;
-	//判定是否有方塊伸出
+	[Header ("是否處於正在移動至最後一個方塊的狀態")]
 	public bool movingTolastCube = false;
-	//是否處於正在移動至最後一個方塊的狀態
+	[Header ("方塊是否丟出")]
 	public bool released;
-	//方塊是否丟出
-	int cubeCount = 0;
 	//移動至最後一個方塊的函式 的計步器
+	int cubeCount = 0;
+	[Header ("生成或回收的動畫冷卻")]
 	public bool is_spawning;
-	//生成或回收的動畫冷卻
-	bool CanMoveCheck = false;
 	//重置移動至最後一個方塊的函式的變數
+	bool CanMoveCheck = false;
+	[Header ("生成後得丟出或移動至最後一個的開關")]
 	public bool spawnCheck = true;
-	//已生成後得丟出或移動至最後一個之後才能再生成
-	public GameObject DisappearSmoke;
 	public GameObject UpSign;
 	public GameObject DownSign;
 	public GameObject LeftSign;

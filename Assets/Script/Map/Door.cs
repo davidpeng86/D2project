@@ -6,7 +6,7 @@ public class Door : MonoBehaviour {
 	private Vector2 velocity;
 	bool open;
 	public GameObject[] DoorSwitch;
-	public Vector3 Save;
+	private Vector3 Save;
 	// Use this for initialization
 	void Start () {
 		Save = transform.position;
