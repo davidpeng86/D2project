@@ -31,7 +31,7 @@ public class spawn : MonoBehaviour
 	public Transform prefab;
 	public List<child> history;
 	//紀錄方塊位置的表單
-	public GameObject[] gen;
+	private GameObject[] gen;
 	//用來儲存丟出的方塊
 	public GameObject player;
 	public LayerMask cubeLayer;
@@ -52,6 +52,7 @@ public class spawn : MonoBehaviour
 	//重置移動至最後一個方塊的函式的變數
 	public bool spawnCheck = true;
 	//已生成後得丟出或移動至最後一個之後才能再生成
+	public GameObject DisappearSmoke;
 	public GameObject UpSign;
 	public GameObject DownSign;
 	public GameObject LeftSign;
@@ -173,13 +174,15 @@ public class spawn : MonoBehaviour
 		directionCheck ();
 		switch (player.GetComponent<Player> ()._state) {
 		case Player.PlayerState.s_idle:
+			ClearCube ();
 			ClearArrowSign ();
 			break;
 		case Player.PlayerState.s_moving:
 			ClearArrowSign ();
+			ClearCube ();
 			break;
 		case Player.PlayerState.s_jumping:
-			
+			ClearCube ();
 			break;
 		case Player.PlayerState.s_spawning:
 			Spawncube ();
@@ -206,6 +209,9 @@ public class spawn : MonoBehaviour
 		} else {
 			cubeCheck = false;
 		}
+		if (Input.GetKeyUp (KeyCode.Z) && cubeCheck == true) {
+			spawnCheck = false;
+		}
 
 	}
 
@@ -223,7 +229,8 @@ public class spawn : MonoBehaviour
 			    Input.GetKeyDown (KeyCode.UpArrow) && is_spawning == false && upCubecheck == false && (history.Count - 1) < maxCube && Upwallchecker == false) {   
 
 				if (released) {
-					Destroy (GameObject.Find ("blocks"));
+					GameObject.Find("blocks").GetComponent<Blocks>().destory = true;
+					released = false;
 				}
 				ClearArrowSign ();
 				is_spawning = true;
@@ -240,7 +247,8 @@ public class spawn : MonoBehaviour
 			if (Input.GetKeyDown (KeyCode.DownArrow) && is_spawning == false && downCubecheck == false && (history.Count - 1) < maxCube && player.GetComponent<Player> ().Upwallchecker == false ||
 			    Input.GetKeyDown (KeyCode.DownArrow) && is_spawning == false && downCubecheck == false && (history.Count - 1) < maxCube && Downwallchecker == false) {
 				if (released) {
-					Destroy (GameObject.Find ("blocks"));
+					GameObject.Find("blocks").GetComponent<Blocks>().destory = true;
+					released = false;
 				}
 				ClearArrowSign ();
 				is_spawning = true;
@@ -255,7 +263,8 @@ public class spawn : MonoBehaviour
 			if (Input.GetKeyDown (KeyCode.LeftArrow) && is_spawning == false && leftCubecheck == false && (history.Count - 1) < maxCube && player.GetComponent<Player> ().Rightwallchecker == false ||
 			    Input.GetKeyDown (KeyCode.LeftArrow) && is_spawning == false && leftCubecheck == false && (history.Count - 1) < maxCube && Leftwallchecker == false) {
 				if (released) {
-					Destroy (GameObject.Find ("blocks"));
+					GameObject.Find("blocks").GetComponent<Blocks>().destory = true;
+					released = false;
 				}
 				ClearArrowSign ();
 				is_spawning = true;
@@ -270,7 +279,8 @@ public class spawn : MonoBehaviour
 			if (Input.GetKeyDown (KeyCode.RightArrow) && is_spawning == false && rightCubecheck == false && (history.Count - 1) < maxCube && player.GetComponent<Player> ().Leftwallchecker == false ||
 			    Input.GetKeyDown (KeyCode.RightArrow) && is_spawning == false && rightCubecheck == false && (history.Count - 1) < maxCube && Rightwallchecker == false) {
 				if (released) {
-					Destroy (GameObject.Find ("blocks"));
+					GameObject.Find("blocks").GetComponent<Blocks>().destory = true;
+					released = false;
 				}
 				ClearArrowSign ();
 				is_spawning = true;
@@ -339,9 +349,9 @@ public class spawn : MonoBehaviour
 	{
         
 
-		if (Input.GetKeyUp (KeyCode.Z) && cubeCheck == true) {
+		/*if (Input.GetKeyUp (KeyCode.Z) && cubeCheck == true) {
 			spawnCheck = false;
-		}
+		}*/
 		if (Input.GetKeyDown (KeyCode.Z) && cubeCheck) {
             
 
@@ -357,9 +367,9 @@ public class spawn : MonoBehaviour
 			group.AddComponent<Rigidbody2D> ();
 			group.AddComponent<Blocks> ();
 			if (player.GetComponent<Player> ().direction == true) {
-				group.GetComponent<Rigidbody2D> ().velocity = new Vector2 (10, 3.5f);
+				group.GetComponent<Rigidbody2D> ().velocity = new Vector2 (0, 3.5f);
 			} else {
-				group.GetComponent<Rigidbody2D> ().velocity = new Vector2 (-10, 3.5f);
+				group.GetComponent<Rigidbody2D> ().velocity = new Vector2 (0, 3.5f);
 			}
 			group.GetComponent<Rigidbody2D> ().freezeRotation = true;
 			group.GetComponent<Rigidbody2D> ().gravityScale = 2;
@@ -367,6 +377,20 @@ public class spawn : MonoBehaviour
 				history.RemoveAt (i);
 			}
 			transform.position = transform.parent.position;
+		}
+	}
+
+
+
+	void ClearCube()
+	{
+		if (released) {
+			if (Input.GetKeyDown (KeyCode.X)) {
+				
+				GameObject.Find("blocks").GetComponent<Blocks>().destory = true;
+				released = false;
+			}
+		
 		}
 	}
 
@@ -427,6 +451,8 @@ public class spawn : MonoBehaviour
 		}
 		transform.position = position;
 	}
+
+
 
 
 

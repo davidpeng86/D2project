@@ -144,6 +144,8 @@ public class Player : MonoBehaviour
             Vector2 left = new Vector2(this.transform.position.x-0.7f, this.transform.position.y );
             Vector2 end3 = new Vector2(left.x - distance, left.y);
             Debug.DrawLine(left, end3, Color.black);
+			Vector2 Top =new Vector2 (this.transform.position.x,this.transform.position.y+0.7f);
+			Vector2 end4 = new Vector2(Top.x, Top.y + distance);
             if (Physics2D.Linecast(bottom, end, cubeLayer))
             {
                 return true;
@@ -156,12 +158,45 @@ public class Player : MonoBehaviour
             {
                 return true;
             }
+			else if(Physics2D.Linecast(Top, end4, cubeLayer) && Isground == false)
+			{
+				return true;
+			}
             else
             {
                 return false;
             }
         }
     }
+	int OnBlocksCheck
+	{
+		get
+		{
+			Vector2 right =new Vector2(this.transform.position.x+0.61f,this.transform.position.y-0.57f);
+			Vector2 Down1 =new Vector2(this.transform.position.x+0.6f,this.transform.position.y-0.61f);
+			Vector2 end = new Vector2(right.x + distance, right.y);
+			Vector2 end2= new Vector2(Down1.x, Down1.y - distance);
+			Debug.DrawLine(right, end, Color.yellow);
+			Debug.DrawLine(Down1, end2, Color.yellow);
+			Vector2 left = new Vector2(this.transform.position.x-0.62f,this.transform.position.y-0.57f);
+			Vector2 Down2 =new Vector2(this.transform.position.x-0.6f,this.transform.position.y-0.61f);
+			Vector2 end3 = new Vector2(left.x - distance, left.y);
+			Vector2 end4 = new Vector2(Down2.x, Down2.y - distance);
+			Debug.DrawLine(left, end3, Color.yellow);
+			Debug.DrawLine(Down2, end4, Color.yellow);
+			if (Physics2D.Linecast (right, end, cubeLayer) &&Physics2D.Linecast (Down1, end2, cubeLayer)||Physics2D.Linecast (right, end, cubeLayer) &&Physics2D.Linecast (Down2, end4, cubeLayer) ) {
+				return 1;
+			} 
+			else if(Physics2D.Linecast (left, end3, cubeLayer) &&Physics2D.Linecast (Down1, end2, cubeLayer)||Physics2D.Linecast (left, end3, cubeLayer) &&Physics2D.Linecast (Down2, end4, cubeLayer))
+			{
+				return 2;
+			}
+			else
+			{
+				return 3;
+			}
+		}
+	}
     // Use this for initialization
     void Start()
     {
@@ -239,22 +274,23 @@ public class Player : MonoBehaviour
         {
             rb.velocity = new Vector2(0,rb.velocity.y);
         }
-        if (Rightwallchecker == false && Leftwallchecker == false)
-        {
-           rb.velocity = new Vector2(5*horizontalDirection,rb.velocity.y);
-        }
-        else if (Leftwallchecker == true && horizontalDirection == 1)
+		if (Leftwallchecker == true && horizontalDirection == 1 |OnBlocksCheck == 2 && horizontalDirection == 1)
         {
             rb.velocity = new Vector2(5*horizontalDirection,rb.velocity.y);
         }
-        else if (Rightwallchecker == true && horizontalDirection == -1)
+		else if (Rightwallchecker == true && horizontalDirection == -1 ||OnBlocksCheck == 1 && horizontalDirection == -1)
         {
             rb.velocity = new Vector2(5*horizontalDirection,rb.velocity.y);
         }
-        else
-        {
-            rb.velocity = new Vector2(0,rb.velocity.y); 
-        }
+		else if (Rightwallchecker == false && Leftwallchecker == false && OnBlocksCheck == 3)
+		{
+			rb.velocity = new Vector2(5*horizontalDirection,rb.velocity.y);
+		}
+		else
+		{
+			rb.velocity = new Vector2(0,rb.velocity.y);
+		}
+			
         directionCheck();
 
     }
