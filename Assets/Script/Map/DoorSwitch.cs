@@ -12,18 +12,23 @@ public class DoorSwitch : MonoBehaviour {
 	// Use this for initialization
 	void Start ()
 	{
-        //sprite.GetComponent<SpriteRenderer>();
+        this.gameObject.GetComponent<BoxCollider2D>().isTrigger=true;
 	}
     private void OnTriggerStay2D(Collider2D col)
     {
-		this.GetComponent<SpriteRenderer>().sprite = touched;
-		DS_open = true;
-		
+		if(col.tag=="Player"||col.tag=="generated")
+		{
+			this.GetComponent<SpriteRenderer>().sprite = touched;
+			DS_open = true;
+		}
 	}
-    private void OnTriggerExit2D(Collider2D collision)
+    private void OnTriggerExit2D(Collider2D col)
     {
-		this.GetComponent<SpriteRenderer>().sprite = touch;
-		DS_open = false;
+		if(col.tag=="Player"||col.tag=="generated")
+		{
+			this.GetComponent<SpriteRenderer>().sprite = touch;
+			DS_open = false;
+		}
 
 	}
 }

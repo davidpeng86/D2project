@@ -18,7 +18,6 @@ public class Trap : MonoBehaviour {
 	{
 		if(col.collider.tag == "Player")
 		{
-
 			StartCoroutine(wait(0.5f));
 		}
 	}

@@ -78,7 +78,7 @@ public class Player : MonoBehaviour
     {
         get
         {
-			Vector2 start2 = new Vector2(this.transform.position.x-0.6f,this.transform.position.y);
+			Vector2 start2 = new Vector2(this.transform.position.x-0.6f,this.transform.position.y-0.57f);
             Vector2 end2 = new Vector2(start2.x - 0.05f, start2.y);
             Debug.DrawLine(start2, end2, Color.yellow);
             if (Physics2D.Linecast(start2, end2, groundLayer))
@@ -96,7 +96,7 @@ public class Player : MonoBehaviour
     {
         get
         {
-			Vector2 start = new Vector2(this.transform.position.x+0.6f,this.transform.position.y);
+			Vector2 start = new Vector2(this.transform.position.x+0.6f,this.transform.position.y-0.57f);
             Vector2 end = new Vector2(start.x+0.05f, start.y);
             Debug.DrawLine(start, end, Color.yellow);
             if (Physics2D.Linecast(start, end, groundLayer))
