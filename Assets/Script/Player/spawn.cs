@@ -108,7 +108,7 @@ public class spawn : MonoBehaviour
 
 	bool Upwallchecker {
 		get {
-			Vector3 start = this.transform.position + new Vector3 (0, 0.635f, 0);
+			Vector3 start = this.transform.position + new Vector3 (0, 0.6f, 0);
 			Vector3 end = new Vector3 (start.x, start.y + distance, this.transform.position.z);
 			Debug.DrawLine (start, end, Color.red);
 			if (Physics2D.Linecast (start, end, groundLayer)) {
@@ -121,9 +121,9 @@ public class spawn : MonoBehaviour
 
 	bool Downwallchecker {
 		get {
-			Vector3 start = this.transform.position + new Vector3 (0, -0.635f, 0);
+			Vector3 start = this.transform.position + new Vector3 (0, -0.6f, 0);
 			Vector3 end = new Vector3 (start.x, start.y - distance, this.transform.position.z);
-			Debug.DrawLine (start, end, Color.red);
+			Debug.DrawLine (start, end, Color.gray);
 			if (Physics2D.Linecast (start, end, groundLayer)) {
 				return true;
 			} else {
@@ -134,7 +134,7 @@ public class spawn : MonoBehaviour
 
 	bool Leftwallchecker {
 		get {
-			Vector3 start = this.transform.position + new Vector3 (-0.635f, 0, 0);
+			Vector3 start = this.transform.position + new Vector3 (-0.6f, 0, 0);
 			Vector3 end = new Vector3 (start.x - distance, start.y, this.transform.position.z);
 			Debug.DrawLine (start, end, Color.red);
 			if (Physics2D.Linecast (start, end, groundLayer)) {
@@ -147,7 +147,7 @@ public class spawn : MonoBehaviour
 
 	bool Rightwallchecker {
 		get {
-			Vector3 start = this.transform.position + new Vector3 (0.635f, 0, 0);
+			Vector3 start = this.transform.position + new Vector3 (0.6f, 0, 0);
 			Vector3 end = new Vector3 (start.x + distance, start.y, this.transform.position.z);
 			Debug.DrawLine (start, end, Color.red);
 			if (Physics2D.Linecast (start, end, groundLayer)) {
@@ -170,6 +170,7 @@ public class spawn : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
+        
 		directionCheck ();
 		switch (player.GetComponent<Player> ()._state) {
 		case Player.PlayerState.s_idle:
@@ -224,7 +225,7 @@ public class spawn : MonoBehaviour
 		if (Input.GetKey (KeyCode.Z) && spawnCheck) {
             
 
-			if (Input.GetKeyDown (KeyCode.UpArrow) && is_spawning == false && upCubecheck == false && (history.Count - 1) < maxCube && player.GetComponent<Player> ().Downwallchecker == false ||
+			if (Input.GetKeyDown (KeyCode.UpArrow) && is_spawning == false && upCubecheck == false && (history.Count - 1) < maxCube && Downwallchecker == false && player.GetComponent<Player> ().Downwallchecker == false ||
 			    Input.GetKeyDown (KeyCode.UpArrow) && is_spawning == false && upCubecheck == false && (history.Count - 1) < maxCube && Upwallchecker == false) {   
 
 				if (released) {
@@ -243,7 +244,7 @@ public class spawn : MonoBehaviour
 
 
 			}
-			if (Input.GetKeyDown (KeyCode.DownArrow) && is_spawning == false && downCubecheck == false && (history.Count - 1) < maxCube && player.GetComponent<Player> ().Upwallchecker == false ||
+			if (Input.GetKeyDown (KeyCode.DownArrow) && is_spawning == false && downCubecheck == false && (history.Count - 1) < maxCube && Upwallchecker == false && player.GetComponent<Player> ().Upwallchecker == false ||
 			    Input.GetKeyDown (KeyCode.DownArrow) && is_spawning == false && downCubecheck == false && (history.Count - 1) < maxCube && Downwallchecker == false) {
 				if (released) {
 					GameObject.Find("blocks").GetComponent<Blocks>().destory = true;
@@ -259,7 +260,7 @@ public class spawn : MonoBehaviour
 					record2history ("down", child);
 				}
 			}
-			if (Input.GetKeyDown (KeyCode.LeftArrow) && is_spawning == false && leftCubecheck == false && (history.Count - 1) < maxCube && player.GetComponent<Player> ().Rightwallchecker == false ||
+			if (Input.GetKeyDown (KeyCode.LeftArrow) && is_spawning == false && leftCubecheck == false && (history.Count - 1) < maxCube && Rightwallchecker == false && player.GetComponent<Player> ().Rightwallchecker == false ||
 			    Input.GetKeyDown (KeyCode.LeftArrow) && is_spawning == false && leftCubecheck == false && (history.Count - 1) < maxCube && Leftwallchecker == false) {
 				if (released) {
 					GameObject.Find("blocks").GetComponent<Blocks>().destory = true;
@@ -275,7 +276,7 @@ public class spawn : MonoBehaviour
 					record2history ("left", child);
 				}
 			}
-			if (Input.GetKeyDown (KeyCode.RightArrow) && is_spawning == false && rightCubecheck == false && (history.Count - 1) < maxCube && player.GetComponent<Player> ().Leftwallchecker == false ||
+			if (Input.GetKeyDown (KeyCode.RightArrow) && is_spawning == false && rightCubecheck == false && (history.Count - 1) < maxCube && Leftwallchecker == false && player.GetComponent<Player> ().Leftwallchecker == false ||
 			    Input.GetKeyDown (KeyCode.RightArrow) && is_spawning == false && rightCubecheck == false && (history.Count - 1) < maxCube && Rightwallchecker == false) {
 				if (released) {
 					GameObject.Find("blocks").GetComponent<Blocks>().destory = true;
@@ -366,12 +367,13 @@ public class spawn : MonoBehaviour
 			group.AddComponent<Rigidbody2D> ();
 			group.AddComponent<Blocks> ();
 			if (player.GetComponent<Player> ().direction == true) {
-				group.GetComponent<Rigidbody2D> ().velocity = new Vector2 (0, 3.5f);
+				group.GetComponent<Rigidbody2D> ().velocity = new Vector2 (1, 3.5f);
 			} else {
-				group.GetComponent<Rigidbody2D> ().velocity = new Vector2 (0, 3.5f);
+				group.GetComponent<Rigidbody2D> ().velocity = new Vector2 (-1, 3.5f);
 			}
 			group.GetComponent<Rigidbody2D> ().freezeRotation = true;
-			group.GetComponent<Rigidbody2D> ().gravityScale = 2;
+			group.GetComponent<Rigidbody2D> ().gravityScale = 3;
+            group.tag = "Blocks";
 			for (int i = history.Count - 1; i > 0; i--) {
 				history.RemoveAt (i);
 			}
@@ -601,9 +603,9 @@ public class spawn : MonoBehaviour
 	//可生成方向指示
 	private void ArrowSign ()
 	{
-		if (is_spawning == false && upCubecheck == false && (history.Count - 1) < maxCube && player.GetComponent<Player> ().Downwallchecker == false&&spawnCheck ||
-			is_spawning == false && upCubecheck == false && (history.Count - 1) < maxCube && Upwallchecker == false &&spawnCheck||
-			is_spawning == false && upCubecheck && history.ElementAt (history.Count - 1).direction == "down"&&spawnCheck) 
+		if (is_spawning == false && upCubecheck == false && (history.Count - 1) < maxCube && player.GetComponent<Player> ().Downwallchecker == false && Downwallchecker == false && spawnCheck ||
+			is_spawning == false && upCubecheck == false && (history.Count - 1) < maxCube && Upwallchecker == false && spawnCheck||
+			is_spawning == false && upCubecheck && history.ElementAt (history.Count - 1).direction == "down"&& spawnCheck) 
 		{
 			UpSign.SetActive(true);
 		} 
@@ -612,8 +614,8 @@ public class spawn : MonoBehaviour
 			UpSign.SetActive (false);
 		}
 
-		if (is_spawning == false && downCubecheck == false && (history.Count - 1) < maxCube && player.GetComponent<Player> ().Upwallchecker == false &&spawnCheck||
-			is_spawning == false && downCubecheck == false && (history.Count - 1) < maxCube && Downwallchecker == false&&spawnCheck||
+		if (is_spawning == false && downCubecheck == false && (history.Count - 1) < maxCube && player.GetComponent<Player> ().Upwallchecker == false && Upwallchecker == false && spawnCheck||
+			is_spawning == false && downCubecheck == false && (history.Count - 1) < maxCube && Downwallchecker == false && spawnCheck||
 			is_spawning == false && downCubecheck && history.ElementAt (history.Count - 1).direction == "up"&&spawnCheck) 
 		{
 			DownSign.SetActive (true);
@@ -623,8 +625,8 @@ public class spawn : MonoBehaviour
 			DownSign.SetActive (false);
 		}
 
-		if (is_spawning == false && leftCubecheck == false && (history.Count - 1) < maxCube && player.GetComponent<Player> ().Rightwallchecker == false&&spawnCheck ||
-			is_spawning == false && leftCubecheck == false && (history.Count - 1) < maxCube && Leftwallchecker == false&&spawnCheck||
+		if (is_spawning == false && leftCubecheck == false && (history.Count - 1) < maxCube && player.GetComponent<Player> ().Rightwallchecker == false && Rightwallchecker == false && spawnCheck ||
+			is_spawning == false && leftCubecheck == false && (history.Count - 1) < maxCube && Leftwallchecker == false && spawnCheck||
 			is_spawning == false && leftCubecheck && history.ElementAt (history.Count - 1).direction == "right" &&spawnCheck) 
 		{
 			LeftSign.SetActive (true);
@@ -633,8 +635,8 @@ public class spawn : MonoBehaviour
 		{
 			LeftSign.SetActive (false);
 		}
-		if (is_spawning == false && rightCubecheck == false && (history.Count - 1) < maxCube && player.GetComponent<Player> ().Leftwallchecker == false &&spawnCheck||
-			is_spawning == false && rightCubecheck == false && (history.Count - 1) < maxCube && Rightwallchecker == false&&spawnCheck||
+		if (is_spawning == false && rightCubecheck == false && (history.Count - 1) < maxCube && player.GetComponent<Player> ().Leftwallchecker == false && Leftwallchecker == false && spawnCheck||
+			is_spawning == false && rightCubecheck == false && (history.Count - 1) < maxCube && Rightwallchecker == false && spawnCheck||
 			is_spawning == false && rightCubecheck && history.ElementAt (history.Count - 1).direction == "left"&&spawnCheck) 
 		{
 			RightSign.SetActive (true);

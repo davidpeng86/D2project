@@ -114,10 +114,24 @@ public class Player : MonoBehaviour
     {
         get
         {
-			Vector2 start = new Vector2(this.transform.position.x-0.6f,this.transform.position.y-0.61f);
-			Vector2 start2 = new Vector2(this.transform.position.x+0.6f,this.transform.position.y-0.61f);
-            Vector2 end = new Vector2(start.x, start.y - distance);
-            Vector2 end2 = new Vector2(start2.x, start.y - distance);
+            Vector2 start = Vector2.zero;
+            Vector2 start2 = Vector2.zero;
+            Vector2 end = Vector2.zero;
+            Vector2 end2 = Vector2.zero;
+            if (rb.gravityScale > 0)
+            {
+                start = new Vector2(this.transform.position.x - 0.6f, this.transform.position.y - 0.61f);
+                start2 = new Vector2(this.transform.position.x + 0.6f, this.transform.position.y - 0.61f);
+                end = new Vector2(start.x, start.y - distance);
+                end2 = new Vector2(start2.x, start.y - distance);
+            }
+            else
+            {
+                start = new Vector2(this.transform.position.x - 0.6f, this.transform.position.y + 0.61f);
+                start2 = new Vector2(this.transform.position.x + 0.6f, this.transform.position.y + 0.61f);
+                end = new Vector2(start.x, start.y + distance);
+                end2 = new Vector2(start2.x, start.y + distance);
+            }
             Debug.DrawLine(start, end, Color.blue);
             Debug.DrawLine(start2, end2, Color.blue);
             if (Physics2D.Linecast(start, end, groundLayer) || Physics2D.Linecast(start2, end2, groundLayer)||Physics2D.Linecast(start, end, cubeLayer) || Physics2D.Linecast(start2, end2, cubeLayer))
@@ -184,17 +198,22 @@ public class Player : MonoBehaviour
 			Vector2 end4 = new Vector2(Down2.x, Down2.y - distance);
 			Debug.DrawLine(left, end3, Color.yellow);
 			Debug.DrawLine(Down2, end4, Color.yellow);
-			if (Physics2D.Linecast (right, end, cubeLayer) &&Physics2D.Linecast (Down1, end2, cubeLayer)||Physics2D.Linecast (right, end, cubeLayer) &&Physics2D.Linecast (Down2, end4, cubeLayer) ) {
-				return 1;
-			} 
-			else if(Physics2D.Linecast (left, end3, cubeLayer) &&Physics2D.Linecast (Down1, end2, cubeLayer)||Physics2D.Linecast (left, end3, cubeLayer) &&Physics2D.Linecast (Down2, end4, cubeLayer))
-			{
-				return 2;
-			}
-			else
-			{
-				return 3;
-			}
+            if (Physics2D.Linecast(right, end, cubeLayer) && Physics2D.Linecast(Down1, end2, cubeLayer) || Physics2D.Linecast(right, end, cubeLayer) && Physics2D.Linecast(Down2, end4, cubeLayer))
+            {
+                return 1;
+            }
+            else if (Physics2D.Linecast(left, end3, cubeLayer) && Physics2D.Linecast(Down1, end2, cubeLayer) || Physics2D.Linecast(left, end3, cubeLayer) && Physics2D.Linecast(Down2, end4, cubeLayer))
+            {
+                return 2;
+            }
+            else if (Physics2D.Linecast(left, end3, cubeLayer) || Physics2D.Linecast(right, end, cubeLayer))
+            {
+                return 3;
+            }
+            else
+            {
+                return 4;
+            }
 		}
 	}
     // Use this for initialization
@@ -250,11 +269,19 @@ public class Player : MonoBehaviour
    void jump()
     {
         
-        if (Isground && Input.GetKeyDown(KeyCode.Space))
+        if (Isground && Input.GetKeyDown(KeyCode.Space)&& rb.gravityScale>0)
         {
             FindObjectOfType<AudioManager>().play("jump");
             rb.AddForce(Vector2.up * yForce, ForceMode2D.Impulse);
 			/*if (Mathf.Abs (rb.velocity.x) > 3) {
+				rb.velocity=new Vector2
+			}*/
+        }
+        else if (Isground && Input.GetKeyDown(KeyCode.Space) && rb.gravityScale < 0)
+        {
+            FindObjectOfType<AudioManager>().play("jump");
+            rb.AddForce(Vector2.down * yForce, ForceMode2D.Impulse);
+            /*if (Mathf.Abs (rb.velocity.x) > 3) {
 				rb.velocity=new Vector2
 			}*/
         }
@@ -275,22 +302,26 @@ public class Player : MonoBehaviour
         {
             rb.velocity = new Vector2(0,rb.velocity.y);
         }
-		if (Leftwallchecker == true && horizontalDirection == 1 |OnBlocksCheck == 2 && horizontalDirection == 1)
+        if (Leftwallchecker == true && horizontalDirection == 1 || OnBlocksCheck == 2 && horizontalDirection == 1)
         {
-            rb.velocity = new Vector2(5*horizontalDirection,rb.velocity.y);
+            rb.velocity = new Vector2(5 * horizontalDirection, rb.velocity.y);
         }
-		else if (Rightwallchecker == true && horizontalDirection == -1 ||OnBlocksCheck == 1 && horizontalDirection == -1)
+        else if (Rightwallchecker == true && horizontalDirection == -1 || OnBlocksCheck == 1 && horizontalDirection == -1)
         {
-            rb.velocity = new Vector2(5*horizontalDirection,rb.velocity.y);
+            rb.velocity = new Vector2(5 * horizontalDirection, rb.velocity.y);
         }
-		else if (Rightwallchecker == false && Leftwallchecker == false && OnBlocksCheck == 3)
-		{
-			rb.velocity = new Vector2(5*horizontalDirection,rb.velocity.y);
-		}
-		else
-		{
-			rb.velocity = new Vector2(0,rb.velocity.y);
-		}
+        else if (OnBlocksCheck == 3 && Isground)
+        {
+            rb.velocity = new Vector2(5 * horizontalDirection, rb.velocity.y);
+        }
+        else if (Rightwallchecker == false && Leftwallchecker == false && OnBlocksCheck == 4)
+        {
+            rb.velocity = new Vector2(5 * horizontalDirection, rb.velocity.y);
+        }
+        else
+        {
+            rb.velocity = new Vector2(0, rb.velocity.y);
+        }
 			
         directionCheck();
 
@@ -313,13 +344,13 @@ public class Player : MonoBehaviour
         if (Input.GetAxisRaw("Horizontal") > 0 && Generator.GetComponent<spawn>().history.Count <=1)
         {
                 direction = true;
-                transform.localScale =new Vector3(1,1,1);
+                transform.localScale =new Vector3(1, transform.localScale.y, 1);
         }
         else if (Input.GetAxisRaw("Horizontal") < 0 && Generator.GetComponent<spawn>().history.Count <=1)
         {
                 direction = false;
                 
-                transform.localScale =new Vector3(-1,1,1);
+                transform.localScale =new Vector3(-1, transform.localScale.y, 1);
 
                 
         }

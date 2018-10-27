@@ -18,6 +18,6 @@ public class DeathZone : MonoBehaviour {
 	IEnumerator wait(float time)
 	{
 		yield return new WaitForSecondsRealtime(time);
-		SceneManager.LoadScene("cubb");
+		SceneManager.LoadScene("Stage1");
 	}
 }

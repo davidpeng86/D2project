@@ -7,11 +7,17 @@ public class Blocks : MonoBehaviour {
 	float amount = 0.08f;
 	private GameObject [] child;
 	public bool destory = false;
-	//public Particle DisappearSmoke;
-	// Use this for initialization
+    //public Particle DisappearSmoke;
+    // Use this for initialization
+    private Rigidbody2D rb;
 	void Start () {
-		child = GameObject.FindGameObjectsWithTag ("generated");
-	}
+        child = GameObject.FindGameObjectsWithTag("generated");
+        rb =gameObject.GetComponent<Rigidbody2D>();
+        foreach (GameObject cube in child)
+        {
+            cube.GetComponent<BoxCollider2D>().size = new Vector2(1.28f,1.28f);
+        }
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -26,7 +32,7 @@ public class Blocks : MonoBehaviour {
 			Destroy(this.gameObject);
 			destory = false;
 		}
-		if (Input.GetKey (KeyCode.Z) && this.GetComponent<Rigidbody2D>().velocity.y ==0) {
+		if (Input.GetKey (KeyCode.Z) && rb.velocity.y ==0) {
 			transform.position = new Vector2(this.transform.position.x+Mathf.Sin (Time.time * speed) * amount,transform.position.y);
 		}
         if (this.GetComponent<Rigidbody2D>().velocity.y == 0 || this.GetComponent<Rigidbody2D>().velocity.y != 0)
