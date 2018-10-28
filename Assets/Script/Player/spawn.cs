@@ -18,12 +18,7 @@ public class child
 
 public class spawn : MonoBehaviour
 {
-	Player Player;
-	//Player的Script
-	[Header ("方塊伸出數量限制")]
-	public float maxCube = 1;
-	[Header ("方塊使用數量限制")]
-	public float maxUsedcube = 30;
+    public DataBase s_Database;
 	[Range (0, 2.0f)]
 	[Header ("感應四周距離")]
 	public float distance;
@@ -225,8 +220,8 @@ public class spawn : MonoBehaviour
 		if (Input.GetKey (KeyCode.Z) && spawnCheck) {
             
 
-			if (Input.GetKeyDown (KeyCode.UpArrow) && is_spawning == false && upCubecheck == false && (history.Count - 1) < maxCube && Downwallchecker == false && player.GetComponent<Player> ().Downwallchecker == false ||
-			    Input.GetKeyDown (KeyCode.UpArrow) && is_spawning == false && upCubecheck == false && (history.Count - 1) < maxCube && Upwallchecker == false) {   
+			if (Input.GetKeyDown (KeyCode.UpArrow) && is_spawning == false && upCubecheck == false && (history.Count - 1) < s_Database.maxCube&& Downwallchecker == false && player.GetComponent<Player> ().Downwallchecker == false ||
+			    Input.GetKeyDown (KeyCode.UpArrow) && is_spawning == false && upCubecheck == false && (history.Count - 1) < s_Database.maxCube && Upwallchecker == false) {   
 
 				if (released) {
 					GameObject.Find("blocks").GetComponent<Blocks>().destory = true;
@@ -244,8 +239,8 @@ public class spawn : MonoBehaviour
 
 
 			}
-			if (Input.GetKeyDown (KeyCode.DownArrow) && is_spawning == false && downCubecheck == false && (history.Count - 1) < maxCube && Upwallchecker == false && player.GetComponent<Player> ().Upwallchecker == false ||
-			    Input.GetKeyDown (KeyCode.DownArrow) && is_spawning == false && downCubecheck == false && (history.Count - 1) < maxCube && Downwallchecker == false) {
+			if (Input.GetKeyDown (KeyCode.DownArrow) && is_spawning == false && downCubecheck == false && (history.Count - 1) < s_Database.maxCube && Upwallchecker == false && player.GetComponent<Player> ().Upwallchecker == false ||
+			    Input.GetKeyDown (KeyCode.DownArrow) && is_spawning == false && downCubecheck == false && (history.Count - 1) < s_Database.maxCube && Downwallchecker == false) {
 				if (released) {
 					GameObject.Find("blocks").GetComponent<Blocks>().destory = true;
 					released = false;
@@ -260,8 +255,8 @@ public class spawn : MonoBehaviour
 					record2history ("down", child);
 				}
 			}
-			if (Input.GetKeyDown (KeyCode.LeftArrow) && is_spawning == false && leftCubecheck == false && (history.Count - 1) < maxCube && Rightwallchecker == false && player.GetComponent<Player> ().Rightwallchecker == false ||
-			    Input.GetKeyDown (KeyCode.LeftArrow) && is_spawning == false && leftCubecheck == false && (history.Count - 1) < maxCube && Leftwallchecker == false) {
+			if (Input.GetKeyDown (KeyCode.LeftArrow) && is_spawning == false && leftCubecheck == false && (history.Count - 1) < s_Database.maxCube && Rightwallchecker == false && player.GetComponent<Player> ().Rightwallchecker == false ||
+			    Input.GetKeyDown (KeyCode.LeftArrow) && is_spawning == false && leftCubecheck == false && (history.Count - 1) < s_Database.maxCube && Leftwallchecker == false) {
 				if (released) {
 					GameObject.Find("blocks").GetComponent<Blocks>().destory = true;
 					released = false;
@@ -276,8 +271,8 @@ public class spawn : MonoBehaviour
 					record2history ("left", child);
 				}
 			}
-			if (Input.GetKeyDown (KeyCode.RightArrow) && is_spawning == false && rightCubecheck == false && (history.Count - 1) < maxCube && Leftwallchecker == false && player.GetComponent<Player> ().Leftwallchecker == false ||
-			    Input.GetKeyDown (KeyCode.RightArrow) && is_spawning == false && rightCubecheck == false && (history.Count - 1) < maxCube && Rightwallchecker == false) {
+			if (Input.GetKeyDown (KeyCode.RightArrow) && is_spawning == false && rightCubecheck == false && (history.Count - 1) < s_Database.maxCube && Leftwallchecker == false && player.GetComponent<Player> ().Leftwallchecker == false ||
+			    Input.GetKeyDown (KeyCode.RightArrow) && is_spawning == false && rightCubecheck == false && (history.Count - 1) < s_Database.maxCube && Rightwallchecker == false) {
 				if (released) {
 					GameObject.Find("blocks").GetComponent<Blocks>().destory = true;
 					released = false;
@@ -603,8 +598,8 @@ public class spawn : MonoBehaviour
 	//可生成方向指示
 	private void ArrowSign ()
 	{
-		if (is_spawning == false && upCubecheck == false && (history.Count - 1) < maxCube && player.GetComponent<Player> ().Downwallchecker == false && Downwallchecker == false && spawnCheck ||
-			is_spawning == false && upCubecheck == false && (history.Count - 1) < maxCube && Upwallchecker == false && spawnCheck||
+		if (is_spawning == false && upCubecheck == false && (history.Count - 1) < s_Database.maxCube && player.GetComponent<Player> ().Downwallchecker == false && Downwallchecker == false && spawnCheck ||
+			is_spawning == false && upCubecheck == false && (history.Count - 1) < s_Database.maxCube && Upwallchecker == false && spawnCheck||
 			is_spawning == false && upCubecheck && history.ElementAt (history.Count - 1).direction == "down"&& spawnCheck) 
 		{
 			UpSign.SetActive(true);
@@ -614,8 +609,8 @@ public class spawn : MonoBehaviour
 			UpSign.SetActive (false);
 		}
 
-		if (is_spawning == false && downCubecheck == false && (history.Count - 1) < maxCube && player.GetComponent<Player> ().Upwallchecker == false && Upwallchecker == false && spawnCheck||
-			is_spawning == false && downCubecheck == false && (history.Count - 1) < maxCube && Downwallchecker == false && spawnCheck||
+		if (is_spawning == false && downCubecheck == false && (history.Count - 1) < s_Database.maxCube && player.GetComponent<Player> ().Upwallchecker == false && Upwallchecker == false && spawnCheck||
+			is_spawning == false && downCubecheck == false && (history.Count - 1) < s_Database.maxCube && Downwallchecker == false && spawnCheck||
 			is_spawning == false && downCubecheck && history.ElementAt (history.Count - 1).direction == "up"&&spawnCheck) 
 		{
 			DownSign.SetActive (true);
@@ -625,8 +620,8 @@ public class spawn : MonoBehaviour
 			DownSign.SetActive (false);
 		}
 
-		if (is_spawning == false && leftCubecheck == false && (history.Count - 1) < maxCube && player.GetComponent<Player> ().Rightwallchecker == false && Rightwallchecker == false && spawnCheck ||
-			is_spawning == false && leftCubecheck == false && (history.Count - 1) < maxCube && Leftwallchecker == false && spawnCheck||
+		if (is_spawning == false && leftCubecheck == false && (history.Count - 1) < s_Database.maxCube && player.GetComponent<Player> ().Rightwallchecker == false && Rightwallchecker == false && spawnCheck ||
+			is_spawning == false && leftCubecheck == false && (history.Count - 1) < s_Database.maxCube && Leftwallchecker == false && spawnCheck||
 			is_spawning == false && leftCubecheck && history.ElementAt (history.Count - 1).direction == "right" &&spawnCheck) 
 		{
 			LeftSign.SetActive (true);
@@ -635,8 +630,8 @@ public class spawn : MonoBehaviour
 		{
 			LeftSign.SetActive (false);
 		}
-		if (is_spawning == false && rightCubecheck == false && (history.Count - 1) < maxCube && player.GetComponent<Player> ().Leftwallchecker == false && Leftwallchecker == false && spawnCheck||
-			is_spawning == false && rightCubecheck == false && (history.Count - 1) < maxCube && Rightwallchecker == false && spawnCheck||
+		if (is_spawning == false && rightCubecheck == false && (history.Count - 1) < s_Database.maxCube && player.GetComponent<Player> ().Leftwallchecker == false && Leftwallchecker == false && spawnCheck||
+			is_spawning == false && rightCubecheck == false && (history.Count - 1) < s_Database.maxCube && Rightwallchecker == false && spawnCheck||
 			is_spawning == false && rightCubecheck && history.ElementAt (history.Count - 1).direction == "left"&&spawnCheck) 
 		{
 			RightSign.SetActive (true);

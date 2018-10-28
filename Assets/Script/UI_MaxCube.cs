@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class UI_MaxCube : MonoBehaviour {
     public Text text;
-    public GameObject Generator;
+    public DataBase s_Database;
     // Use this for initialization
     void Start () {
         text.GetComponent<Text>();
@@ -14,6 +14,6 @@ public class UI_MaxCube : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        text.text = "方塊數量限制:" + Generator.GetComponent<spawn>().maxCube;
+        text.text = "方塊數量限制:" + s_Database.maxCube;
 	}
 }

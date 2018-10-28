@@ -36,7 +36,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1112222815599714}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 180.72, y: 2.1360002, z: -2.9}
+  m_LocalPosition: {x: 180.72, y: 2.1360002, z: -0.2}
   m_LocalScale: {x: -1.1225, y: 1.1225, z: 1.1225}
   m_Children: []
   m_Father: {fileID: 0}
@@ -80,7 +80,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DoorSwitch:
   - {fileID: 0}
-  Save: {x: 0, y: 0, z: 0}
 --- !u!212 &212160690528257716
 SpriteRenderer:
   m_ObjectHideFlags: 1

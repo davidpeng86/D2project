@@ -15,7 +15,7 @@ public class Blocks : MonoBehaviour {
         rb =gameObject.GetComponent<Rigidbody2D>();
         foreach (GameObject cube in child)
         {
-            cube.GetComponent<BoxCollider2D>().size = new Vector2(1.28f,1.28f);
+            cube.GetComponent<BoxCollider2D>().size = new Vector2(1.26f,1.26f);
         }
     }
 	
@@ -34,6 +34,17 @@ public class Blocks : MonoBehaviour {
 		}
 		if (Input.GetKey (KeyCode.Z) && rb.velocity.y ==0) {
 			transform.position = new Vector2(this.transform.position.x+Mathf.Sin (Time.time * speed) * amount,transform.position.y);
+			foreach(GameObject cube in child)
+			{
+				cube.layer = 0;
+			}
+		}
+		else if(Input.GetKeyUp(KeyCode.Z) && child[0].layer==0)
+		{
+			foreach(GameObject cube in child)
+			{
+				cube.layer = 9;
+			}
 		}
         if (this.GetComponent<Rigidbody2D>().velocity.y == 0 || this.GetComponent<Rigidbody2D>().velocity.y != 0)
         {

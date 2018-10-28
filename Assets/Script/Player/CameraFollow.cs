@@ -30,32 +30,27 @@ public class CameraFollow : MonoBehaviour {
         Debug.DrawLine(Player.transform.position + new Vector3(-10, 1.82f, 0), Player.transform.position + new Vector3(+10, 1.82f, 0), Color.red);
         posXR = Mathf.SmoothDamp(transform.position.x, Player.transform.position.x, ref velocity.x, smoothTimeX);
         posXL = Mathf.SmoothDamp(transform.position.x, Player.transform.position.x+8 , ref velocity.x, smoothTimeX);
-        if (Player.GetComponent<Player>().direction)
+
+        if (Player.transform.position.x > transform.position.x)
         {
-            if (Player.transform.position.x > transform.position.x)
-            {
-                transform.position = new Vector3(posXR, transform.position.y, transform.position.z);
-            }
+            transform.position = new Vector3(posXR, transform.position.y, transform.position.z);
         }
-        else
+    
+
+        if (Player.transform.position.x < transform.position.x - 8)
         {
-            if (Player.transform.position.x < transform.position.x - 8)
-            {
-                
-                transform.position = new Vector3(posXL, transform.position.y, transform.position.z);
-            }
+            
+            transform.position = new Vector3(posXL, transform.position.y, transform.position.z);
         }
-        if(transform.position.y>-5.5f)
+/* 
+        if (Player.transform.position.y+1.82f<transform.position.y)
         {
-            if (Player.transform.position.y+1.82f<transform.position.y)
-            {
-                transform.position = new Vector3(transform.position.x, Mathf.SmoothDamp(transform.position.y, Player.transform.position.y+1.82f, ref velocity.y, smoothTimeY), transform.position.z);
-            }
-            if (transform.position.y<Player.transform.position.y+0.82f)
-            {
-                transform.position = new Vector3(transform.position.x, Mathf.SmoothDamp(transform.position.y, Player.transform.position.y+0.82f, ref velocity.y, smoothTimeY), transform.position.z);
-            }
+            transform.position = new Vector3(transform.position.x, Mathf.SmoothDamp(transform.position.y, Player.transform.position.y+1.82f, ref velocity.y, smoothTimeY), transform.position.z);
         }
+        if (transform.position.y<Player.transform.position.y+0.82f)
+        {
+            transform.position = new Vector3(transform.position.x, Mathf.SmoothDamp(transform.position.y, Player.transform.position.y+0.82f, ref velocity.y, smoothTimeY), transform.position.z);
+        }*/
         
         
         

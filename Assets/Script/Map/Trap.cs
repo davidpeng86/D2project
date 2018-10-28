@@ -4,15 +4,16 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class Trap : MonoBehaviour {
-
-	// Use this for initialization
+	public GameObject o_Player;
+	public DataBase s_Databae;
+	SavePoint theMostCloseSavePoint;
 	void Start () {
 		
 	}
 	
-	// Update is called once per frame
 	void Update () {
-		
+		theMostCloseSavePoint = s_Databae.theMostCloseSavePoint.GetComponent<SavePoint>();
+
 	}
 	void OnCollisionEnter2D(Collision2D col)
 	{
@@ -24,7 +25,11 @@ public class Trap : MonoBehaviour {
 	IEnumerator wait(float time)
 	{
 		yield return new WaitForSecondsRealtime(time);
-		SceneManager.LoadScene("cubb");
+		o_Player.transform.position = s_Databae.SavePoint;
+		s_Databae.maxCube = theMostCloseSavePoint.maxCube;
+		s_Databae.maxUsedcube = theMostCloseSavePoint.maxUsedcube;
+		s_Databae.UsedCube = theMostCloseSavePoint.UsedCube;
+		s_Databae.Crown =theMostCloseSavePoint.Crown;
 
 	}
 }

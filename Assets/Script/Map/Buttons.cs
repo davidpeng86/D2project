@@ -24,6 +24,6 @@ public class Buttons : MonoBehaviour {
 
 	IEnumerator wait(float time){
 		yield return new WaitForSecondsRealtime(time);
-		SceneManager.LoadScene("cubb");
+		SceneManager.LoadScene("Tutorial");
 	}
 }
