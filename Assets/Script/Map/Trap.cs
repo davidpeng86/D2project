@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class Trap : MonoBehaviour {
 	public GameObject o_Player;
 	public DataBase s_Databae;
+	public CameraFollow s_CameraFollow;
 	SavePoint theMostCloseSavePoint;
 	void Start () {
 		
@@ -19,6 +20,7 @@ public class Trap : MonoBehaviour {
 	{
 		if(col.collider.tag == "Player")
 		{
+			s_CameraFollow.StartCoroutine(s_CameraFollow.CameraShake(0.15f,0.4f));
 			StartCoroutine(wait(0.5f));
 		}
 	}

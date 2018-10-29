@@ -8,7 +8,7 @@ public class Player : MonoBehaviour
 {
     public GameObject Generator;
 
-    public float maxSpeedX = 5.0f;
+    public float maxSpeedX ;
     public float speedX;
     public float speedY;
     [Header("右:true左:false")]
@@ -259,9 +259,6 @@ public class Player : MonoBehaviour
                 break;
 
         }
-        //move control
-
-        ControlSpeed();
         Debug.Log(_state);
 
     }
@@ -269,7 +266,7 @@ public class Player : MonoBehaviour
    void jump()
     {
         
-        if (Isground && Input.GetKeyDown(KeyCode.Space)&& rb.gravityScale>0)
+        if (Isground && Input.GetKeyDown(KeyCode.Space)&& rb.gravityScale > 0)
         {
             FindObjectOfType<AudioManager>().play("jump");
             rb.AddForce(Vector2.up * yForce, ForceMode2D.Impulse);
@@ -298,25 +295,21 @@ public class Player : MonoBehaviour
         {
             anim_.SetBool("Move",false);
         }
-        if(rb.velocity.y==0)//防止滑行
-        {
-            rb.velocity = new Vector2(0,rb.velocity.y);
-        }
         if (Leftwallchecker == true && horizontalDirection == 1 || OnBlocksCheck == 2 && horizontalDirection == 1)
         {
-            rb.velocity = new Vector2(5 * horizontalDirection, rb.velocity.y);
+            rb.velocity = new Vector2(maxSpeedX * horizontalDirection, rb.velocity.y);
         }
         else if (Rightwallchecker == true && horizontalDirection == -1 || OnBlocksCheck == 1 && horizontalDirection == -1)
         {
-            rb.velocity = new Vector2(5 * horizontalDirection, rb.velocity.y);
+            rb.velocity = new Vector2(maxSpeedX * horizontalDirection, rb.velocity.y);
         }
         else if (OnBlocksCheck == 3 && Isground)
         {
-            rb.velocity = new Vector2(5 * horizontalDirection, rb.velocity.y);
+            rb.velocity = new Vector2(maxSpeedX * horizontalDirection, rb.velocity.y);
         }
         else if (Rightwallchecker == false && Leftwallchecker == false && OnBlocksCheck == 4)
         {
-            rb.velocity = new Vector2(5 * horizontalDirection, rb.velocity.y);
+            rb.velocity = new Vector2(maxSpeedX * horizontalDirection, rb.velocity.y);
         }
         else
         {
@@ -324,6 +317,7 @@ public class Player : MonoBehaviour
         }
 			
         directionCheck();
+        ControlSpeed();
 
     }
     public void ControlSpeed()

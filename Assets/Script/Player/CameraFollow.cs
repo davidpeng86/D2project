@@ -1,15 +1,20 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using EZCameraShake;
 
 public class CameraFollow : MonoBehaviour {
     private Vector2 velocity;
     public float smoothTimeX;
     public float smoothTimeY;
-    float distanceY;
+    public float distanceXR =0;
+    public float distanceXL = 8;
+    public float distanceYU = 0;
+    public float distanceYD = 0;
     float posXR;
     float posXL;
+    float posYU;
+    float posYD;
+    public LayerMask groundLayer;
     public GameObject Player;
 	public GameObject Generator;
     bool spawnMove;
@@ -24,39 +29,57 @@ public class CameraFollow : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate ()
     {
-        Debug.DrawLine(transform.position+new Vector3(0,8,0), transform.position + new Vector3(0, -8, 0),Color.green);
-		Debug.DrawLine(this.transform.position + new Vector3(-7.8f, 8, 0), this.transform.position + new Vector3(-7.8f, -8, 0), Color.green);
-        Debug.DrawLine(Player.transform.position + new Vector3(-10, 0.82f, 0), Player.transform.position + new Vector3(+10, 0.82f, 0), Color.red);
-        Debug.DrawLine(Player.transform.position + new Vector3(-10, 1.82f, 0), Player.transform.position + new Vector3(+10, 1.82f, 0), Color.red);
-        posXR = Mathf.SmoothDamp(transform.position.x, Player.transform.position.x, ref velocity.x, smoothTimeX);
-        posXL = Mathf.SmoothDamp(transform.position.x, Player.transform.position.x+8 , ref velocity.x, smoothTimeX);
+        Debug.DrawLine(Player.transform.position + new Vector3(distanceXR, 0,0),Player.transform.position + new Vector3(distanceXR, -4, 0),Color.gray);
 
-        if (Player.transform.position.x > transform.position.x)
+
+        Debug.DrawLine(transform.position + new Vector3(distanceXR, distanceYU,0),transform.position + new Vector3(distanceXR, -distanceYD, 0),Color.green);
+		Debug.DrawLine(transform.position + new Vector3(-distanceXL, distanceYU, 0),transform.position + new Vector3(-distanceXL, -distanceYD, 0), Color.green);
+        Debug.DrawLine(transform.position + new Vector3(-distanceXL, -distanceYD, 0),transform.position + new Vector3(distanceXR, -distanceYD, 0), Color.red);
+        Debug.DrawLine(transform.position + new Vector3(-distanceXL, distanceYU, 0),transform.position + new Vector3(distanceXR, distanceYU, 0), Color.red);
+        posXR = Mathf.SmoothDamp(transform.position.x, Player.transform.position.x-distanceXR, ref velocity.x, smoothTimeX);
+        posXL = Mathf.SmoothDamp(transform.position.x, Player.transform.position.x+distanceXL , ref velocity.x, smoothTimeX);
+        posYU = Mathf.SmoothDamp(transform.position.y, Player.transform.position.y-distanceYU, ref velocity.y, smoothTimeY);
+        posYD = Mathf.SmoothDamp(transform.position.y, Player.transform.position.y+distanceYD, ref velocity.y, smoothTimeY);
+
+        //右側邊界
+        if (Player.transform.position.x > transform.position.x + distanceXR)
         {
             transform.position = new Vector3(posXR, transform.position.y, transform.position.z);
         }
-    
-
-        if (Player.transform.position.x < transform.position.x - 8)
+        //左側邊界
+        if (Player.transform.position.x < transform.position.x - distanceXL)
         {
             
             transform.position = new Vector3(posXL, transform.position.y, transform.position.z);
         }
-/* 
-        if (Player.transform.position.y+1.82f<transform.position.y)
+        //上方邊界
+        /* 
+        if (Player.transform.position.y > transform.position.y + distanceYU)
         {
-            transform.position = new Vector3(transform.position.x, Mathf.SmoothDamp(transform.position.y, Player.transform.position.y+1.82f, ref velocity.y, smoothTimeY), transform.position.z);
+            transform.position = new Vector3(transform.position.x, posYU, transform.position.z);
         }
-        if (transform.position.y<Player.transform.position.y+0.82f)
+        //下方邊界
+        if (Player.transform.position.y < transform.position.y-distanceYD)
         {
-            transform.position = new Vector3(transform.position.x, Mathf.SmoothDamp(transform.position.y, Player.transform.position.y+0.82f, ref velocity.y, smoothTimeY), transform.position.z);
+            transform.position = new Vector3(transform.position.x,posYD, transform.position.z);
         }*/
+
+        if(Physics2D.Linecast(Player.transform.position + new Vector3(distanceXR, 0,0),Player.transform.position + new Vector3(distanceXR, -3, 0),groundLayer))
+        {
+            transform.position = new Vector3(transform.position.x,Mathf.SmoothDamp(transform.position.y,Player.transform.position.y+distanceYU*2, ref velocity.y, smoothTimeY), transform.position.z);
+        }
+        else if(!Physics2D.Linecast(Player.transform.position + new Vector3(distanceXR, 0,0),Player.transform.position + new Vector3(distanceXR, -3, 0),groundLayer))
+        {
+            Debug.Log("HI~~");
+            transform.position = new Vector3(Mathf.SmoothDamp(transform.position.x,Player.transform.position.x+distanceXL, ref velocity.x, smoothTimeY)
+                                            ,Mathf.SmoothDamp(transform.position.y,Player.transform.position.y-distanceYU*2, ref velocity.y, smoothTimeY)
+                                            ,transform.position.z);
+        }
         
         
         
         
-        
-		if (Input.GetKey(KeyCode.Z) && Generator.GetComponent<spawn>().spawnCheck)
+		/* if (Input.GetKey(KeyCode.Z) && Generator.GetComponent<spawn>().spawnCheck)
         {
             spawnMove =true;
         }
@@ -78,6 +101,21 @@ public class CameraFollow : MonoBehaviour {
                     spawnMove = false;
                 }
             }
-        }
+        }*/
     }
+    public IEnumerator CameraShake(float duration, float magnitude)
+	{
+		Vector3 p_camera = transform.position;
+
+		float time =0.0f;
+		while(time < duration)
+		{
+			float x = Random.Range(-1f,1f)*magnitude;
+			float y = Random.Range(-1f,1f)*magnitude;
+			transform.position = new Vector3(p_camera.x+x,p_camera.y+y,p_camera.z);
+			time +=Time.deltaTime; 
+			yield return null;
+		}
+		transform.position = p_camera;
+	}
 }

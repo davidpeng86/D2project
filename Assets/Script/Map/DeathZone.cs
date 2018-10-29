@@ -6,10 +6,8 @@ using UnityEngine.SceneManagement;
 public class DeathZone : MonoBehaviour {
 
 	public GameObject o_Player;
-	public GameObject o_Camera;
 	public DataBase s_Databae;
-	float speed = 50.0f;
-	float amount = 0.08f;
+	public CameraFollow s_CameraFollow;
 	SavePoint theMostCloseSavePoint;
 	void Start () {
 		
@@ -24,7 +22,7 @@ public class DeathZone : MonoBehaviour {
 		
 		if(col.tag == "Player")
 		{
-			StartCoroutine(CameraShake(0.15f,0.4f));
+			s_CameraFollow.StartCoroutine(s_CameraFollow.CameraShake(0.15f,0.4f));
 			StartCoroutine(wait(1f));
 		}
 	}
@@ -37,20 +35,5 @@ public class DeathZone : MonoBehaviour {
 		s_Databae.UsedCube = theMostCloseSavePoint.UsedCube;
 		s_Databae.Crown =theMostCloseSavePoint.Crown;
 
-	}
-	IEnumerator CameraShake(float duration, float magnitude)
-	{
-		Vector3 p_camera = o_Camera.transform.position;
-
-		float time =0.0f;
-		while(time < duration)
-		{
-			float x = Random.Range(-1f,1f)*magnitude;
-			float y = Random.Range(-1f,1f)*magnitude;
-			o_Camera.transform.position = new Vector3(p_camera.x+x,p_camera.y+y,p_camera.z);
-			time +=Time.deltaTime; 
-			yield return null;
-		}
-		o_Camera.transform.position = p_camera;
 	}
 }
