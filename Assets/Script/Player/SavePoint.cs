@@ -20,7 +20,6 @@ public class SavePoint : MonoBehaviour {
 	{
 		if(Col.tag=="Player" && s_Database.SavePoint!=this.transform.position)
 		{
-			Debug.Log("GO!");
 			s_Database.SavePoint =this.transform.position;
 			Crown = s_Database.Crown;
 			maxCube = s_Database.maxCube;

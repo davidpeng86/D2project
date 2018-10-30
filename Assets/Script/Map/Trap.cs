@@ -25,8 +25,11 @@ public class Trap : MonoBehaviour {
 		}
 	}
 	IEnumerator wait(float time)
-	{
+	{	
+		o_Player.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
 		yield return new WaitForSecondsRealtime(time);
+		o_Player.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
+		o_Player.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeRotation;
 		o_Player.transform.position = s_Databae.SavePoint;
 		s_Databae.maxCube = theMostCloseSavePoint.maxCube;
 		s_Databae.maxUsedcube = theMostCloseSavePoint.maxUsedcube;

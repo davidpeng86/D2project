@@ -44,7 +44,7 @@ public class Player : MonoBehaviour
         {
 			Vector2 start = new Vector2(this.transform.position.x,this.transform.position.y+0.6f);
             Vector2 end = new Vector2(start.x, start.y+distance);
-            Debug.DrawLine(start, end, Color.yellow);
+            Debug.DrawLine(start, end, Color.red);
             if (Physics2D.Linecast(start, end, groundLayer))
             {
                 return true;
@@ -62,7 +62,7 @@ public class Player : MonoBehaviour
         {
 			Vector2 start = new Vector2(this.transform.position.x,this.transform.position.y-0.6f);
             Vector2 end = new Vector2(start.x, start.y-distance);
-            Debug.DrawLine(start, end, Color.yellow);
+            Debug.DrawLine(start, end, Color.red);
             if (Physics2D.Linecast(start, end, groundLayer))
             {
                 return true;
@@ -77,11 +77,14 @@ public class Player : MonoBehaviour
     public bool Leftwallchecker
     {
         get
-        {
+        {   
+            Vector2 start = new Vector2(this.transform.position.x-0.6f,this.transform.position.y+0.57f);
+            Vector2 end = new Vector2(start.x-0.05f, start.y);
+            Debug.DrawLine(start, end, Color.red);
 			Vector2 start2 = new Vector2(this.transform.position.x-0.6f,this.transform.position.y-0.57f);
             Vector2 end2 = new Vector2(start2.x - 0.05f, start2.y);
-            Debug.DrawLine(start2, end2, Color.yellow);
-            if (Physics2D.Linecast(start2, end2, groundLayer))
+            Debug.DrawLine(start2, end2, Color.red);
+            if (Physics2D.Linecast(start2, end2, groundLayer)||Physics2D.Linecast(start, end, groundLayer))
             {
                 return true;
             }
@@ -98,8 +101,11 @@ public class Player : MonoBehaviour
         {
 			Vector2 start = new Vector2(this.transform.position.x+0.6f,this.transform.position.y-0.57f);
             Vector2 end = new Vector2(start.x+0.05f, start.y);
-            Debug.DrawLine(start, end, Color.yellow);
-            if (Physics2D.Linecast(start, end, groundLayer))
+            Debug.DrawLine(start, end, Color.red);
+            Vector2 start2 = new Vector2(this.transform.position.x+0.6f,this.transform.position.y+0.57f);
+            Vector2 end2 = new Vector2(start2.x + 0.05f, start2.y);
+            Debug.DrawLine(start2, end2, Color.red);
+            if (Physics2D.Linecast(start, end, groundLayer)||Physics2D.Linecast(start2, end2, groundLayer))
             {
                 return true;
             }
@@ -132,8 +138,8 @@ public class Player : MonoBehaviour
                 end = new Vector2(start.x, start.y + distance);
                 end2 = new Vector2(start2.x, start.y + distance);
             }
-            Debug.DrawLine(start, end, Color.blue);
-            Debug.DrawLine(start2, end2, Color.blue);
+            Debug.DrawLine(start, end, Color.yellow);
+            Debug.DrawLine(start2, end2, Color.yellow);
             if (Physics2D.Linecast(start, end, groundLayer) || Physics2D.Linecast(start2, end2, groundLayer)||Physics2D.Linecast(start, end, cubeLayer) || Physics2D.Linecast(start2, end2, cubeLayer))
             {
                return true; 
@@ -190,14 +196,14 @@ public class Player : MonoBehaviour
 			Vector2 Down1 =new Vector2(this.transform.position.x+0.6f,this.transform.position.y-0.61f);
 			Vector2 end = new Vector2(right.x + distance, right.y);
 			Vector2 end2= new Vector2(Down1.x, Down1.y - distance);
-			Debug.DrawLine(right, end, Color.yellow);
-			Debug.DrawLine(Down1, end2, Color.yellow);
+			Debug.DrawLine(right, end, Color.green);
+			Debug.DrawLine(Down1, end2, Color.green);
 			Vector2 left = new Vector2(this.transform.position.x-0.62f,this.transform.position.y-0.57f);
 			Vector2 Down2 =new Vector2(this.transform.position.x-0.6f,this.transform.position.y-0.61f);
 			Vector2 end3 = new Vector2(left.x - distance, left.y);
 			Vector2 end4 = new Vector2(Down2.x, Down2.y - distance);
-			Debug.DrawLine(left, end3, Color.yellow);
-			Debug.DrawLine(Down2, end4, Color.yellow);
+			Debug.DrawLine(left, end3, Color.green);
+			Debug.DrawLine(Down2, end4, Color.green);
             if (Physics2D.Linecast(right, end, cubeLayer) && Physics2D.Linecast(Down1, end2, cubeLayer) || Physics2D.Linecast(right, end, cubeLayer) && Physics2D.Linecast(Down2, end4, cubeLayer))
             {
                 return 1;

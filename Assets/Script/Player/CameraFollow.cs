@@ -29,7 +29,7 @@ public class CameraFollow : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate ()
     {
-        Debug.DrawLine(Player.transform.position + new Vector3(distanceXR, 0,0),Player.transform.position + new Vector3(distanceXR, -4, 0),Color.gray);
+        Debug.DrawLine(Player.transform.position + new Vector3(1.28f*4, -0.64f,0),Player.transform.position + new Vector3(1.28f*4, -1.28f*4+0.64f, 0),Color.gray);
 
 
         Debug.DrawLine(transform.position + new Vector3(distanceXR, distanceYU,0),transform.position + new Vector3(distanceXR, -distanceYD, 0),Color.green);
@@ -40,20 +40,26 @@ public class CameraFollow : MonoBehaviour {
         posXL = Mathf.SmoothDamp(transform.position.x, Player.transform.position.x+distanceXL , ref velocity.x, smoothTimeX);
         posYU = Mathf.SmoothDamp(transform.position.y, Player.transform.position.y-distanceYU, ref velocity.y, smoothTimeY);
         posYD = Mathf.SmoothDamp(transform.position.y, Player.transform.position.y+distanceYD, ref velocity.y, smoothTimeY);
+         //右側邊界
 
-        //右側邊界
         if (Player.transform.position.x > transform.position.x + distanceXR)
         {
-            transform.position = new Vector3(posXR, transform.position.y, transform.position.z);
+            if(transform.position.x<42)
+                transform.position = new Vector3(posXR, transform.position.y, transform.position.z);
+            else if(transform.position.x>42)
+                transform.position = new Vector3(42, transform.position.y, transform.position.z);
+
+            //transform.position = new Vector3(posXR, transform.position.y, transform.position.z);
         }
         //左側邊界
         if (Player.transform.position.x < transform.position.x - distanceXL)
         {
-            
-            transform.position = new Vector3(posXL, transform.position.y, transform.position.z);
+            if(transform.position.x>0)
+                transform.position = new Vector3(posXL, transform.position.y, transform.position.z);
+            else if(transform.position.x<0)
+                transform.position = new Vector3(0, transform.position.y, transform.position.z);
         }
         //上方邊界
-        /* 
         if (Player.transform.position.y > transform.position.y + distanceYU)
         {
             transform.position = new Vector3(transform.position.x, posYU, transform.position.z);
@@ -62,19 +68,20 @@ public class CameraFollow : MonoBehaviour {
         if (Player.transform.position.y < transform.position.y-distanceYD)
         {
             transform.position = new Vector3(transform.position.x,posYD, transform.position.z);
-        }*/
-
-        if(Physics2D.Linecast(Player.transform.position + new Vector3(distanceXR, 0,0),Player.transform.position + new Vector3(distanceXR, -3, 0),groundLayer))
-        {
-            transform.position = new Vector3(transform.position.x,Mathf.SmoothDamp(transform.position.y,Player.transform.position.y+distanceYU*2, ref velocity.y, smoothTimeY), transform.position.z);
         }
-        else if(!Physics2D.Linecast(Player.transform.position + new Vector3(distanceXR, 0,0),Player.transform.position + new Vector3(distanceXR, -3, 0),groundLayer))
+        /* if(Physics2D.Linecast(Player.transform.position + new Vector3(distanceXR, 0,0),Player.transform.position + new Vector3(distanceXR, -3, 0),groundLayer))
+        {
+            
+
+            
+        }
+        else if(!Physics2D.Linecast(Player.transform.position + new Vector3(1.28f*4, -0.64f,0),Player.transform.position + new Vector3(1.28f*4, -1.28f*4 +0.64f, 0),groundLayer))
         {
             Debug.Log("HI~~");
             transform.position = new Vector3(Mathf.SmoothDamp(transform.position.x,Player.transform.position.x+distanceXL, ref velocity.x, smoothTimeY)
-                                            ,Mathf.SmoothDamp(transform.position.y,Player.transform.position.y-distanceYU*2, ref velocity.y, smoothTimeY)
+                                            ,Mathf.SmoothDamp(transform.position.y,Player.transform.position.y+distanceYU*2, ref velocity.y, smoothTimeY)
                                             ,transform.position.z);
-        }
+        }*/
         
         
         

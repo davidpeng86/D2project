@@ -118,7 +118,7 @@ public class spawn : MonoBehaviour
 		get {
 			Vector3 start = this.transform.position + new Vector3 (0, -0.6f, 0);
 			Vector3 end = new Vector3 (start.x, start.y - distance, this.transform.position.z);
-			Debug.DrawLine (start, end, Color.gray);
+			Debug.DrawLine (start, end, Color.red);
 			if (Physics2D.Linecast (start, end, groundLayer)) {
 				return true;
 			} else {
