@@ -155,33 +155,10 @@ public class Player : MonoBehaviour
     {
         get
         {
-            Vector2 bottom =new Vector2 (this.transform.position.x,this.transform.position.y-0.7f);
-            Vector2 end = new Vector2(bottom.x, bottom.y - distance);
-            Debug.DrawLine(bottom, end, Color.black);
-            Vector2 right = new Vector2(this.transform.position.x+0.7f, this.transform.position.y);
-            Vector2 end2 = new Vector2(right.x+ distance, right.y );
-            Debug.DrawLine(right, end2, Color.black);
-            Vector2 left = new Vector2(this.transform.position.x-0.7f, this.transform.position.y );
-            Vector2 end3 = new Vector2(left.x - distance, left.y);
-            Debug.DrawLine(left, end3, Color.black);
-			Vector2 Top =new Vector2 (this.transform.position.x,this.transform.position.y+0.7f);
-			Vector2 end4 = new Vector2(Top.x, Top.y + distance);
-            if (Physics2D.Linecast(bottom, end, cubeLayer))
+            if (Generator.GetComponent<spawn>().cubeCheck && Isground == false)
             {
                 return true;
             }
-            else if (Physics2D.Linecast(right, end2, cubeLayer) && Isground == false)
-            {
-                return true;
-            }
-            else if (Physics2D.Linecast(left, end3, cubeLayer) && Isground == false)
-            {
-                return true;
-            }
-			else if(Physics2D.Linecast(Top, end4, cubeLayer) && Isground == false)
-			{
-				return true;
-			}
             else
             {
                 return false;
@@ -192,18 +169,45 @@ public class Player : MonoBehaviour
 	{
 		get
 		{
-			Vector2 right =new Vector2(this.transform.position.x+0.61f,this.transform.position.y-0.57f);
-			Vector2 Down1 =new Vector2(this.transform.position.x+0.6f,this.transform.position.y-0.61f);
-			Vector2 end = new Vector2(right.x + distance, right.y);
-			Vector2 end2= new Vector2(Down1.x, Down1.y - distance);
-			Debug.DrawLine(right, end, Color.green);
-			Debug.DrawLine(Down1, end2, Color.green);
-			Vector2 left = new Vector2(this.transform.position.x-0.62f,this.transform.position.y-0.57f);
-			Vector2 Down2 =new Vector2(this.transform.position.x-0.6f,this.transform.position.y-0.61f);
-			Vector2 end3 = new Vector2(left.x - distance, left.y);
-			Vector2 end4 = new Vector2(Down2.x, Down2.y - distance);
-			Debug.DrawLine(left, end3, Color.green);
-			Debug.DrawLine(Down2, end4, Color.green);
+            Vector2 right = Vector2.zero;
+            Vector2 Down1 = Vector2.zero;
+            Vector2 end = Vector2.zero;
+            Vector2 end2= Vector2.zero;
+            Vector2 left = Vector2.zero;
+            Vector2 Down2 = Vector2.zero;
+            Vector2 end3 = Vector2.zero;
+            Vector2 end4 = Vector2.zero;
+            if(rb.gravityScale >0)
+            {
+                right = new Vector2(this.transform.position.x+0.61f,this.transform.position.y-0.57f);
+                Down1 = new Vector2(this.transform.position.x+0.6f,this.transform.position.y-0.61f);
+                end = new Vector2(right.x + distance, right.y);
+                end2= new Vector2(Down1.x, Down1.y - distance);
+                Debug.DrawLine(right, end, Color.green);
+                Debug.DrawLine(Down1, end2, Color.green);
+                left = new Vector2(this.transform.position.x-0.62f,this.transform.position.y-0.57f);
+                Down2 =new Vector2(this.transform.position.x-0.6f,this.transform.position.y-0.61f);
+                end3 = new Vector2(left.x - distance, left.y);
+                end4 = new Vector2(Down2.x, Down2.y - distance);
+                Debug.DrawLine(left, end3, Color.green);
+                Debug.DrawLine(Down2, end4, Color.green);
+            }
+            else if(rb.gravityScale < 0)
+            {
+                right = new Vector2(this.transform.position.x+0.61f,this.transform.position.y+0.57f);
+                Down1 = new Vector2(this.transform.position.x+0.6f,this.transform.position.y+0.61f);
+                end = new Vector2(right.x + distance, right.y);
+                end2= new Vector2(Down1.x, Down1.y + distance);
+                Debug.DrawLine(right, end, Color.green);
+                Debug.DrawLine(Down1, end2, Color.green);
+                left = new Vector2(this.transform.position.x-0.62f,this.transform.position.y+0.57f);
+                Down2 =new Vector2(this.transform.position.x-0.6f,this.transform.position.y+0.61f);
+                end3 = new Vector2(left.x - distance, left.y);
+                end4 = new Vector2(Down2.x, Down2.y + distance);
+                Debug.DrawLine(left, end3, Color.green);
+                Debug.DrawLine(Down2, end4, Color.green);
+            }
+
             if (Physics2D.Linecast(right, end, cubeLayer) && Physics2D.Linecast(Down1, end2, cubeLayer) || Physics2D.Linecast(right, end, cubeLayer) && Physics2D.Linecast(Down2, end4, cubeLayer))
             {
                 return 1;
@@ -313,6 +317,10 @@ public class Player : MonoBehaviour
         {
             rb.velocity = new Vector2(maxSpeedX * horizontalDirection, rb.velocity.y);
         }
+        else if(OnBlocksCheck == 3 && Generator.GetComponent<spawn>().cubeCheck)
+        {
+            rb.velocity = new Vector2(maxSpeedX * horizontalDirection, rb.velocity.y);
+        }
         else if (Rightwallchecker == false && Leftwallchecker == false && OnBlocksCheck == 4)
         {
             rb.velocity = new Vector2(maxSpeedX * horizontalDirection, rb.velocity.y);
@@ -370,7 +378,7 @@ public class Player : MonoBehaviour
         {
             _state = PlayerState.s_groundedHoldingidle;
         }
-        if (Generator.GetComponent<spawn>().cubeCheck == true&& Holdingbool==true)
+        if (Holdingbool==true)
         {
             _state = PlayerState.s_Holdingidle;
         }

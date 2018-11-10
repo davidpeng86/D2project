@@ -13,6 +13,7 @@ public class Gravity : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
+    
 	void Update () {
         if (o_Player.GetComponent<Rigidbody2D>().gravityScale > 0)
         {
@@ -26,12 +27,6 @@ public class Gravity : MonoBehaviour {
     }
     private void OnTriggerExit2D(Collider2D col)
     {
-
-        if (col.tag == "generated" && o_Player.GetComponent<Player>()._state == Player.PlayerState.s_spawning && !spawn.movingTolastCube)
-        {
-            o_Player.GetComponent<Rigidbody2D>().gravityScale = 3;
-        }
-        
         if (col.tag == "Player"  &&!spawn.movingTolastCube)
         {
             Exist = false;
@@ -45,7 +40,10 @@ public class Gravity : MonoBehaviour {
                 col.GetComponentInParent<Rigidbody2D>().gravityScale = 3;
             }
         }
-
+        if (col.tag == "generated" && o_Player.GetComponent<Player>()._state == Player.PlayerState.s_spawning && !Exist)
+        {
+            o_Player.GetComponent<Rigidbody2D>().gravityScale = 3;
+        }
     }
     private void OnTriggerStay2D(Collider2D col)
     {
@@ -61,7 +59,6 @@ public class Gravity : MonoBehaviour {
 
             col.GetComponentInParent<Rigidbody2D>().gravityScale = -3;
         }
-
         if (col.tag == "Player" && !spawn.movingTolastCube)
         {
             Exist = true;

@@ -1,12 +1,10 @@
 ﻿using System.Collections;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
-public class child
-{
-	public child (string s, Transform t)
-	{
+public class child {
+	public child (string s, Transform t) {
 		direction = s;
 		spawn_position = t;
 	}
@@ -16,9 +14,8 @@ public class child
 	public Transform spawn_position { get; set; }
 }
 
-public class spawn : MonoBehaviour
-{
-    public DataBase s_Database;
+public class spawn : MonoBehaviour {
+	public DataBase s_Database;
 	[Range (0, 2.0f)]
 	[Header ("感應四周距離")]
 	public float distance;
@@ -85,7 +82,7 @@ public class spawn : MonoBehaviour
 				return true;
 			} else
 				return false;
-            
+
 		}
 	}
 
@@ -153,50 +150,46 @@ public class spawn : MonoBehaviour
 		}
 	}
 
-
-
-	void Start ()
-	{
+	void Start () {
 		is_spawning = false;
 		history = new List<child> ();
 		history.Add (new child ("empty", null));
 	}
 
 	// Update is called once per frame
-	void Update ()
-	{
-        
+	void Update () {
+
 		directionCheck ();
 		switch (player.GetComponent<Player> ()._state) {
-		case Player.PlayerState.s_idle:
-			ClearCube ();
-			ClearArrowSign ();
-			break;
-		case Player.PlayerState.s_moving:
-			ClearArrowSign ();
-			ClearCube ();
-			break;
-		case Player.PlayerState.s_jumping:
-			ClearCube ();
-			break;
-		case Player.PlayerState.s_spawning:
-			Spawncube ();
-			ArrowSign ();
-			break;
-		case Player.PlayerState.s_Holdingidle:
-			ClearArrowSign ();
-			ThrowCube ();
-			PlayerMovetoLast ();
-			break;
-		case Player.PlayerState.s_groundedHoldingidle:
-			ClearArrowSign ();
-			ThrowCube ();
-			PlayerMovetoLast ();
-			break;
+			case Player.PlayerState.s_idle:
+				ClearCube ();
+				ClearArrowSign ();
+				break;
+			case Player.PlayerState.s_moving:
+				ClearArrowSign ();
+				ClearCube ();
+				break;
+			case Player.PlayerState.s_jumping:
+				ClearCube ();
+				break;
+			case Player.PlayerState.s_spawning:
+				Spawncube ();
+				ArrowSign ();
+				break;
+			case Player.PlayerState.s_Holdingidle:
+				ClearArrowSign ();
+				ThrowCube ();
+				PlayerMovetoLast ();
+				break;
+			case Player.PlayerState.s_groundedHoldingidle:
+				ClearArrowSign ();
+				ThrowCube ();
+				PlayerMovetoLast ();
+				break;
 
-		case Player.PlayerState.s_movingTolastCube:
-			PlayerMovetoLast ();
-			break;
+			case Player.PlayerState.s_movingTolastCube:
+				PlayerMovetoLast ();
+				break;
 		}
 		//判定是否有方塊伸出，可不可以丟出來
 		if (history.Count - 1 > 0) {
@@ -210,55 +203,93 @@ public class spawn : MonoBehaviour
 
 	}
 
-
-
-
 	//方塊伸出.收回.防回堵
-	void Spawncube ()
-	{
+	void Spawncube () {
 		//伸出方塊 同時判定周邊是否可以伸出方塊 且伸出時刪除既有丟出方塊
+
+		
 		if (Input.GetKey (KeyCode.Z) && spawnCheck) {
-            
-
-			if (Input.GetKeyDown (KeyCode.UpArrow) && is_spawning == false && upCubecheck == false && (history.Count - 1) < s_Database.maxCube&& Downwallchecker == false && player.GetComponent<Player> ().Downwallchecker == false ||
-			    Input.GetKeyDown (KeyCode.UpArrow) && is_spawning == false && upCubecheck == false && (history.Count - 1) < s_Database.maxCube && Upwallchecker == false) {   
-
-				if (released) {
-					GameObject.Find("blocks").GetComponent<Blocks>().destory = true;
-					released = false;
-				}
-				ClearArrowSign ();
-				is_spawning = true;
-				Transform child = Instantiate (prefab, this.transform.position, this.transform.rotation);
-				child.transform.parent = player.transform;
-				StartCoroutine (Move (child, "up"));
-				Move_self ("up");
-				if (cube_exist == false) {
-					record2history ("up", child);
-				}
-
-
-			}
-			if (Input.GetKeyDown (KeyCode.DownArrow) && is_spawning == false && downCubecheck == false && (history.Count - 1) < s_Database.maxCube && Upwallchecker == false && player.GetComponent<Player> ().Upwallchecker == false ||
-			    Input.GetKeyDown (KeyCode.DownArrow) && is_spawning == false && downCubecheck == false && (history.Count - 1) < s_Database.maxCube && Downwallchecker == false) {
-				if (released) {
-					GameObject.Find("blocks").GetComponent<Blocks>().destory = true;
-					released = false;
-				}
-				ClearArrowSign ();
-				is_spawning = true;
-				Transform child = Instantiate (prefab, this.transform.position, this.transform.rotation);
-				child.transform.parent = player.transform;
-				StartCoroutine (Move (child, "down"));
-				Move_self ("down");
-				if (cube_exist == false) {
-					record2history ("down", child);
+			//向上生成方塊 正常狀態
+			if (player.GetComponent<Rigidbody2D> ().gravityScale > 0) {
+				if (Input.GetKeyDown (KeyCode.UpArrow) && is_spawning == false && upCubecheck == false && (history.Count - 1) < s_Database.maxCube && Downwallchecker == false && player.GetComponent<Player> ().Downwallchecker == false ||
+					Input.GetKeyDown (KeyCode.UpArrow) && is_spawning == false && upCubecheck == false && (history.Count - 1) < s_Database.maxCube && Upwallchecker == false) {
+					if (released) {
+						GameObject.Find ("blocks").GetComponent<Blocks> ().destory = true;
+						released = false;
+					}
+					ClearArrowSign ();
+					is_spawning = true;
+					Transform child = Instantiate (prefab, this.transform.position, this.transform.rotation);
+					child.transform.parent = player.transform;
+					StartCoroutine (Move (child, "up"));
+					Move_self ("up");
+					if (cube_exist == false) {
+						record2history ("up", child);
+					}
 				}
 			}
+			//向上生成 重力相反狀態
+			if (player.GetComponent<Rigidbody2D> ().gravityScale < 0) {
+				if (Input.GetKeyDown (KeyCode.UpArrow) && is_spawning == false && upCubecheck == false && history.Count > 1 && (history.Count - 1) < s_Database.maxCube && Downwallchecker == false && player.GetComponent<Player> ().Downwallchecker == false ||
+					Input.GetKeyDown (KeyCode.UpArrow) && is_spawning == false && upCubecheck == false && history.Count > 1 && (history.Count - 1) < s_Database.maxCube && Upwallchecker == false) {
+					if (released) {
+						GameObject.Find ("blocks").GetComponent<Blocks> ().destory = true;
+						released = false;
+					}
+					ClearArrowSign ();
+					is_spawning = true;
+					Transform child = Instantiate (prefab, this.transform.position, this.transform.rotation);
+					child.transform.parent = player.transform;
+					StartCoroutine (Move (child, "up"));
+					Move_self ("up");
+					if (cube_exist == false) {
+						record2history ("up", child);
+					}
+				}
+			}
+			//向下生成方塊 重力正常狀態
+			if (player.GetComponent<Rigidbody2D> ().gravityScale > 0) {
+				if (Input.GetKeyDown (KeyCode.DownArrow) && is_spawning == false && downCubecheck == false && history.Count > 1 && (history.Count - 1) < s_Database.maxCube && Upwallchecker == false && player.GetComponent<Player> ().Upwallchecker == false ||
+					Input.GetKeyDown (KeyCode.DownArrow) && is_spawning == false && downCubecheck == false && history.Count > 1 && (history.Count - 1) < s_Database.maxCube && Downwallchecker == false) {
+					if (released) {
+						GameObject.Find ("blocks").GetComponent<Blocks> ().destory = true;
+						released = false;
+					}
+					ClearArrowSign ();
+					is_spawning = true;
+					Transform child = Instantiate (prefab, this.transform.position, this.transform.rotation);
+					child.transform.parent = player.transform;
+					StartCoroutine (Move (child, "down"));
+					Move_self ("down");
+					if (cube_exist == false) {
+						record2history ("down", child);
+					}
+				}
+			}
+			//向下生成方塊 重力相反狀態
+			if (player.GetComponent<Rigidbody2D> ().gravityScale <0) {
+				if (Input.GetKeyDown (KeyCode.DownArrow) && is_spawning == false && downCubecheck == false && (history.Count - 1) < s_Database.maxCube && Upwallchecker == false && player.GetComponent<Player> ().Upwallchecker == false ||
+					Input.GetKeyDown (KeyCode.DownArrow) && is_spawning == false && downCubecheck == false && (history.Count - 1) < s_Database.maxCube && Downwallchecker == false) {
+					if (released) {
+						GameObject.Find ("blocks").GetComponent<Blocks> ().destory = true;
+						released = false;
+					}
+					ClearArrowSign ();
+					is_spawning = true;
+					Transform child = Instantiate (prefab, this.transform.position, this.transform.rotation);
+					child.transform.parent = player.transform;
+					StartCoroutine (Move (child, "down"));
+					Move_self ("down");
+					if (cube_exist == false) {
+						record2history ("down", child);
+					}
+				}
+			}
+
 			if (Input.GetKeyDown (KeyCode.LeftArrow) && is_spawning == false && leftCubecheck == false && (history.Count - 1) < s_Database.maxCube && Rightwallchecker == false && player.GetComponent<Player> ().Rightwallchecker == false ||
-			    Input.GetKeyDown (KeyCode.LeftArrow) && is_spawning == false && leftCubecheck == false && (history.Count - 1) < s_Database.maxCube && Leftwallchecker == false) {
+				Input.GetKeyDown (KeyCode.LeftArrow) && is_spawning == false && leftCubecheck == false && (history.Count - 1) < s_Database.maxCube && Leftwallchecker == false) {
 				if (released) {
-					GameObject.Find("blocks").GetComponent<Blocks>().destory = true;
+					GameObject.Find ("blocks").GetComponent<Blocks> ().destory = true;
 					released = false;
 				}
 				ClearArrowSign ();
@@ -272,9 +303,9 @@ public class spawn : MonoBehaviour
 				}
 			}
 			if (Input.GetKeyDown (KeyCode.RightArrow) && is_spawning == false && rightCubecheck == false && (history.Count - 1) < s_Database.maxCube && Leftwallchecker == false && player.GetComponent<Player> ().Leftwallchecker == false ||
-			    Input.GetKeyDown (KeyCode.RightArrow) && is_spawning == false && rightCubecheck == false && (history.Count - 1) < s_Database.maxCube && Rightwallchecker == false) {
+				Input.GetKeyDown (KeyCode.RightArrow) && is_spawning == false && rightCubecheck == false && (history.Count - 1) < s_Database.maxCube && Rightwallchecker == false) {
 				if (released) {
-					GameObject.Find("blocks").GetComponent<Blocks>().destory = true;
+					GameObject.Find ("blocks").GetComponent<Blocks> ().destory = true;
 					released = false;
 				}
 				ClearArrowSign ();
@@ -338,17 +369,13 @@ public class spawn : MonoBehaviour
 		}
 	}
 
-
 	//方塊丟出
-	void ThrowCube ()
-	{
-        
+	void ThrowCube () {
 
 		/*if (Input.GetKeyUp (KeyCode.Z) && cubeCheck == true) {
 			spawnCheck = false;
 		}*/
 		if (Input.GetKeyDown (KeyCode.Z) && cubeCheck) {
-            
 
 			spawnCheck = true;
 			//StopAllCoroutines();
@@ -357,7 +384,7 @@ public class spawn : MonoBehaviour
 			gen = GameObject.FindGameObjectsWithTag ("generated");
 			GameObject group = new GameObject ("blocks");
 			for (int i = 0; i < gen.Length; i++) {
-				gen [i].transform.parent = group.transform;
+				gen[i].transform.parent = group.transform;
 			}
 			group.AddComponent<Rigidbody2D> ();
 			group.AddComponent<Blocks> ();
@@ -368,7 +395,7 @@ public class spawn : MonoBehaviour
 			}
 			group.GetComponent<Rigidbody2D> ().freezeRotation = true;
 			group.GetComponent<Rigidbody2D> ().gravityScale = 3;
-            group.tag = "Blocks";
+			group.tag = "Blocks";
 			for (int i = history.Count - 1; i > 0; i--) {
 				history.RemoveAt (i);
 			}
@@ -376,35 +403,25 @@ public class spawn : MonoBehaviour
 		}
 	}
 
-
-
-	void ClearCube()
-	{
+	void ClearCube () {
 		if (released) {
 			if (Input.GetKeyDown (KeyCode.X)) {
-				
-				GameObject.Find("blocks").GetComponent<Blocks>().destory = true;
+
+				GameObject.Find ("blocks").GetComponent<Blocks> ().destory = true;
 				released = false;
 			}
-		
+
 		}
 	}
 
-
-    
-	IEnumerator landingSound ()
-	{
+	IEnumerator landingSound () {
 		yield return new WaitForSeconds (0.05f);
 		//play audio
 		FindObjectOfType<AudioManager> ().play ("cube_put");
 		StopCoroutine (landingSound ());
 	}
 
-
-
-
-	void directionCheck ()
-	{
+	void directionCheck () {
 		if (player.transform.localScale.x == 1) {
 			transform.localScale = new Vector3 (1, 1, 1);
 		} else if (player.transform.localScale.x == -1) {
@@ -412,69 +429,55 @@ public class spawn : MonoBehaviour
 		}
 	}
 
-
-
-
-
 	//紀錄list
-	void record2history (string direction, Transform child_position)
-	{
+	void record2history (string direction, Transform child_position) {
 		history.Add (new child (direction, child_position));
 	}
 
-
-
 	//generator位置控制
-	void Move_self (string dir)
-	{
+	void Move_self (string dir) {
 		Vector3 position = transform.position;
 		switch (dir) {
-		case "up":
-			position.y += 1.28f;
-			break;
+			case "up":
+				position.y += 1.28f;
+				break;
 
-		case "down":
-			position.y -= 1.28f;
-			break;
+			case "down":
+				position.y -= 1.28f;
+				break;
 
-		case "left":
-			position.x -= 1.28f;
-			break;
+			case "left":
+				position.x -= 1.28f;
+				break;
 
-		case "right":
-			position.x += 1.28f;
-			break;
+			case "right":
+				position.x += 1.28f;
+				break;
 		}
 		transform.position = position;
 	}
 
-
-
-
-
 	//玩家移動至最後一個方塊
-	void PlayerMovetoLast ()
-	{   
+	void PlayerMovetoLast () {
 		Rigidbody2D rb = player.GetComponent<Rigidbody2D> ();
 
-		if (Input.GetKeyDown (KeyCode.X) && cubeCheck && movingTolastCube == false) {//在已確認可移動的情況下 按下X後開啟移動至最後一個方塊的StartCoroutine 並且關閉重力以及所生成出的方塊的碰撞
+		if (Input.GetKeyDown (KeyCode.X) && cubeCheck && movingTolastCube == false) { //在已確認可移動的情況下 按下X後開啟移動至最後一個方塊的StartCoroutine 並且關閉重力以及所生成出的方塊的碰撞
 			movingTolastCube = true;
 			CanMoveCheck = true;
 			cubeCheck = false;
-			cubeCount = 0;//cubecount是記錄Player已走到第幾個方塊 
+			cubeCount = 0; //cubecount是記錄Player已走到第幾個方塊 
 			rb.gravityScale = 0;
 			rb.velocity = Vector2.zero;
 			player.GetComponent<Collider2D> ().isTrigger = true;
 			gen = GameObject.FindGameObjectsWithTag ("generated");
 			for (int i = 0; i < gen.Length; i++) {
-				gen [i].transform.parent = null;
-				gen [i].GetComponent<Collider2D> ().isTrigger = true;
+				gen[i].transform.parent = null;
+				gen[i].GetComponent<Collider2D> ().isTrigger = true;
 			}
 
-            
 			transform.position = player.transform.position;
 		}
-		if (cubeCount == history.Count - 1) {//當移動至最後一個方塊後"移動至最後一個方塊"的狀態解除,重設重力並且關閉StartCoroutine,最後把List內的所有元素刪除
+		if (cubeCount == history.Count - 1) { //當移動至最後一個方塊後"移動至最後一個方塊"的狀態解除,重設重力並且關閉StartCoroutine,最後把List內的所有元素刪除
 			spawnCheck = true;
 			movingTolastCube = false;
 			cubeCount = 0;
@@ -485,16 +488,14 @@ public class spawn : MonoBehaviour
 				history.RemoveAt (i);
 			}
 		}
-		if (CanMoveCheck) {//開始StartCoroutine
+		if (CanMoveCheck) { //開始StartCoroutine
 			StartCoroutine (MoveToLast (history.ElementAt (cubeCount + 1).direction, cubeCount));
 		}
 
 	}
 
-
 	//生成方塊移動控制
-	IEnumerator Move (Transform T, string I)
-	{
+	IEnumerator Move (Transform T, string I) {
 		float F = 0f;
 		float spawn_speed = 0.0853f;
 		int n = history.Count - 1;
@@ -503,45 +504,44 @@ public class spawn : MonoBehaviour
 		FindObjectOfType<AudioManager> ().play ("cube_born");
 
 		switch (I) {
-		case "up":
-			V3 = Vector3.up * spawn_speed;
-			if (n != 0 && history.ElementAt (n).direction == "down") { //destroy last cube
-				Destroy (history.ElementAt (n).spawn_position.gameObject);
-				history.RemoveAt (n);
-				cube_exist = true;
-			}
-			break;
+			case "up":
+				V3 = Vector3.up * spawn_speed;
+				if (n != 0 && history.ElementAt (n).direction == "down") { //destroy last cube
+					Destroy (history.ElementAt (n).spawn_position.gameObject);
+					history.RemoveAt (n);
+					cube_exist = true;
+				}
+				break;
 
-		case "down":
-			V3 = Vector3.down * spawn_speed;
-			if (n != 0 && history.ElementAt (n).direction == "up") {
-				Destroy (history.ElementAt (n).spawn_position.gameObject);
-				history.RemoveAt (n);
-				cube_exist = true;
-			}
+			case "down":
+				V3 = Vector3.down * spawn_speed;
+				if (n != 0 && history.ElementAt (n).direction == "up") {
+					Destroy (history.ElementAt (n).spawn_position.gameObject);
+					history.RemoveAt (n);
+					cube_exist = true;
+				}
 
+				break;
 
-			break;
+			case "left":
+				V3 = Vector3.left * spawn_speed;
+				if (n != 0 && history.ElementAt (n).direction == "right") {
+					Destroy (history.ElementAt (n).spawn_position.gameObject);
+					history.RemoveAt (n);
+					cube_exist = true;
+				}
 
-		case "left":
-			V3 = Vector3.left * spawn_speed;
-			if (n != 0 && history.ElementAt (n).direction == "right") {
-				Destroy (history.ElementAt (n).spawn_position.gameObject);
-				history.RemoveAt (n);
-				cube_exist = true;
-			}
+				break;
 
-			break;
+			case "right":
+				V3 = Vector3.right * spawn_speed;
+				if (n != 0 && history.ElementAt (n).direction == "left") {
+					Destroy (history.ElementAt (n).spawn_position.gameObject);
+					history.RemoveAt (n);
+					cube_exist = true;
+				}
 
-		case "right":
-			V3 = Vector3.right * spawn_speed;
-			if (n != 0 && history.ElementAt (n).direction == "left") {
-				Destroy (history.ElementAt (n).spawn_position.gameObject);
-				history.RemoveAt (n);
-				cube_exist = true;
-			}
-
-			break;
+				break;
 		}
 		while (F < 1.28f) {
 			F += spawn_speed;
@@ -559,91 +559,72 @@ public class spawn : MonoBehaviour
 		StopCoroutine (Move (T, I));
 	}
 
-
 	//移動至最後一個方塊
-	IEnumerator MoveToLast (string direction, int cube)
-	{
+	IEnumerator MoveToLast (string direction, int cube) {
 		CanMoveCheck = false;
 		float moveTime = 0;
 		float moveSpeed = 0.128f;
 		Vector3 directionCheck = Vector3.zero;
-		switch (direction) {//判斷下一顆方塊位置給予不同方向的位移量
-		case "up":
-			directionCheck = Vector3.up * moveSpeed;
-			break;
-		case "down":
-			directionCheck = Vector3.down * moveSpeed;
-			break;
-		case "left":
-			directionCheck = Vector3.left * moveSpeed;
-			break;
-		case "right":
-			directionCheck = Vector3.right * moveSpeed;
-			break;
+		switch (direction) { //判斷下一顆方塊位置給予不同方向的位移量
+			case "up":
+				directionCheck = Vector3.up * moveSpeed;
+				break;
+			case "down":
+				directionCheck = Vector3.down * moveSpeed;
+				break;
+			case "left":
+				directionCheck = Vector3.left * moveSpeed;
+				break;
+			case "right":
+				directionCheck = Vector3.right * moveSpeed;
+				break;
 		}
 		while (moveTime < 1.28f) {
 			moveTime += moveSpeed;
 			player.transform.Translate (directionCheck);
 			yield return new WaitForSeconds (0.01f);
 		}
-		Destroy (gen [cubeCount]);//刪除已移動過後的軌跡方塊
-		CanMoveCheck = true;//重啟StartCoroutine直至已移動至最後一個方塊
-		cubeCount += 1;//計算移動至第幾塊方塊
+		Destroy (gen[cubeCount]); //刪除已移動過後的軌跡方塊
+		CanMoveCheck = true; //重啟StartCoroutine直至已移動至最後一個方塊
+		cubeCount += 1; //計算移動至第幾塊方塊
 		StopCoroutine (MoveToLast (direction, cube));
 	}
-    
-
-
 
 	//可生成方向指示
-	private void ArrowSign ()
-	{
+	private void ArrowSign () {
 		if (is_spawning == false && upCubecheck == false && (history.Count - 1) < s_Database.maxCube && player.GetComponent<Player> ().Downwallchecker == false && Downwallchecker == false && spawnCheck ||
-			is_spawning == false && upCubecheck == false && (history.Count - 1) < s_Database.maxCube && Upwallchecker == false && spawnCheck||
-			is_spawning == false && upCubecheck && history.ElementAt (history.Count - 1).direction == "down"&& spawnCheck) 
-		{
-			UpSign.SetActive(true);
-		} 
-		else 
-		{
+			is_spawning == false && upCubecheck == false && (history.Count - 1) < s_Database.maxCube && Upwallchecker == false && spawnCheck ||
+			is_spawning == false && upCubecheck && history.ElementAt (history.Count - 1).direction == "down" && spawnCheck) {
+			UpSign.SetActive (true);
+		} else {
 			UpSign.SetActive (false);
 		}
 
-		if (is_spawning == false && downCubecheck == false && (history.Count - 1) < s_Database.maxCube && player.GetComponent<Player> ().Upwallchecker == false && Upwallchecker == false && spawnCheck||
-			is_spawning == false && downCubecheck == false && (history.Count - 1) < s_Database.maxCube && Downwallchecker == false && spawnCheck||
-			is_spawning == false && downCubecheck && history.ElementAt (history.Count - 1).direction == "up"&&spawnCheck) 
-		{
+		if (is_spawning == false && downCubecheck == false && history.Count > 1 && (history.Count - 1) < s_Database.maxCube && player.GetComponent<Player> ().Upwallchecker == false && Upwallchecker == false && spawnCheck ||
+			is_spawning == false && downCubecheck == false && history.Count > 1 && (history.Count - 1) < s_Database.maxCube && Downwallchecker == false && spawnCheck ||
+			is_spawning == false && downCubecheck && history.ElementAt (history.Count - 1).direction == "up" && spawnCheck) {
 			DownSign.SetActive (true);
-		}
-		else
-		{
+		} else {
 			DownSign.SetActive (false);
 		}
 
 		if (is_spawning == false && leftCubecheck == false && (history.Count - 1) < s_Database.maxCube && player.GetComponent<Player> ().Rightwallchecker == false && Rightwallchecker == false && spawnCheck ||
-			is_spawning == false && leftCubecheck == false && (history.Count - 1) < s_Database.maxCube && Leftwallchecker == false && spawnCheck||
-			is_spawning == false && leftCubecheck && history.ElementAt (history.Count - 1).direction == "right" &&spawnCheck) 
-		{
+			is_spawning == false && leftCubecheck == false && (history.Count - 1) < s_Database.maxCube && Leftwallchecker == false && spawnCheck ||
+			is_spawning == false && leftCubecheck && history.ElementAt (history.Count - 1).direction == "right" && spawnCheck) {
 			LeftSign.SetActive (true);
-		}
-		else
-		{
+		} else {
 			LeftSign.SetActive (false);
 		}
-		if (is_spawning == false && rightCubecheck == false && (history.Count - 1) < s_Database.maxCube && player.GetComponent<Player> ().Leftwallchecker == false && Leftwallchecker == false && spawnCheck||
-			is_spawning == false && rightCubecheck == false && (history.Count - 1) < s_Database.maxCube && Rightwallchecker == false && spawnCheck||
-			is_spawning == false && rightCubecheck && history.ElementAt (history.Count - 1).direction == "left"&&spawnCheck) 
-		{
+		if (is_spawning == false && rightCubecheck == false && (history.Count - 1) < s_Database.maxCube && player.GetComponent<Player> ().Leftwallchecker == false && Leftwallchecker == false && spawnCheck ||
+			is_spawning == false && rightCubecheck == false && (history.Count - 1) < s_Database.maxCube && Rightwallchecker == false && spawnCheck ||
+			is_spawning == false && rightCubecheck && history.ElementAt (history.Count - 1).direction == "left" && spawnCheck) {
 			RightSign.SetActive (true);
-		}
-		else
-		{
+		} else {
 			RightSign.SetActive (false);
 		}
 
 	}
-	private void ClearArrowSign()
-	{
+	private void ClearArrowSign () {
 		UpSign.SetActive (false);
 		DownSign.SetActive (false);
 		LeftSign.SetActive (false);
