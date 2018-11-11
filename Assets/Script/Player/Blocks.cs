@@ -34,6 +34,7 @@ public class Blocks : MonoBehaviour {
 		}
 		if (Input.GetKey (KeyCode.Z) && rb.velocity.y ==0) {
 			transform.position = new Vector2(this.transform.position.x+Mathf.Sin (Time.time * speed) * amount,transform.position.y);
+			rb.isKinematic = true;
 			foreach(GameObject cube in child)
 			{
 				cube.layer = 0;
@@ -41,6 +42,7 @@ public class Blocks : MonoBehaviour {
 		}
 		else if(Input.GetKeyUp(KeyCode.Z) && child[0].layer==0)
 		{
+			rb.isKinematic = false;
 			foreach(GameObject cube in child)
 			{
 				cube.layer = 9;

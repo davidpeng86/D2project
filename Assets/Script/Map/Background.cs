@@ -24,6 +24,7 @@ public class Background : MonoBehaviour {
             layers[i] = transform.GetChild(i);
             leftIndex = 0;
             rightIndex = layers.Length - 1;
+            layers[i].position = new Vector3(layers[i].position.x,layers[i].position.y,gameObject.GetComponentInParent<Transform>().position.z);
         }
     }
     private void Update()

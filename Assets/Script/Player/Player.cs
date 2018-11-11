@@ -155,7 +155,20 @@ public class Player : MonoBehaviour
     {
         get
         {
-            if (Generator.GetComponent<spawn>().cubeCheck && Isground == false)
+            Vector2 Down = Vector2.zero;
+            Vector2 end = Vector2.zero;
+            if(rb.gravityScale >0)
+            {
+                Down = new Vector2(this.transform.position.x,this.transform.position.y-0.64f);
+                end = new Vector2(Down.x, Down.y - distance);
+            }
+            else
+            {
+                Down = new Vector2(this.transform.position.x,this.transform.position.y+0.64f);
+                end = new Vector2(Down.x, Down.y + distance);
+            }
+            
+            if (Generator.GetComponent<spawn>().cubeCheck && Isground == false ||Generator.GetComponent<spawn>().cubeCheck && Physics2D.Linecast(Down, end, cubeLayer))
             {
                 return true;
             }
@@ -226,19 +239,15 @@ public class Player : MonoBehaviour
             }
 		}
 	}
-    // Use this for initialization
     void Start()
     {
         anim_ = GetComponent<Animator>();
         _state = PlayerState.s_idle;
         rb = GetComponent<Rigidbody2D>();
     }
- 
-
-    // Update is called once per frame
     void Update()
     {
-		//Debug.Log(Isground);
+		
         ChangeState();
         switch (_state)
         {
@@ -259,6 +268,7 @@ public class Player : MonoBehaviour
                 rb.velocity = new Vector2(0, rb.velocity.y);
                 break;
             case PlayerState.s_Holdingidle:
+                rb.velocity = new Vector2(0, rb.velocity.y);
                 break;
             case PlayerState.s_groundedHoldingidle:
                 MovementX();
@@ -382,7 +392,7 @@ public class Player : MonoBehaviour
         {
             _state = PlayerState.s_Holdingidle;
         }
-        if (Isground==false && rb.velocity.y!=0)
+        if (/* Isground==false && */rb.velocity.y!=0)
         {
             _state = PlayerState.s_jumping;
         }

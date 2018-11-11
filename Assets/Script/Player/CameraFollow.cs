@@ -44,20 +44,12 @@ public class CameraFollow : MonoBehaviour {
 
         if (Player.transform.position.x > transform.position.x + distanceXR)
         {
-            if(transform.position.x<42)
-                transform.position = new Vector3(posXR, transform.position.y, transform.position.z);
-            else if(transform.position.x>42)
-                transform.position = new Vector3(42, transform.position.y, transform.position.z);
-
-            //transform.position = new Vector3(posXR, transform.position.y, transform.position.z);
+            transform.position = new Vector3(posXR, transform.position.y, transform.position.z);
         }
         //左側邊界
         if (Player.transform.position.x < transform.position.x - distanceXL)
         {
-            if(transform.position.x>0)
                 transform.position = new Vector3(posXL, transform.position.y, transform.position.z);
-            else if(transform.position.x<0)
-                transform.position = new Vector3(0, transform.position.y, transform.position.z);
         }
         //上方邊界
         if (Player.transform.position.y > transform.position.y + distanceYU)

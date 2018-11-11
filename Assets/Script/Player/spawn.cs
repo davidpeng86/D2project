@@ -207,7 +207,6 @@ public class spawn : MonoBehaviour {
 	void Spawncube () {
 		//伸出方塊 同時判定周邊是否可以伸出方塊 且伸出時刪除既有丟出方塊
 
-		
 		if (Input.GetKey (KeyCode.Z) && spawnCheck) {
 			//向上生成方塊 正常狀態
 			if (player.GetComponent<Rigidbody2D> ().gravityScale > 0) {
@@ -267,7 +266,7 @@ public class spawn : MonoBehaviour {
 				}
 			}
 			//向下生成方塊 重力相反狀態
-			if (player.GetComponent<Rigidbody2D> ().gravityScale <0) {
+			if (player.GetComponent<Rigidbody2D> ().gravityScale < 0) {
 				if (Input.GetKeyDown (KeyCode.DownArrow) && is_spawning == false && downCubecheck == false && (history.Count - 1) < s_Database.maxCube && Upwallchecker == false && player.GetComponent<Player> ().Upwallchecker == false ||
 					Input.GetKeyDown (KeyCode.DownArrow) && is_spawning == false && downCubecheck == false && (history.Count - 1) < s_Database.maxCube && Downwallchecker == false) {
 					if (released) {
@@ -461,13 +460,13 @@ public class spawn : MonoBehaviour {
 	void PlayerMovetoLast () {
 		Rigidbody2D rb = player.GetComponent<Rigidbody2D> ();
 
-		if (Input.GetKeyDown (KeyCode.X) && cubeCheck && movingTolastCube == false) { //在已確認可移動的情況下 按下X後開啟移動至最後一個方塊的StartCoroutine 並且關閉重力以及所生成出的方塊的碰撞
+		if (Input.GetKeyDown (KeyCode.X) && cubeCheck && movingTolastCube == false) { //在已確認可移動的情況下 按下X後開啟移動至最後一個方塊的StartCoroutine 並且改成剛體以及所生成出的方塊的碰撞
 			movingTolastCube = true;
 			CanMoveCheck = true;
 			cubeCheck = false;
 			cubeCount = 0; //cubecount是記錄Player已走到第幾個方塊 
-			rb.gravityScale = 0;
 			rb.velocity = Vector2.zero;
+			rb.isKinematic = true;
 			player.GetComponent<Collider2D> ().isTrigger = true;
 			gen = GameObject.FindGameObjectsWithTag ("generated");
 			for (int i = 0; i < gen.Length; i++) {
@@ -477,11 +476,11 @@ public class spawn : MonoBehaviour {
 
 			transform.position = player.transform.position;
 		}
-		if (cubeCount == history.Count - 1) { //當移動至最後一個方塊後"移動至最後一個方塊"的狀態解除,重設重力並且關閉StartCoroutine,最後把List內的所有元素刪除
+		if (cubeCount == history.Count - 1) { //當移動至最後一個方塊後"移動至最後一個方塊"的狀態解除,重設狀態並且關閉StartCoroutine,最後把List內的所有元素刪除
 			spawnCheck = true;
 			movingTolastCube = false;
 			cubeCount = 0;
-			rb.gravityScale = 3;
+			rb.isKinematic = false;
 			CanMoveCheck = false;
 			player.GetComponent<Collider2D> ().isTrigger = false;
 			for (int i = history.Count - 1; i > 0; i--) {
@@ -592,21 +591,41 @@ public class spawn : MonoBehaviour {
 
 	//可生成方向指示
 	private void ArrowSign () {
-		if (is_spawning == false && upCubecheck == false && (history.Count - 1) < s_Database.maxCube && player.GetComponent<Player> ().Downwallchecker == false && Downwallchecker == false && spawnCheck ||
-			is_spawning == false && upCubecheck == false && (history.Count - 1) < s_Database.maxCube && Upwallchecker == false && spawnCheck ||
-			is_spawning == false && upCubecheck && history.ElementAt (history.Count - 1).direction == "down" && spawnCheck) {
-			UpSign.SetActive (true);
+		if (player.GetComponent<Rigidbody2D> ().gravityScale > 0) {
+			if (is_spawning == false && upCubecheck == false && (history.Count - 1) < s_Database.maxCube && player.GetComponent<Player> ().Downwallchecker == false && Downwallchecker == false && spawnCheck ||
+				is_spawning == false && upCubecheck == false && (history.Count - 1) < s_Database.maxCube && Upwallchecker == false && spawnCheck ||
+				is_spawning == false && upCubecheck && history.ElementAt (history.Count - 1).direction == "down" && spawnCheck) {
+				UpSign.SetActive (true);
+			} else {
+				UpSign.SetActive (false);
+			}
 		} else {
-			UpSign.SetActive (false);
+			if (is_spawning == false && upCubecheck == false && history.Count > 1 && (history.Count - 1) < s_Database.maxCube && player.GetComponent<Player> ().Downwallchecker == false && Downwallchecker == false && spawnCheck ||
+				is_spawning == false && upCubecheck == false && history.Count > 1 && (history.Count - 1) < s_Database.maxCube && Upwallchecker == false && spawnCheck ||
+				is_spawning == false && upCubecheck && history.ElementAt (history.Count - 1).direction == "down" && spawnCheck) {
+				UpSign.SetActive (true);
+			} else {
+				UpSign.SetActive (false);
+			}
+		}
+		if (player.GetComponent<Rigidbody2D> ().gravityScale > 0) {
+			if (is_spawning == false && downCubecheck == false && history.Count > 1 && (history.Count - 1) < s_Database.maxCube && player.GetComponent<Player> ().Upwallchecker == false && Upwallchecker == false && spawnCheck ||
+				is_spawning == false && downCubecheck == false && history.Count > 1 && (history.Count - 1) < s_Database.maxCube && Downwallchecker == false && spawnCheck ||
+				is_spawning == false && downCubecheck && history.ElementAt (history.Count - 1).direction == "up" && spawnCheck) {
+				DownSign.SetActive (true);
+			} else {
+				DownSign.SetActive (false);
+			}
+		} else {
+			if (is_spawning == false && downCubecheck == false && (history.Count - 1) < s_Database.maxCube && player.GetComponent<Player> ().Upwallchecker == false && Upwallchecker == false && spawnCheck ||
+				is_spawning == false && downCubecheck == false && (history.Count - 1) < s_Database.maxCube && Downwallchecker == false && spawnCheck ||
+				is_spawning == false && downCubecheck && history.ElementAt (history.Count - 1).direction == "up" && spawnCheck) {
+				DownSign.SetActive (true);
+			} else {
+				DownSign.SetActive (false);
+			}
 		}
 
-		if (is_spawning == false && downCubecheck == false && history.Count > 1 && (history.Count - 1) < s_Database.maxCube && player.GetComponent<Player> ().Upwallchecker == false && Upwallchecker == false && spawnCheck ||
-			is_spawning == false && downCubecheck == false && history.Count > 1 && (history.Count - 1) < s_Database.maxCube && Downwallchecker == false && spawnCheck ||
-			is_spawning == false && downCubecheck && history.ElementAt (history.Count - 1).direction == "up" && spawnCheck) {
-			DownSign.SetActive (true);
-		} else {
-			DownSign.SetActive (false);
-		}
 
 		if (is_spawning == false && leftCubecheck == false && (history.Count - 1) < s_Database.maxCube && player.GetComponent<Player> ().Rightwallchecker == false && Rightwallchecker == false && spawnCheck ||
 			is_spawning == false && leftCubecheck == false && (history.Count - 1) < s_Database.maxCube && Leftwallchecker == false && spawnCheck ||

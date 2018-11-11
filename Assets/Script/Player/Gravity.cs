@@ -5,8 +5,8 @@ using UnityEngine;
 public class Gravity : MonoBehaviour {
     public GameObject o_Player;
     public spawn spawn;
-    bool Exist = false;
-
+    public bool Exist = false;
+    public bool CubeExist = false;
 	// Use this for initialization
 	void Start () {
 		
@@ -17,26 +17,25 @@ public class Gravity : MonoBehaviour {
 	void Update () {
         if (o_Player.GetComponent<Rigidbody2D>().gravityScale > 0)
         {
-            o_Player.transform.localScale = new Vector3(o_Player.transform.localScale.x, 1, 1);
+           o_Player.GetComponent<Animator>().SetBool("Reverse",false);
         }
         else if (o_Player.GetComponent<Rigidbody2D>().gravityScale < 0)
         {
-            o_Player.transform.localScale = new Vector3(o_Player.transform.localScale.x, -1, 1);
-        }
-        
+            o_Player.GetComponent<Animator>().SetBool("Reverse",true);
+        } 
     }
     private void OnTriggerExit2D(Collider2D col)
-    {
-        if (col.tag == "Player"  &&!spawn.movingTolastCube)
+    {   
+        if (col.tag == "Player" )
         {
             Exist = false;
             col.GetComponent<Rigidbody2D>().gravityScale = 3;
         }
-        
-        if (col.tag == "generated" && !spawn.movingTolastCube)
+        if (col.tag == "generated" && col.transform.parent!=null)
         {
             if (col.transform.parent.tag =="Blocks")
             {
+                CubeExist = false;
                 col.GetComponentInParent<Rigidbody2D>().gravityScale = 3;
             }
         }
@@ -44,37 +43,28 @@ public class Gravity : MonoBehaviour {
         {
             o_Player.GetComponent<Rigidbody2D>().gravityScale = 3;
         }
-    }
-    private void OnTriggerStay2D(Collider2D col)
-    {
-
-        if (col.tag == "generated" && o_Player.GetComponent<Player>()._state == Player.PlayerState.s_Holdingidle ||
-            col.tag == "generated" && o_Player.GetComponent<Player>()._state == Player.PlayerState.s_groundedHoldingidle ||
-            col.tag == "generated" && o_Player.GetComponent<Player>()._state == Player.PlayerState.s_spawning)
+        if (col.tag == "generated" && !Exist && CubeExist && o_Player.GetComponent<Player>()._state == Player.PlayerState.s_Holdingidle )
         {
             o_Player.GetComponent<Rigidbody2D>().gravityScale = -3;
         }
-        if (col.tag == "generated" &&!spawn.movingTolastCube)
+        if (col.tag == "generated" && !Exist)
         {
+            o_Player.GetComponent<Rigidbody2D>().gravityScale = 3;
+        }
 
+    }
+    private void OnTriggerStay2D(Collider2D col)
+    {
+        if (col.tag == "generated")
+        {
+            CubeExist = true;
             col.GetComponentInParent<Rigidbody2D>().gravityScale = -3;
         }
-        if (col.tag == "Player" && !spawn.movingTolastCube)
+        if (col.tag == "Player" )
         {
             Exist = true;
             col.GetComponent<Rigidbody2D>().gravityScale = -3;
         }
-        if(col.tag =="generated")
-        {  
-            if (spawn.released)
-            {
-                if (!Exist)
-                {
-                    o_Player.GetComponent<Rigidbody2D>().gravityScale = 3;
-                }
-            }
-        }
-         
 
     }
 }
