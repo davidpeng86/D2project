@@ -383,6 +383,7 @@ public class spawn : MonoBehaviour {
 			gen = GameObject.FindGameObjectsWithTag ("generated");
 			GameObject group = new GameObject ("blocks");
 			for (int i = 0; i < gen.Length; i++) {
+				gen[i].GetComponent<SpriteRenderer>().color = new Color(255f,255f,255f,255f);
 				gen[i].transform.parent = group.transform;
 			}
 			group.AddComponent<Rigidbody2D> ();
