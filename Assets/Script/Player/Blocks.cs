@@ -15,7 +15,7 @@ public class Blocks : MonoBehaviour {
         rb =gameObject.GetComponent<Rigidbody2D>();
         foreach (GameObject cube in child)
         {
-            cube.GetComponent<BoxCollider2D>().size = new Vector2(1.245f,1.28f);
+            cube.GetComponent<BoxCollider2D>().size = new Vector2(1.24f,1.28f);
         }
     }
 	

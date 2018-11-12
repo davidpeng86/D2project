@@ -14,8 +14,6 @@ public class Player : MonoBehaviour
     [Header("右:true左:false")]
     public bool direction;
     [Header("施力大小")]
-    [Range(400, 10000)]
-    public float xForce;
     [Range(0, 200)]
     public float yForce;
     [Range(0, 0.5f)]

@@ -18,7 +18,7 @@ public class DataBase : MonoBehaviour {
     public GameObject theMostCloseSavePoint;
     void Start () {
       
-		  SavePoint = o_Player.transform.position;
+		  SavePoint = o_Player.transform.position + Vector3.up;
 	}
 	
 	// Update is called once per frame

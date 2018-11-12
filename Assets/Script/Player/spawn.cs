@@ -100,10 +100,13 @@ public class spawn : MonoBehaviour {
 
 	bool Upwallchecker {
 		get {
-			Vector3 start = this.transform.position + new Vector3 (0, 0.6f, 0);
+			Vector3 start = this.transform.position + new Vector3 (0.55f, 0.6f, 0);
 			Vector3 end = new Vector3 (start.x, start.y + distance, this.transform.position.z);
+			Vector3 start2 = this.transform.position + new Vector3 (-0.55f, 0.6f, 0);
+			Vector3 end2 = new Vector3 (start2.x, start2.y + distance, this.transform.position.z);
 			Debug.DrawLine (start, end, Color.red);
-			if (Physics2D.Linecast (start, end, groundLayer)) {
+			Debug.DrawLine (start2, end2, Color.red);
+			if (Physics2D.Linecast (start, end, groundLayer)||Physics2D.Linecast (start2, end2, groundLayer)) {
 				return true;
 			} else {
 				return false;
@@ -113,10 +116,13 @@ public class spawn : MonoBehaviour {
 
 	bool Downwallchecker {
 		get {
-			Vector3 start = this.transform.position + new Vector3 (0, -0.6f, 0);
+			Vector3 start = this.transform.position + new Vector3 (0.55f, -0.6f, 0);
 			Vector3 end = new Vector3 (start.x, start.y - distance, this.transform.position.z);
+			Vector3 start2 = this.transform.position + new Vector3 (-0.55f, -0.6f, 0);
+			Vector3 end2 = new Vector3 (start2.x, start2.y - distance, this.transform.position.z);
 			Debug.DrawLine (start, end, Color.red);
-			if (Physics2D.Linecast (start, end, groundLayer)) {
+			Debug.DrawLine (start2, end2, Color.red);
+			if (Physics2D.Linecast (start, end, groundLayer)||Physics2D.Linecast (start2, end2, groundLayer)) {
 				return true;
 			} else {
 				return false;
@@ -126,10 +132,13 @@ public class spawn : MonoBehaviour {
 
 	bool Leftwallchecker {
 		get {
-			Vector3 start = this.transform.position + new Vector3 (-0.6f, 0, 0);
+			Vector3 start = this.transform.position + new Vector3 (-0.6f, 0.55f, 0);
 			Vector3 end = new Vector3 (start.x - distance, start.y, this.transform.position.z);
+			Vector3 start2 = this.transform.position + new Vector3 (-0.6f, -0.55f, 0);
+			Vector3 end2 = new Vector3 (start2.x - distance, start2.y, this.transform.position.z);
 			Debug.DrawLine (start, end, Color.red);
-			if (Physics2D.Linecast (start, end, groundLayer)) {
+			Debug.DrawLine (start2, end2, Color.red);
+			if (Physics2D.Linecast (start, end, groundLayer)||Physics2D.Linecast (start2, end2, groundLayer)) {
 				return true;
 			} else {
 				return false;
@@ -139,10 +148,13 @@ public class spawn : MonoBehaviour {
 
 	bool Rightwallchecker {
 		get {
-			Vector3 start = this.transform.position + new Vector3 (0.6f, 0, 0);
+			Vector3 start = this.transform.position + new Vector3 (0.6f, 0.55f, 0);
 			Vector3 end = new Vector3 (start.x + distance, start.y, this.transform.position.z);
+			Vector3 start2 = this.transform.position + new Vector3 (0.6f, -0.55f, 0);
+			Vector3 end2 = new Vector3 (start2.x + distance, start2.y, this.transform.position.z);
 			Debug.DrawLine (start, end, Color.red);
-			if (Physics2D.Linecast (start, end, groundLayer)) {
+			Debug.DrawLine (start2, end2, Color.red);
+			if (Physics2D.Linecast (start, end, groundLayer)||Physics2D.Linecast (start2, end2, groundLayer)) {
 				return true;
 			} else {
 				return false;

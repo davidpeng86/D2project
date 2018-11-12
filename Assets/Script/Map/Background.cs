@@ -24,7 +24,6 @@ public class Background : MonoBehaviour {
             layers[i] = transform.GetChild(i);
             leftIndex = 0;
             rightIndex = layers.Length - 1;
-            layers[i].position = new Vector3(layers[i].position.x,layers[i].position.y,gameObject.GetComponentInParent<Transform>().position.z);
         }
     }
     private void Update()
@@ -52,7 +51,8 @@ public class Background : MonoBehaviour {
     void ScrollLeft()
     {
         int lastRight = rightIndex;
-        layers[lastRight].position = Vector3.right * (layers[leftIndex].position.x - backgroundSize);
+        layers[lastRight].position = new Vector3(1,0,0) * (layers[leftIndex].position.x - backgroundSize);
+        layers[lastRight].position = new Vector3(layers[lastRight].position.x,layers[lastRight].position.y,0);
         leftIndex = rightIndex;
         rightIndex--;
         if (rightIndex < 0)
@@ -62,7 +62,8 @@ public class Background : MonoBehaviour {
     }
     void ScrollRight()
     {
-        layers[leftIndex].position = Vector3.right * (layers[rightIndex].position.x + backgroundSize);
+        layers[leftIndex].position = new Vector3(1,0,0) * (layers[rightIndex].position.x + backgroundSize);
+        layers[leftIndex].position = new Vector3(layers[leftIndex].position.x,layers[leftIndex].position.y,0);
         rightIndex = leftIndex;
         leftIndex++;
         if (leftIndex == layers.Length)

@@ -855,8 +855,8 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 717185716}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 453, y: 211.5, z: 0}
-  m_LocalScale: {x: 1.1325, y: 1.1325, z: 1.1325}
+  m_LocalPosition: {x: 376, y: 211.5, z: 0}
+  m_LocalScale: {x: 0.94, y: 0.94, z: 0.94}
   m_Children:
   - {fileID: 1466718613}
   - {fileID: 94582570}
@@ -1960,6 +1960,7 @@ MonoBehaviour:
   o_Player: {fileID: 1674396227}
   s_Databae: {fileID: 699758754}
   s_CameraFollow: {fileID: 674226545}
+  s_CameraFollowStage2: {fileID: 0}
 --- !u!1001 &868644028
 Prefab:
   m_ObjectHideFlags: 0
@@ -11962,7 +11963,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1466718612}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -282.99997, y: 133.75496, z: 0}
+  m_LocalPosition: {x: -283, y: 172, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 717185717}
@@ -12301,6 +12302,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e261401e010b18749849ffb47522e950, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dataBase: {fileID: 699758754}
 --- !u!1001 &1567715748
 Prefab:
   m_ObjectHideFlags: 0
@@ -12462,6 +12464,7 @@ MonoBehaviour:
   o_Player: {fileID: 1674396227}
   s_Databae: {fileID: 699758754}
   s_CameraFollow: {fileID: 674226545}
+  s_CameraFollowStage2: {fileID: 0}
 --- !u!61 &1624054792
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -12509,11 +12512,11 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4686533551129400, guid: e7aaa8a7a9b427944badbbe20761c7a5, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 65.16
+      value: 44.48
       objectReference: {fileID: 0}
     - target: {fileID: 4686533551129400, guid: e7aaa8a7a9b427944badbbe20761c7a5, type: 2}
       propertyPath: m_LocalPosition.y
-      value: -3.2
+      value: -2.98
       objectReference: {fileID: 0}
     - target: {fileID: 4686533551129400, guid: e7aaa8a7a9b427944badbbe20761c7a5, type: 2}
       propertyPath: m_LocalPosition.z
