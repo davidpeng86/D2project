@@ -43,6 +43,17 @@ public class Player : MonoBehaviour
 			Vector2 start = new Vector2(this.transform.position.x,this.transform.position.y+0.6f);
             Vector2 end = new Vector2(start.x, start.y+distance);
             Debug.DrawLine(start, end, Color.red);
+            if(Generator.GetComponent<spawn>().history.Count>1)
+            {
+                for(int i = 0; i <= Generator.GetComponent<spawn>().history.Count-2;i++)
+                {
+                    if(Generator.GetComponent<spawn>().SpawningCube[i].Upwallchecker)
+                    {
+                        return true;
+                    }
+                }
+            }
+            
             if (Physics2D.Linecast(start, end, groundLayer))
             {
                 return true;
@@ -61,6 +72,16 @@ public class Player : MonoBehaviour
 			Vector2 start = new Vector2(this.transform.position.x,this.transform.position.y-0.6f);
             Vector2 end = new Vector2(start.x, start.y-distance);
             Debug.DrawLine(start, end, Color.red);
+            if(Generator.GetComponent<spawn>().history.Count>1)
+            {
+                for(int i = 0; i <= Generator.GetComponent<spawn>().history.Count-2;i++)
+                {
+                    if(Generator.GetComponent<spawn>().SpawningCube[i].Downwallchecker)
+                    {
+                        return true;
+                    }
+                }
+            }
             if (Physics2D.Linecast(start, end, groundLayer))
             {
                 return true;
@@ -82,6 +103,16 @@ public class Player : MonoBehaviour
 			Vector2 start2 = new Vector2(this.transform.position.x-0.6f,this.transform.position.y-0.57f);
             Vector2 end2 = new Vector2(start2.x - 0.05f, start2.y);
             Debug.DrawLine(start2, end2, Color.red);
+            if(Generator.GetComponent<spawn>().history.Count>1)
+            {
+                for(int i = 0; i <= Generator.GetComponent<spawn>().history.Count-2;i++)
+                {
+                    if(Generator.GetComponent<spawn>().SpawningCube[i].Leftwallchecker)
+                    {
+                        return true;
+                    }
+                }
+            }
             if (Physics2D.Linecast(start2, end2, groundLayer)||Physics2D.Linecast(start, end, groundLayer))
             {
                 return true;
@@ -103,6 +134,16 @@ public class Player : MonoBehaviour
             Vector2 start2 = new Vector2(this.transform.position.x+0.6f,this.transform.position.y+0.57f);
             Vector2 end2 = new Vector2(start2.x + 0.05f, start2.y);
             Debug.DrawLine(start2, end2, Color.red);
+            if(Generator.GetComponent<spawn>().history.Count>1)
+            {
+                for(int i = 0; i <= Generator.GetComponent<spawn>().history.Count-2;i++)
+                {
+                    if(Generator.GetComponent<spawn>().SpawningCube[i].Rightwallchecker)
+                    {
+                        return true;
+                    }
+                }
+            }
             if (Physics2D.Linecast(start, end, groundLayer)||Physics2D.Linecast(start2, end2, groundLayer))
             {
                 return true;
