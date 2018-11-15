@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class DeathZone : MonoBehaviour {
 
 	public GameObject o_Player;
+	public spawn generator;
 	public DataBase s_Databae;
 	public CameraFollow s_CameraFollow = null;
 	public CameraFollowStage2 s_CameraFollowStage2 = null;
@@ -27,6 +28,9 @@ public class DeathZone : MonoBehaviour {
 			s_CameraFollow.StartCoroutine(s_CameraFollow.CameraShake(0.15f,0.4f));
 			else if(s_CameraFollowStage2 != null)
 			s_CameraFollowStage2.StartCoroutine(s_CameraFollowStage2.CameraShake(0.15f,0.4f));
+
+			generator.ThrowCube();
+			generator.DestroyCube();
 			StartCoroutine(wait(1f));
 		}
 	}
@@ -34,10 +38,12 @@ public class DeathZone : MonoBehaviour {
 	{
 		yield return new WaitForSecondsRealtime(time);
 		o_Player.transform.position = s_Databae.SavePoint;
-		s_Databae.maxCube = theMostCloseSavePoint.maxCube;
-		s_Databae.maxUsedcube = theMostCloseSavePoint.maxUsedcube;
-		s_Databae.UsedCube = theMostCloseSavePoint.UsedCube;
-		s_Databae.Crown =theMostCloseSavePoint.Crown;
-
+		if(theMostCloseSavePoint!=null)
+		{
+			s_Databae.maxCube = theMostCloseSavePoint.maxCube;
+			s_Databae.maxUsedcube = theMostCloseSavePoint.maxUsedcube;
+			s_Databae.UsedCube = theMostCloseSavePoint.UsedCube;
+			s_Databae.Crown =theMostCloseSavePoint.Crown;
+		}
 	}
 }

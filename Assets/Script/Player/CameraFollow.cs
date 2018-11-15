@@ -47,9 +47,15 @@ public class CameraFollow : MonoBehaviour {
             transform.position = new Vector3(posXR, transform.position.y, transform.position.z);
         }
         //左側邊界
-        if (Player.transform.position.x < transform.position.x - distanceXL)
+        if(transform.position.x<=-29)
+            transform.position = new Vector3(-29,transform.position.y,transform.position.z);
+        else
         {
+            if (Player.transform.position.x < transform.position.x - distanceXL)
+            {
                 transform.position = new Vector3(posXL, transform.position.y, transform.position.z);
+            }
+            
         }
         //上方邊界
         if (Player.transform.position.y > transform.position.y + distanceYU)
@@ -78,29 +84,25 @@ public class CameraFollow : MonoBehaviour {
         
         
         
-		/* if (Input.GetKey(KeyCode.Z) && Generator.GetComponent<spawn>().spawnCheck)
+		if (Input.GetKey(KeyCode.Z) && Generator.GetComponent<spawn>().spawnCheck)
         {
-            spawnMove =true;
-        }
-        if(spawnMove)
-        {
-            if (Player.GetComponent<Player>().direction)
+            if(Player.GetComponent<Player>().direction)
             {
-                transform.position = new Vector3(Mathf.SmoothDamp(transform.position.x, Player.transform.position.x-5, ref velocity.x, smoothTimeX), transform.position.y, transform.position.z);
-                if(transform.position.x<Player.transform.position.x+3 )
-                {
-                    spawnMove = false;
-                }
+                distanceXL = 4;
+                distanceXR =-4;
             }
             else
             {
-                transform.position = new Vector3(Mathf.SmoothDamp(transform.position.x, Player.transform.position.x-7, ref velocity.x, smoothTimeX), transform.position.y, transform.position.z);
-                if(transform.position.x<Player.transform.position.x+1 )
-                {
-                    spawnMove = false;
-                }
+                distanceXL =-4;
+                distanceXR = 4;
             }
-        }*/
+        }
+        if (Input.GetKeyUp (KeyCode.Z))
+        {
+            distanceXL = 4;
+            distanceXR = 0;
+        }
+       
     }
     public IEnumerator CameraShake(float duration, float magnitude)
 	{

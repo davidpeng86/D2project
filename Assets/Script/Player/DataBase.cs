@@ -15,7 +15,7 @@ public class DataBase : MonoBehaviour {
     public float maxUsedcube;
     [Header("方塊總使用次數")]
     public float UsedCube;
-    public GameObject theMostCloseSavePoint;
+    public GameObject theMostCloseSavePoint =null;
     void Start () {
       
 		  SavePoint = o_Player.transform.position + Vector3.up;

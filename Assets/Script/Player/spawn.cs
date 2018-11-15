@@ -184,7 +184,7 @@ public class spawn : MonoBehaviour {
 				break;
 			case Player.PlayerState.s_jumping:
 				DeleteCube ();
-				ThrowCube ();
+				Throw();
 				break;
 			case Player.PlayerState.s_spawning:
 				Spawncube ();
@@ -192,12 +192,12 @@ public class spawn : MonoBehaviour {
 				break;
 			case Player.PlayerState.s_Holdingidle:
 				ClearArrowSign ();
-				ThrowCube ();
+				Throw();
 				PlayerMovetoLast ();
 				break;
 			case Player.PlayerState.s_groundedHoldingidle:
 				ClearArrowSign ();
-				ThrowCube ();
+				Throw();
 				PlayerMovetoLast ();
 				break;
 
@@ -370,9 +370,15 @@ public class spawn : MonoBehaviour {
 			}
 		}
 	}
+	public void Throw(){
+		if(Input.GetKeyDown (KeyCode.Z))
+		{
+			ThrowCube();
+		}
+	}
 	//方塊丟出
-	private void ThrowCube () {
-		if (Input.GetKeyDown (KeyCode.Z) && cubeCheck) {
+	public void ThrowCube () {
+		if (cubeCheck) {
 
 			spawnCheck = true;
 			//StopAllCoroutines();
@@ -407,7 +413,7 @@ public class spawn : MonoBehaviour {
 			DestroyCube();
 		}
 	}
-	private void DestroyCube()
+	public void DestroyCube()
 	{
 		if(released){
 			GameObject.Find ("blocks").GetComponent<Blocks> ().destory = true;
