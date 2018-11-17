@@ -11,7 +11,7 @@ public class DataBase : MonoBehaviour {
     public float Crown;
     [Header("方塊伸出數量限制")]
     public float maxCube = 4;
-    [Header("方塊使用數量限制")]
+    [Header("關卡方塊總使用量限制")]
     public float maxUsedcube;
     [Header("方塊總使用次數")]
     public float UsedCube;

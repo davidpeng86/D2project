@@ -75,11 +75,5 @@ public class SpawningBlocks : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if(Upwallchecker||Downwallchecker||Leftwallchecker||Rightwallchecker)
-		{
-			Debug.Log("123123");
-
-		}
-		
 	}
 }

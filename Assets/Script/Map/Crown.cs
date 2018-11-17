@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Crown : MonoBehaviour {
-	public DataBase dataBase;
+	public DataBase s_Database;
 
 	// Use this for initialization
 	void Start () {
@@ -19,7 +19,7 @@ public class Crown : MonoBehaviour {
 
 		if(Col.tag=="Player")
 		{
-			dataBase.Crown +=1;
+			s_Database.Crown +=1;
 			Destroy(this.gameObject);
 		}
 	}

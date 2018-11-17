@@ -6,6 +6,7 @@ TagManager:
   tags:
   - generated
   - Blocks
+  - FallDownBlock
   layers:
   - Default
   - TransparentFX

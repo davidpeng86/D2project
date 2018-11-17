@@ -172,7 +172,6 @@ public class spawn : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		directionCheck ();
 		switch (player.GetComponent<Player> ()._state) {
 			case Player.PlayerState.s_idle:
 				DeleteCube ();
@@ -211,7 +210,13 @@ public class spawn : MonoBehaviour {
 		} else {
 			cubeCheck = false;
 		}
+		//方塊生成狀態下放掉Z時偵測是否有方塊伸出，有即實體化
 		if (Input.GetKeyUp (KeyCode.Z) && cubeCheck == true) {
+			s_Database.UsedCube +=(history.Count-1);
+			gen = GameObject.FindGameObjectsWithTag ("generated");
+			for (int i = 0; i < gen.Length; i++) {
+				gen[i].GetComponent<SpriteRenderer>().color = new Color(255f,255f,255f,255f);
+			}
 			spawnCheck = false;
 		}
 	}
@@ -371,18 +376,20 @@ public class spawn : MonoBehaviour {
 		}
 	}
 	public void Throw(){
-		if(Input.GetKeyDown (KeyCode.Z))
+		if(Input.GetKeyDown (KeyCode.Z) && Input.GetKey(KeyCode.DownArrow))
 		{
-			ThrowCube();
+			ThrowCube(new Vector2 (0,0));
+		}
+		else if(Input.GetKeyDown (KeyCode.Z))
+		{
+			ThrowCube(new Vector2(3,5));
 		}
 	}
 	//方塊丟出
-	public void ThrowCube () {
+	public void ThrowCube (Vector2 force) {
 		if (cubeCheck) {
-
 			spawnCheck = true;
-			//StopAllCoroutines();
-			StartCoroutine (landingSound ());
+			FindObjectOfType<AudioManager> ().play ("cube_put");
 			released = true;
 			gen = GameObject.FindGameObjectsWithTag ("generated");
 			GameObject group = new GameObject ("blocks");
@@ -392,10 +399,11 @@ public class spawn : MonoBehaviour {
 			}
 			group.AddComponent<Rigidbody2D> ();
 			group.AddComponent<Blocks> ();
+			
 			if (player.GetComponent<Player> ().direction == true) {
-				group.GetComponent<Rigidbody2D> ().velocity = new Vector2 (1, 3.5f);
+				group.GetComponent<Rigidbody2D>().AddForce(force,ForceMode2D.Impulse);
 			} else {
-				group.GetComponent<Rigidbody2D> ().velocity = new Vector2 (-1, 3.5f);
+				group.GetComponent<Rigidbody2D>().AddForce(new Vector2(force.x*-1,force.y*1),ForceMode2D.Impulse);
 			}
 			group.GetComponent<Rigidbody2D> ().freezeRotation = true;
 			group.GetComponent<Rigidbody2D> ().gravityScale = 3;
@@ -416,26 +424,11 @@ public class spawn : MonoBehaviour {
 	public void DestroyCube()
 	{
 		if(released){
+			FindObjectOfType<AudioManager> ().play ("DestroyCube");
 			GameObject.Find ("blocks").GetComponent<Blocks> ().destory = true;
 			released = false;
 		}
 	}
-
-	IEnumerator landingSound () {
-		yield return new WaitForSeconds (0.05f);
-		//play audio
-		FindObjectOfType<AudioManager> ().play ("cube_put");
-		StopCoroutine (landingSound ());
-	}
-
-	void directionCheck () {
-		if (player.transform.localScale.x == 1) {
-			transform.localScale = new Vector3 (1, 1, 1);
-		} else if (player.transform.localScale.x == -1) {
-			transform.localScale = new Vector3 (-1, 1, 1);
-		}
-	}
-
 	//紀錄list
 	private void record2history (string direction, Transform child_position) {
 		history.Add (new child (direction, child_position));

@@ -29,14 +29,19 @@ public class DeathZone : MonoBehaviour {
 			else if(s_CameraFollowStage2 != null)
 			s_CameraFollowStage2.StartCoroutine(s_CameraFollowStage2.CameraShake(0.15f,0.4f));
 
-			generator.ThrowCube();
+			generator.ThrowCube(new Vector2 (0,0));
 			generator.DestroyCube();
 			StartCoroutine(wait(1f));
+		}
+		if(col.tag =="FallDownBlock")
+		{
+			col.transform.position = new Vector3(col.transform.position.x,col.transform.position.y+20,col.transform.position.z);
 		}
 	}
 	IEnumerator wait(float time)
 	{
 		yield return new WaitForSecondsRealtime(time);
+		o_Player.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
 		o_Player.transform.position = s_Databae.SavePoint;
 		if(theMostCloseSavePoint!=null)
 		{

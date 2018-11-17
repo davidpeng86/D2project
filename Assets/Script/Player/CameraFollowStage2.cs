@@ -47,15 +47,30 @@ private Vector2 velocity;
             transform.position = new Vector3(posXR, transform.position.y, transform.position.z);
         }
         //左側邊界
-        if (Player.transform.position.x < transform.position.x - distanceXL)
+        if(transform.position.x<=-1.6f)
         {
+            transform.position = new Vector3(-1.6f, transform.position.y, transform.position.z);
+        }
+        else
+        {
+            if (Player.transform.position.x < transform.position.x - distanceXL)
+            {
                 transform.position = new Vector3(posXL, transform.position.y, transform.position.z);
+            }
         }
         //上方邊界
-        if (Player.transform.position.y > transform.position.y + distanceYU)
+        if(transform.position.y>=6)
         {
-            transform.position = new Vector3(transform.position.x, posYU, transform.position.z);
+            transform.position = new Vector3(transform.position.x, 6, transform.position.z);
         }
+        else
+        {
+            if (Player.transform.position.y > transform.position.y + distanceYU)
+            {
+                transform.position = new Vector3(transform.position.x, posYU, transform.position.z);
+            }
+        }
+        
         //下方邊界
 		if(transform.position.y<=-2f)
 		{

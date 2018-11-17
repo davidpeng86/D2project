@@ -9,8 +9,6 @@ public class Player : MonoBehaviour
     public GameObject Generator;
 
     public float maxSpeedX ;
-    public float speedX;
-    public float speedY;
     [Header("右:true左:false")]
     public bool direction;
     [Header("施力大小")]
@@ -286,7 +284,6 @@ public class Player : MonoBehaviour
     }
     void Update()
     {
-		
         ChangeState();
         switch (_state)
         {
@@ -297,7 +294,6 @@ public class Player : MonoBehaviour
             case PlayerState.s_moving:
                 MovementX();
                 jump();
-                
                 break;
             case PlayerState.s_jumping:
                 MovementX();
@@ -318,8 +314,16 @@ public class Player : MonoBehaviour
                 break;
 
         }
-        Debug.Log(_state);
+        if(rb.velocity.x!=0)
+        {
 
+            anim_.SetBool("Move",true);
+        }
+        else
+        {
+            anim_.SetBool("Move",false);
+        }
+        Debug.Log(_state);
     }
 
    void jump()
@@ -329,34 +333,20 @@ public class Player : MonoBehaviour
         {
             FindObjectOfType<AudioManager>().play("jump");
             rb.AddForce(Vector2.up * yForce, ForceMode2D.Impulse);
-			/*if (Mathf.Abs (rb.velocity.x) > 3) {
-				rb.velocity=new Vector2
-			}*/
         }
         else if (Isground && Input.GetKeyDown(KeyCode.Space) && rb.gravityScale < 0)
         {
             FindObjectOfType<AudioManager>().play("jump");
             rb.AddForce(Vector2.down * yForce, ForceMode2D.Impulse);
-            /*if (Mathf.Abs (rb.velocity.x) > 3) {
-				rb.velocity=new Vector2
-			}*/
         }
     }
 
     void MovementX()
     {
         horizontalDirection = Input.GetAxisRaw("Horizontal");
-        if(horizontalDirection !=0)
-        {
-            anim_.SetBool("Move",true);
-        }
-        else
-        {
-            anim_.SetBool("Move",false);
-        }
         if (Leftwallchecker == true && horizontalDirection == 1 || OnBlocksCheck == 2 && horizontalDirection == 1)
         {
-            rb.velocity = new Vector2(maxSpeedX * horizontalDirection, rb.velocity.y);
+            rb.velocity = new Vector2(maxSpeedX * horizontalDirection , rb.velocity.y);
         }
         else if (Rightwallchecker == true && horizontalDirection == -1 || OnBlocksCheck == 1 && horizontalDirection == -1)
         {
@@ -377,24 +367,14 @@ public class Player : MonoBehaviour
         else
         {
             rb.velocity = new Vector2(0, rb.velocity.y);
-        }
-			
+        }	
         directionCheck();
-        ControlSpeed();
-
-    }
-    public void ControlSpeed()
-    {
-        speedX = rb.velocity.x;
-        speedY = rb.velocity.y;
-        float newspeedX = Mathf.Clamp(speedX, -maxSpeedX, maxSpeedX);
-        rb.velocity = new Vector2(newspeedX, speedY);
-
         if (Input.GetKeyUp(KeyCode.RightArrow) || Input.GetKeyUp(KeyCode.LeftArrow))
         {
-            rb.velocity = new Vector2(0, speedY);
+            rb.velocity = new Vector2(0, rb.velocity.y);
         }
     }
+
 
     void directionCheck()
     {
@@ -406,10 +386,7 @@ public class Player : MonoBehaviour
         else if (Input.GetAxisRaw("Horizontal") < 0 && Generator.GetComponent<spawn>().history.Count <=1)
         {
                 direction = false;
-                
                 transform.localScale =new Vector3(-1, transform.localScale.y, 1);
-
-                
         }
     }
 
@@ -431,7 +408,7 @@ public class Player : MonoBehaviour
         {
             _state = PlayerState.s_Holdingidle;
         }
-        if (/* Isground==false && */rb.velocity.y!=0)
+        if (rb.velocity.y!=0)
         {
             _state = PlayerState.s_jumping;
         }

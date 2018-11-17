@@ -48,11 +48,9 @@ public class Blocks : MonoBehaviour {
 				cube.layer = 9;
 			}
 		}
-        if (this.GetComponent<Rigidbody2D>().velocity.y == 0 || this.GetComponent<Rigidbody2D>().velocity.y != 0)
+        if (this.GetComponent<Rigidbody2D>().velocity.y == 0 )
         {
 			this.GetComponent<Rigidbody2D>().velocity = new Vector2(0, this.GetComponent<Rigidbody2D>().velocity.y);
-        }
-
-		
+		}
 	}
 }

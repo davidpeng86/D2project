@@ -14,7 +14,6 @@ public class CameraFollow : MonoBehaviour {
     float posXL;
     float posYU;
     float posYD;
-    public LayerMask groundLayer;
     public GameObject Player;
 	public GameObject Generator;
     bool spawnMove;
@@ -29,9 +28,6 @@ public class CameraFollow : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate ()
     {
-        Debug.DrawLine(Player.transform.position + new Vector3(1.28f*4, -0.64f,0),Player.transform.position + new Vector3(1.28f*4, -1.28f*4+0.64f, 0),Color.gray);
-
-
         Debug.DrawLine(transform.position + new Vector3(distanceXR, distanceYU,0),transform.position + new Vector3(distanceXR, -distanceYD, 0),Color.green);
 		Debug.DrawLine(transform.position + new Vector3(-distanceXL, distanceYU, 0),transform.position + new Vector3(-distanceXL, -distanceYD, 0), Color.green);
         Debug.DrawLine(transform.position + new Vector3(-distanceXL, -distanceYD, 0),transform.position + new Vector3(distanceXR, -distanceYD, 0), Color.red);
@@ -47,8 +43,8 @@ public class CameraFollow : MonoBehaviour {
             transform.position = new Vector3(posXR, transform.position.y, transform.position.z);
         }
         //左側邊界
-        if(transform.position.x<=-29)
-            transform.position = new Vector3(-29,transform.position.y,transform.position.z);
+        if(transform.position.x<=-27)
+            transform.position = new Vector3(-27,transform.position.y,transform.position.z);
         else
         {
             if (Player.transform.position.x < transform.position.x - distanceXL)
@@ -63,27 +59,17 @@ public class CameraFollow : MonoBehaviour {
             transform.position = new Vector3(transform.position.x, posYU, transform.position.z);
         }
         //下方邊界
-        if (Player.transform.position.y < transform.position.y-distanceYD)
+        if(transform.position.y<=-2.76f)
         {
-            transform.position = new Vector3(transform.position.x,posYD, transform.position.z);
+            transform.position = new Vector3(transform.position.x,-2.76f, transform.position.z);
         }
-        /* if(Physics2D.Linecast(Player.transform.position + new Vector3(distanceXR, 0,0),Player.transform.position + new Vector3(distanceXR, -3, 0),groundLayer))
+        else
         {
-            
-
-            
+            if (Player.transform.position.y < transform.position.y-distanceYD)
+            {
+                transform.position = new Vector3(transform.position.x,posYD, transform.position.z);
+            } 
         }
-        else if(!Physics2D.Linecast(Player.transform.position + new Vector3(1.28f*4, -0.64f,0),Player.transform.position + new Vector3(1.28f*4, -1.28f*4 +0.64f, 0),groundLayer))
-        {
-            Debug.Log("HI~~");
-            transform.position = new Vector3(Mathf.SmoothDamp(transform.position.x,Player.transform.position.x+distanceXL, ref velocity.x, smoothTimeY)
-                                            ,Mathf.SmoothDamp(transform.position.y,Player.transform.position.y+distanceYU*2, ref velocity.y, smoothTimeY)
-                                            ,transform.position.z);
-        }*/
-        
-        
-        
-        
 		if (Input.GetKey(KeyCode.Z) && Generator.GetComponent<spawn>().spawnCheck)
         {
             if(Player.GetComponent<Player>().direction)
