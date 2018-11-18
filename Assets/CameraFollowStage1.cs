@@ -1,57 +1,32 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
-public class CameraFollow : MonoBehaviour {
-    [System.NonSerialized]
-    public Vector2 velocity;
+public class CameraFollowStage1 : MonoBehaviour {
+    private Vector2 velocity;
     public float smoothTimeX;
     public float smoothTimeY;
     public float distanceXR =0;
     public float distanceXL = 8;
     public float distanceYU = 0;
     public float distanceYD = 0;
-    [System.NonSerialized]
-    public float posXR;
-    [System.NonSerialized]
-    public float posXL;
-    [System.NonSerialized]
-    public float posYU;
-    [System.NonSerialized]
-    public float posYD;
+    float posXR;
+    float posXL;
+    float posYU;
+    float posYD;
     public GameObject Player;
 	public GameObject Generator;
-    Scene m_scene;
-    string SceneName;
+    bool spawnMove;
 
 
     // Use this for initialization
 
 	void Start () {
-        m_scene = SceneManager.GetActiveScene();
-		SceneName =m_scene.name;
+		
 	}
 	
 	// Update is called once per frame
-	public void FixedUpdate ()
-    {
-        CameraBorder();
-        if(SceneName =="Tutorial")
-        {
-            CameraMove(1000,-2.76f,-27,1000);
-        }
-        else if(SceneName == "Stage1")
-        {
-            CameraMove(1000,1000,1000,1000);
-        }
-        else
-        {
-            CameraMove(6,-2,-1.8f,1000);
-        }
-        SpawningCamera();
-    }
-    public void CameraBorder()
+	void FixedUpdate ()
     {
         Debug.DrawLine(transform.position + new Vector3(distanceXR, distanceYU,0),transform.position + new Vector3(distanceXR, -distanceYD, 0),Color.green);
 		Debug.DrawLine(transform.position + new Vector3(-distanceXL, distanceYU, 0),transform.position + new Vector3(-distanceXL, -distanceYD, 0), Color.green);
@@ -61,51 +36,15 @@ public class CameraFollow : MonoBehaviour {
         posXL = Mathf.SmoothDamp(transform.position.x, Player.transform.position.x+distanceXL , ref velocity.x, smoothTimeX);
         posYU = Mathf.SmoothDamp(transform.position.y, Player.transform.position.y-distanceYU, ref velocity.y, smoothTimeY);
         posYD = Mathf.SmoothDamp(transform.position.y, Player.transform.position.y+distanceYD, ref velocity.y, smoothTimeY);
+         //右側邊界
 
-    }
-    public void CameraMove(float up,float down,float left,float right)
-    {  
-        if(transform.position.y>=up)
+        if (Player.transform.position.x > transform.position.x + distanceXR)
         {
-            transform.position = new Vector3(transform.position.x,up, transform.position.z);
-        }
-        else
-        {
-            //上方邊界
-            if (Player.transform.position.y > transform.position.y + distanceYU)
-            {
-                transform.position = new Vector3(transform.position.x, posYU, transform.position.z);
-            }
-        }
-        //下方邊界
-        if(transform.position.y<=down)
-        {
-            transform.position = new Vector3(transform.position.x,down, transform.position.z);
-        }
-        else
-        {
-            if (Player.transform.position.y < transform.position.y-distanceYD)
-            {
-                transform.position = new Vector3(transform.position.x,posYD, transform.position.z);
-            } 
-        }
-        //右側邊界
-        if(transform.position.x>=right)
-        {
-            transform.position = new Vector3(right,transform.position.y,transform.position.z);
-        }
-        else
-        {
-            if (Player.transform.position.x > transform.position.x + distanceXR)
-            {
-                transform.position = new Vector3(posXR, transform.position.y, transform.position.z);
-            }
+            transform.position = new Vector3(posXR, transform.position.y, transform.position.z);
         }
         //左側邊界
-        if(transform.position.x<=left)
-        {
-            transform.position = new Vector3(left,transform.position.y,transform.position.z);
-        }
+        if(transform.position.x<=-27)
+            transform.position = new Vector3(-27,transform.position.y,transform.position.z);
         else
         {
             if (Player.transform.position.x < transform.position.x - distanceXL)
@@ -114,11 +53,24 @@ public class CameraFollow : MonoBehaviour {
             }
             
         }
-    
-    }
-    public void SpawningCamera()
-    {
-        if (Input.GetKey(KeyCode.Z) && Generator.GetComponent<spawn>().spawnCheck)
+        //上方邊界
+        if (Player.transform.position.y > transform.position.y + distanceYU)
+        {
+            transform.position = new Vector3(transform.position.x, posYU, transform.position.z);
+        }
+        //下方邊界
+        if(transform.position.y<=-2.76f)
+        {
+            transform.position = new Vector3(transform.position.x,-2.76f, transform.position.z);
+        }
+        else
+        {
+            if (Player.transform.position.y < transform.position.y-distanceYD)
+            {
+                transform.position = new Vector3(transform.position.x,posYD, transform.position.z);
+            } 
+        }
+		if (Input.GetKey(KeyCode.Z) && Generator.GetComponent<spawn>().spawnCheck)
         {
             if(Player.GetComponent<Player>().direction)
             {
@@ -136,6 +88,7 @@ public class CameraFollow : MonoBehaviour {
             distanceXL = 4;
             distanceXR = 0;
         }
+       
     }
     public IEnumerator CameraShake(float duration, float magnitude)
 	{
@@ -151,5 +104,5 @@ public class CameraFollow : MonoBehaviour {
 			yield return null;
 		}
 		transform.position = p_camera;
-    }
+	}
 }

@@ -9,7 +9,6 @@ public class DeathZone : MonoBehaviour {
 	public spawn generator;
 	public DataBase s_Databae;
 	public CameraFollow s_CameraFollow = null;
-	public CameraFollowStage2 s_CameraFollowStage2 = null;
 	SavePoint theMostCloseSavePoint;
 	void Start () {
 		
@@ -24,11 +23,7 @@ public class DeathZone : MonoBehaviour {
 		
 		if(col.tag == "Player")
 		{
-			if(s_CameraFollow!=null)
 			s_CameraFollow.StartCoroutine(s_CameraFollow.CameraShake(0.15f,0.4f));
-			else if(s_CameraFollowStage2 != null)
-			s_CameraFollowStage2.StartCoroutine(s_CameraFollowStage2.CameraShake(0.15f,0.4f));
-
 			generator.ThrowCube(new Vector2 (0,0));
 			generator.DestroyCube();
 			StartCoroutine(wait(1f));

@@ -8,7 +8,6 @@ public class Trap : MonoBehaviour {
 	public spawn generator;
 	public DataBase s_Databae;
 	public CameraFollow s_CameraFollow;
-	public CameraFollowStage2 s_CameraFollowStage2 = null;
 	SavePoint theMostCloseSavePoint;
 	public Sprite DeadSprite;
 	public RuntimeAnimatorController A_Controller;
@@ -24,11 +23,7 @@ public class Trap : MonoBehaviour {
 	{
 		if(col.collider.tag == "Player")
 		{
-			if(s_CameraFollow!=null)
 			s_CameraFollow.StartCoroutine(s_CameraFollow.CameraShake(0.15f,0.4f));
-			else if(s_CameraFollowStage2 != null)
-			s_CameraFollowStage2.StartCoroutine(s_CameraFollowStage2.CameraShake(0.15f,0.4f));
-			
 			if(o_Player.transform.localScale == new Vector3(1,1,1))
 			{
 				o_Player.transform.Rotate(0,0,20);
