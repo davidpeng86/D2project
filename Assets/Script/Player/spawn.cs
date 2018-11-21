@@ -24,6 +24,7 @@ public class spawn : MonoBehaviour {
 	public List<child> history;
 	[Header ("用來儲存丟出的方塊")]
 	private GameObject[] gen;
+	private GameObject[] MovingTolastCube;
 	public GameObject player;
 
 	public LayerMask cubeLayer;
@@ -44,11 +45,13 @@ public class spawn : MonoBehaviour {
 	bool CanMoveCheck = false;
 	[Header ("生成後得丟出或移動至最後一個的開關")]
 	public bool spawnCheck = true;
+	public bool MovingTolastCubeGroundCheck;
 	public GameObject UpSign;
 	public GameObject DownSign;
 	public GameObject LeftSign;
 	public GameObject RightSign;
 	public SpawningBlocks[] SpawningCube;
+	private Rigidbody2D rb;
 
 	bool upCubecheck {
 		get {
@@ -164,6 +167,7 @@ public class spawn : MonoBehaviour {
 	}
 
 	void Start () {
+		rb = player.GetComponent<Rigidbody2D>();
 		SpawningCube = new SpawningBlocks[(int)s_Database.maxCube];
 		is_spawning = false;
 		history = new List<child> ();
@@ -192,16 +196,16 @@ public class spawn : MonoBehaviour {
 			case Player.PlayerState.s_Holdingidle:
 				ClearArrowSign ();
 				Throw();
-				PlayerMovetoLast ();
+				PlayerStartMovetoLast ();
 				break;
 			case Player.PlayerState.s_groundedHoldingidle:
 				ClearArrowSign ();
 				Throw();
-				PlayerMovetoLast ();
+				PlayerStartMovetoLast ();
 				break;
 
 			case Player.PlayerState.s_movingTolastCube:
-				PlayerMovetoLast ();
+				PlayerMovingToLastCube();
 				break;
 		}
 		//判定是否有方塊伸出，可不可以丟出來
@@ -211,13 +215,17 @@ public class spawn : MonoBehaviour {
 			cubeCheck = false;
 		}
 		//方塊生成狀態下放掉Z時偵測是否有方塊伸出，有即實體化
-		if (Input.GetKeyUp (KeyCode.Z) && cubeCheck == true) {
+		 if (Input.GetKeyUp (KeyCode.Z) && cubeCheck == true) {
 			s_Database.UsedCube +=(history.Count-1);
 			gen = GameObject.FindGameObjectsWithTag ("generated");
 			for (int i = 0; i < gen.Length; i++) {
 				gen[i].GetComponent<SpriteRenderer>().color = new Color(255f,255f,255f,255f);
 			}
 			spawnCheck = false;
+		}
+		if(player.GetComponent<Player>().Isground)
+		{
+			MovingTolastCubeGroundCheck = true;
 		}
 	}
 
@@ -226,7 +234,7 @@ public class spawn : MonoBehaviour {
 		//伸出方塊 同時判定周邊是否可以伸出方塊 且伸出時刪除既有丟出方塊
 		if (Input.GetKey (KeyCode.Z) && spawnCheck) {
 			//向上生成方塊 正常狀態
-			if (player.GetComponent<Rigidbody2D> ().gravityScale > 0) {
+			if (rb.gravityScale > 0) {
 				if (Input.GetKeyDown (KeyCode.UpArrow) && is_spawning == false && upCubecheck == false && (history.Count - 1) < s_Database.maxCube && Downwallchecker == false && player.GetComponent<Player> ().Downwallchecker == false ||
 					Input.GetKeyDown (KeyCode.UpArrow) && is_spawning == false && upCubecheck == false && (history.Count - 1) < s_Database.maxCube && Upwallchecker == false) {
 					DestroyCube();
@@ -243,7 +251,7 @@ public class spawn : MonoBehaviour {
 				}
 			}
 			//向上生成 重力相反狀態
-			if (player.GetComponent<Rigidbody2D> ().gravityScale < 0) {
+			if (rb.gravityScale < 0) {
 				if (Input.GetKeyDown (KeyCode.UpArrow) && is_spawning == false && upCubecheck == false && history.Count > 1 && (history.Count - 1) < s_Database.maxCube && Downwallchecker == false && player.GetComponent<Player> ().Downwallchecker == false ||
 					Input.GetKeyDown (KeyCode.UpArrow) && is_spawning == false && upCubecheck == false && history.Count > 1 && (history.Count - 1) < s_Database.maxCube && Upwallchecker == false) {
 					DestroyCube();
@@ -260,7 +268,7 @@ public class spawn : MonoBehaviour {
 				}
 			}
 			//向下生成方塊 重力正常狀態
-			if (player.GetComponent<Rigidbody2D> ().gravityScale > 0) {
+			if (rb.gravityScale > 0) {
 				if (Input.GetKeyDown (KeyCode.DownArrow) && is_spawning == false && downCubecheck == false && history.Count > 1 && (history.Count - 1) < s_Database.maxCube && Upwallchecker == false && player.GetComponent<Player> ().Upwallchecker == false ||
 					Input.GetKeyDown (KeyCode.DownArrow) && is_spawning == false && downCubecheck == false && history.Count > 1 && (history.Count - 1) < s_Database.maxCube && Downwallchecker == false) {
 					DestroyCube();
@@ -277,7 +285,7 @@ public class spawn : MonoBehaviour {
 				}
 			}
 			//向下生成方塊 重力相反狀態
-			if (player.GetComponent<Rigidbody2D> ().gravityScale < 0) {
+			if (rb.gravityScale < 0) {
 				if (Input.GetKeyDown (KeyCode.DownArrow) && is_spawning == false && downCubecheck == false && (history.Count - 1) < s_Database.maxCube && Upwallchecker == false && player.GetComponent<Player> ().Upwallchecker == false ||
 					Input.GetKeyDown (KeyCode.DownArrow) && is_spawning == false && downCubecheck == false && (history.Count - 1) < s_Database.maxCube && Downwallchecker == false) {
 					DestroyCube();
@@ -399,11 +407,19 @@ public class spawn : MonoBehaviour {
 			}
 			group.AddComponent<Rigidbody2D> ();
 			group.AddComponent<Blocks> ();
-			
-			if (player.GetComponent<Player> ().direction == true) {
-				group.GetComponent<Rigidbody2D>().AddForce(force,ForceMode2D.Impulse);
-			} else {
-				group.GetComponent<Rigidbody2D>().AddForce(new Vector2(force.x*-1,force.y*1),ForceMode2D.Impulse);
+			if(rb.gravityScale>0)
+				if (player.GetComponent<Player> ().direction == true) {
+					group.GetComponent<Rigidbody2D>().AddForce(force,ForceMode2D.Impulse);
+				} else {
+					group.GetComponent<Rigidbody2D>().AddForce(new Vector2(force.x*-1,force.y*1),ForceMode2D.Impulse);
+				}
+			else
+			{
+				if (player.GetComponent<Player> ().direction == true) {
+					group.GetComponent<Rigidbody2D>().AddForce(new Vector2(force.x,force.y*-1),ForceMode2D.Impulse);
+				} else {
+					group.GetComponent<Rigidbody2D>().AddForce(new Vector2(force.x*-1,force.y*-1),ForceMode2D.Impulse);
+				}
 			}
 			group.GetComponent<Rigidbody2D> ().freezeRotation = true;
 			group.GetComponent<Rigidbody2D> ().gravityScale = 3;
@@ -458,10 +474,9 @@ public class spawn : MonoBehaviour {
 	}
 
 	//玩家移動至最後一個方塊
-	private void PlayerMovetoLast () {
-		Rigidbody2D rb = player.GetComponent<Rigidbody2D> ();
-
-		if (Input.GetKeyDown (KeyCode.X) && cubeCheck && movingTolastCube == false) { //在已確認可移動的情況下 按下X後開啟移動至最後一個方塊的StartCoroutine 並且改成剛體以及所生成出的方塊的碰撞
+	private void PlayerStartMovetoLast () {
+		//在已確認可移動的情況下 按下X後開啟移動至最後一個方塊的StartCoroutine 並且改成剛體以及所生成出的方塊的碰撞
+		if (Input.GetKeyDown (KeyCode.X) && cubeCheck && movingTolastCube == false) { 
 			movingTolastCube = true;
 			CanMoveCheck = true;
 			cubeCheck = false;
@@ -469,14 +484,24 @@ public class spawn : MonoBehaviour {
 			rb.velocity = Vector2.zero;
 			rb.isKinematic = true;
 			player.GetComponent<Collider2D> ().isTrigger = true;
-			gen = GameObject.FindGameObjectsWithTag ("generated");
-			for (int i = 0; i < gen.Length; i++) {
-				gen[i].transform.parent = null;
-				gen[i].GetComponent<Collider2D> ().isTrigger = true;
+			MovingTolastCube = GameObject.FindGameObjectsWithTag ("generated");
+			for (int i = 0; i < MovingTolastCube.Length; i++) {
+				MovingTolastCube[i].transform.parent = null;
+				MovingTolastCube[i].GetComponent<Collider2D> ().isTrigger = true;
 			}
 
 			transform.position = player.transform.position;
 		}
+
+		if (CanMoveCheck) { //開始StartCoroutine
+			StartCoroutine (MoveToLast (history.ElementAt (cubeCount + 1).direction, cubeCount));
+		}
+
+	}
+
+	void PlayerMovingToLastCube()
+	{
+		
 		if (cubeCount == history.Count - 1) { //當移動至最後一個方塊後"移動至最後一個方塊"的狀態解除,重設狀態並且關閉StartCoroutine,最後把List內的所有元素刪除
 			spawnCheck = true;
 			movingTolastCube = false;
@@ -487,11 +512,15 @@ public class spawn : MonoBehaviour {
 			for (int i = history.Count - 1; i > 0; i--) {
 				history.RemoveAt (i);
 			}
+			for(int i = MovingTolastCube.Length-1;i>=0;i--)
+			{
+				Destroy(MovingTolastCube[i]);
+			}
+			MovingTolastCubeGroundCheck = false;
 		}
-		if (CanMoveCheck) { //開始StartCoroutine
+		else if (CanMoveCheck) { //開始StartCoroutine
 			StartCoroutine (MoveToLast (history.ElementAt (cubeCount + 1).direction, cubeCount));
 		}
-
 	}
 
 	//生成方塊移動控制
@@ -545,10 +574,11 @@ public class spawn : MonoBehaviour {
 		}
 		while (F < 1.28f) {
 			F += spawn_speed;
+			if(T!=null)
 			T.position += V3;
 			yield return new WaitForSeconds (0.01f);
 		}
-
+		if(T!=null)
 		T.position = transform.position;
 		is_spawning = false;
 
@@ -584,15 +614,16 @@ public class spawn : MonoBehaviour {
 			player.transform.Translate (directionCheck);
 			yield return new WaitForSeconds (0.01f);
 		}
-		Destroy (gen[cubeCount]); //刪除已移動過後的軌跡方塊
+		MovingTolastCube[cubeCount].SetActive(false); //刪除已移動過後的軌跡方塊	
 		CanMoveCheck = true; //重啟StartCoroutine直至已移動至最後一個方塊
 		cubeCount += 1; //計算移動至第幾塊方塊
 		StopCoroutine (MoveToLast (direction, cube));
+		
 	}
 
 	//可生成方向指示
 	private void ArrowSign () {
-		if (player.GetComponent<Rigidbody2D> ().gravityScale > 0) {
+		if (rb.gravityScale > 0) {
 			if (is_spawning == false && upCubecheck == false && (history.Count - 1) < s_Database.maxCube && player.GetComponent<Player> ().Downwallchecker == false && Downwallchecker == false && spawnCheck ||
 				is_spawning == false && upCubecheck == false && (history.Count - 1) < s_Database.maxCube && Upwallchecker == false && spawnCheck ||
 				is_spawning == false && upCubecheck && history.ElementAt (history.Count - 1).direction == "down" && spawnCheck) {
@@ -609,7 +640,7 @@ public class spawn : MonoBehaviour {
 				UpSign.SetActive (false);
 			}
 		}
-		if (player.GetComponent<Rigidbody2D> ().gravityScale > 0) {
+		if (rb.gravityScale > 0) {
 			if (is_spawning == false && downCubecheck == false && history.Count > 1 && (history.Count - 1) < s_Database.maxCube && player.GetComponent<Player> ().Upwallchecker == false && Upwallchecker == false && spawnCheck ||
 				is_spawning == false && downCubecheck == false && history.Count > 1 && (history.Count - 1) < s_Database.maxCube && Downwallchecker == false && spawnCheck ||
 				is_spawning == false && downCubecheck && history.ElementAt (history.Count - 1).direction == "up" && spawnCheck) {

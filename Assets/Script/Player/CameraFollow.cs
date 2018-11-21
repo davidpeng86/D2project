@@ -39,11 +39,11 @@ public class CameraFollow : MonoBehaviour {
         CameraBorder();
         if(SceneName =="Tutorial")
         {
-            CameraMove(1000,-2.76f,-27,1000);
+            CameraMove(1000,-2.76f,-27.4f,160.5f);
         }
         else if(SceneName == "Stage1")
         {
-            CameraMove(1000,1000,1000,1000);
+            CameraMove(1000,0,0.8f,1000);
         }
         else
         {
@@ -51,7 +51,7 @@ public class CameraFollow : MonoBehaviour {
         }
         SpawningCamera();
     }
-    public void CameraBorder()
+    void CameraBorder()
     {
         Debug.DrawLine(transform.position + new Vector3(distanceXR, distanceYU,0),transform.position + new Vector3(distanceXR, -distanceYD, 0),Color.green);
 		Debug.DrawLine(transform.position + new Vector3(-distanceXL, distanceYU, 0),transform.position + new Vector3(-distanceXL, -distanceYD, 0), Color.green);
@@ -63,7 +63,7 @@ public class CameraFollow : MonoBehaviour {
         posYD = Mathf.SmoothDamp(transform.position.y, Player.transform.position.y+distanceYD, ref velocity.y, smoothTimeY);
 
     }
-    public void CameraMove(float up,float down,float left,float right)
+    void CameraMove(float up,float down,float left,float right)
     {  
         if(transform.position.y>=up)
         {
@@ -116,7 +116,7 @@ public class CameraFollow : MonoBehaviour {
         }
     
     }
-    public void SpawningCamera()
+    void SpawningCamera()
     {
         if (Input.GetKey(KeyCode.Z) && Generator.GetComponent<spawn>().spawnCheck)
         {

@@ -356,6 +356,10 @@ public class Player : MonoBehaviour
         {
             rb.velocity = new Vector2(maxSpeedX * horizontalDirection, rb.velocity.y);
         }
+        else if(!Generator.GetComponent<spawn>().MovingTolastCubeGroundCheck)
+        {
+            rb.velocity = new Vector2(0, rb.velocity.y);
+        }
         else if(OnBlocksCheck == 3 && Generator.GetComponent<spawn>().cubeCheck)
         {
             rb.velocity = new Vector2(maxSpeedX * horizontalDirection, rb.velocity.y);
@@ -367,7 +371,7 @@ public class Player : MonoBehaviour
         else
         {
             rb.velocity = new Vector2(0, rb.velocity.y);
-        }	
+        }		
         directionCheck();
         if (Input.GetKeyUp(KeyCode.RightArrow) || Input.GetKeyUp(KeyCode.LeftArrow))
         {

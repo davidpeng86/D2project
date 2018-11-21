@@ -19,8 +19,12 @@ public class Crown : MonoBehaviour {
 
 		if(Col.tag=="Player")
 		{
-			s_Database.Crown +=1;
-			Destroy(this.gameObject);
+			s_Database.CrownCount +=1;
+			this.gameObject.SetActive(false);
+			for(int i =0;i<=s_Database.Crown.Length-1;i++)
+			{
+				s_Database.CrownCheck[i] = s_Database.Crown[i].activeSelf;
+			}
 		}
 	}
 }

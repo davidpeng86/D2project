@@ -8,7 +8,7 @@ public class DataBase : MonoBehaviour {
     [Header("記錄點位置")]
     public Vector3 SavePoint  = Vector3.zero;
     [Header("成就數")]
-    public float Crown;
+    public float CrownCount;
     [Header("方塊伸出數量限制")]
     public float maxCube = 4;
     [Header("關卡方塊總使用量限制")]
@@ -16,13 +16,21 @@ public class DataBase : MonoBehaviour {
     [Header("方塊總使用次數")]
     public float UsedCube;
     public GameObject theMostCloseSavePoint =null;
+    public GameObject[] Crown;
+    //[System.NonSerialized]
+    public bool[] CrownCheck;
     void Start () {
-      
-		  SavePoint = o_Player.transform.position + Vector3.up;
+        CrownCheck =new bool[Crown.Length];
+        for(int i=0;i<Crown.Length;i++)
+        {
+            CrownCheck[i] = Crown[i].activeSelf;
+        }
+	    SavePoint = o_Player.transform.position + Vector3.up;
 	}
 	
 	// Update is called once per frame
 	void Update () {
+        
 		
 	}
 }

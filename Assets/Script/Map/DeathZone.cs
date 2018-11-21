@@ -35,7 +35,10 @@ public class DeathZone : MonoBehaviour {
 	}
 	IEnumerator wait(float time)
 	{
+		o_Player.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
 		yield return new WaitForSecondsRealtime(time);
+		o_Player.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
+		o_Player.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeRotation;
 		o_Player.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
 		o_Player.transform.position = s_Databae.SavePoint;
 		if(theMostCloseSavePoint!=null)
@@ -43,7 +46,16 @@ public class DeathZone : MonoBehaviour {
 			s_Databae.maxCube = theMostCloseSavePoint.maxCube;
 			s_Databae.maxUsedcube = theMostCloseSavePoint.maxUsedcube;
 			s_Databae.UsedCube = theMostCloseSavePoint.UsedCube;
-			s_Databae.Crown =theMostCloseSavePoint.Crown;
+			s_Databae.CrownCount =theMostCloseSavePoint.CrownCount;
+
+			for(int i =0;i<s_Databae.CrownCheck.Length;i++)
+			{
+				s_Databae.CrownCheck[i] = theMostCloseSavePoint.CrownCheck[i];
+				if(theMostCloseSavePoint.CrownCheck[i])
+				{
+					s_Databae.Crown[i].SetActive(true);
+				}
+			}
 		}
 	}
 }

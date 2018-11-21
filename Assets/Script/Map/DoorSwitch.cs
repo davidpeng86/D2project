@@ -16,7 +16,7 @@ public class DoorSwitch : MonoBehaviour {
 	}
     private void OnTriggerStay2D(Collider2D col)
     {
-		if(col.tag=="Player"||col.tag=="generated")
+		if(col.tag=="Player"||col.tag=="generated" ||col.tag == "FallDownBlock")
 		{
 			this.GetComponent<SpriteRenderer>().sprite = touched;
 			DS_open = true;
@@ -24,7 +24,7 @@ public class DoorSwitch : MonoBehaviour {
 	}
     private void OnTriggerExit2D(Collider2D col)
     {
-		if(col.tag=="Player"||col.tag=="generated")
+		if(col.tag=="Player"||col.tag=="generated" ||col.tag == "FallDownBlock" )
 		{
 			this.GetComponent<SpriteRenderer>().sprite = touch;
 			DS_open = false;

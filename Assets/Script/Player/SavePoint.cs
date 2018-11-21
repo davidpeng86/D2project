@@ -4,12 +4,13 @@ using UnityEngine;
 
 public class SavePoint : MonoBehaviour {
 	public DataBase s_Database;
- 	public float Crown;
+ 	public float CrownCount;
  	public float maxCube = 4;
  	public float maxUsedcube;
  	public float UsedCube;
+	public bool[] CrownCheck;
 	void Start () {
-		
+		CrownCheck = new bool[s_Database.Crown.Length];
 	}
 	
 	// Update is called once per frame
@@ -21,11 +22,15 @@ public class SavePoint : MonoBehaviour {
 		if(Col.tag=="Player" && s_Database.SavePoint!=this.transform.position)
 		{
 			s_Database.SavePoint =this.transform.position;
-			Crown = s_Database.Crown;
+			CrownCount = s_Database.CrownCount;
 			maxCube = s_Database.maxCube;
 			maxUsedcube = s_Database.maxUsedcube;
 			UsedCube = s_Database.UsedCube;
 			s_Database.theMostCloseSavePoint = this.gameObject;
+			for(int i=0 ; i<CrownCheck.Length;i++)
+			{
+				CrownCheck[i]=s_Database.CrownCheck[i];
+			}
 		}
 	}
 }

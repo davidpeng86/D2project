@@ -7,9 +7,9 @@ public class Blocks : MonoBehaviour {
 	float amount = 0.08f;
 	private GameObject [] child;
 	public bool destory = false;
-    //public Particle DisappearSmoke;
-    // Use this for initialization
+
     private Rigidbody2D rb;
+	bool GroundChecked = false;
 	void Start () {
         child = GameObject.FindGameObjectsWithTag("generated");
         rb =gameObject.GetComponent<Rigidbody2D>();
@@ -48,9 +48,22 @@ public class Blocks : MonoBehaviour {
 				cube.layer = 9;
 			}
 		}
-        if (this.GetComponent<Rigidbody2D>().velocity.y == 0 )
+        if (this.GetComponent<Rigidbody2D>().velocity.y == 0 ||GroundChecked )
         {
 			this.GetComponent<Rigidbody2D>().velocity = new Vector2(0, this.GetComponent<Rigidbody2D>().velocity.y);
+			if(!GroundChecked)
+			{
+				for(int i=0; i<child.Length;i++)
+				{
+					if(child[i].GetComponent<SpawningBlocks>().Downwallchecker)
+					{
+						GroundChecked = true;
+						break;
+					}
+				}
+			}
+
+
 		}
 	}
 }

@@ -109,7 +109,7 @@ public class Door : MonoBehaviour {
 			s_Databae.maxCube = theMostCloseSavePoint.maxCube;
 			s_Databae.maxUsedcube = theMostCloseSavePoint.maxUsedcube;
 			s_Databae.UsedCube = theMostCloseSavePoint.UsedCube;
-			s_Databae.Crown =theMostCloseSavePoint.Crown;
+			s_Databae.CrownCount =theMostCloseSavePoint.CrownCount;
 
 		}
 		
