@@ -428,6 +428,7 @@ public class spawn : MonoBehaviour {
 				history.RemoveAt (i);
 			}
 			transform.position = transform.parent.position;
+			cubeCheck =false;
 		}
 	}
 
@@ -483,11 +484,11 @@ public class spawn : MonoBehaviour {
 			cubeCount = 0; //cubecount是記錄Player已走到第幾個方塊 
 			rb.velocity = Vector2.zero;
 			rb.isKinematic = true;
-			player.GetComponent<Collider2D> ().isTrigger = true;
+			//player.GetComponent<Collider2D> ().isTrigger = true;
 			MovingTolastCube = GameObject.FindGameObjectsWithTag ("generated");
 			for (int i = 0; i < MovingTolastCube.Length; i++) {
 				MovingTolastCube[i].transform.parent = null;
-				MovingTolastCube[i].GetComponent<Collider2D> ().isTrigger = true;
+				//MovingTolastCube[i].GetComponent<Collider2D> ().isTrigger = true;
 			}
 
 			transform.position = player.transform.position;
@@ -503,24 +504,28 @@ public class spawn : MonoBehaviour {
 	{
 		
 		if (cubeCount == history.Count - 1) { //當移動至最後一個方塊後"移動至最後一個方塊"的狀態解除,重設狀態並且關閉StartCoroutine,最後把List內的所有元素刪除
-			spawnCheck = true;
-			movingTolastCube = false;
-			cubeCount = 0;
-			rb.isKinematic = false;
-			CanMoveCheck = false;
-			player.GetComponent<Collider2D> ().isTrigger = false;
-			for (int i = history.Count - 1; i > 0; i--) {
-				history.RemoveAt (i);
-			}
-			for(int i = MovingTolastCube.Length-1;i>=0;i--)
-			{
-				Destroy(MovingTolastCube[i]);
-			}
-			MovingTolastCubeGroundCheck = false;
+			AtLastCube();
 		}
 		else if (CanMoveCheck) { //開始StartCoroutine
 			StartCoroutine (MoveToLast (history.ElementAt (cubeCount + 1).direction, cubeCount));
 		}
+	}
+	public void AtLastCube()
+	{
+		spawnCheck = true;
+		movingTolastCube = false;
+		cubeCount = 0;
+		rb.isKinematic = false;
+		CanMoveCheck = false;
+		player.GetComponent<Collider2D> ().isTrigger = false;
+		for (int i = history.Count - 1; i > 0; i--) {
+			history.RemoveAt (i);
+		}
+		for(int i = MovingTolastCube.Length-1;i>=0;i--)
+		{
+			Destroy(MovingTolastCube[i]);
+		}
+		MovingTolastCubeGroundCheck = false;
 	}
 
 	//生成方塊移動控制

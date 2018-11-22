@@ -15,7 +15,7 @@ public class Blocks : MonoBehaviour {
         rb =gameObject.GetComponent<Rigidbody2D>();
         foreach (GameObject cube in child)
         {
-            cube.GetComponent<BoxCollider2D>().size = new Vector2(1.24f,1.26f);
+            cube.GetComponent<BoxCollider2D>().size = new Vector2(1.25f,1.26f);
         }
     }
 	
@@ -25,26 +25,30 @@ public class Blocks : MonoBehaviour {
 		{
 			foreach(GameObject cube in child)
 			{
-				GameObject DisappearSmoke =  Instantiate(Resources.Load("DisappearSmoke"), cube.transform) as GameObject;
-				DisappearSmoke.transform.position = cube.transform.position;
-				DisappearSmoke.transform.parent =null;
+				if(cube!=null){
+					GameObject DisappearSmoke =  Instantiate(Resources.Load("DisappearSmoke"), cube.transform) as GameObject;
+					DisappearSmoke.transform.position = cube.transform.position;
+					DisappearSmoke.transform.parent =null;
+				}
+				
 			}
+			Debug.Log("123123");
 			Destroy(this.gameObject);
 			destory = false;
 		}
 		if (Input.GetKey (KeyCode.Z) && rb.velocity.y ==0) {
 			transform.position = new Vector2(this.transform.position.x+Mathf.Sin (Time.time * speed) * amount,transform.position.y);
-			rb.isKinematic = true;
 			foreach(GameObject cube in child)
 			{
+				if(cube!=null)
 				cube.layer = 0;
 			}
 		}
 		else if(Input.GetKeyUp(KeyCode.Z) && child[0].layer==0)
 		{
-			rb.isKinematic = false;
 			foreach(GameObject cube in child)
 			{
+				if(cube!=null)
 				cube.layer = 9;
 			}
 		}
@@ -55,11 +59,15 @@ public class Blocks : MonoBehaviour {
 			{
 				for(int i=0; i<child.Length;i++)
 				{
-					if(child[i].GetComponent<SpawningBlocks>().Downwallchecker)
+					if(child[i]!=null)
 					{
-						GroundChecked = true;
-						break;
+						if(child[i].GetComponent<SpawningBlocks>().Downwallchecker)
+						{
+							GroundChecked = true;
+							break;
+						}
 					}
+					
 				}
 			}
 

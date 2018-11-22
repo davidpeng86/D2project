@@ -384,13 +384,15 @@ public class Player : MonoBehaviour
     {
         if (Input.GetAxisRaw("Horizontal") > 0 && Generator.GetComponent<spawn>().history.Count <=1)
         {
-                direction = true;
-                transform.localScale =new Vector3(1, transform.localScale.y, 1);
+            direction = true;
+            transform.localScale =new Vector3(1, transform.localScale.y, 1);
+            Generator.transform.localScale =new Vector3(1, transform.localScale.y, 1);
         }
         else if (Input.GetAxisRaw("Horizontal") < 0 && Generator.GetComponent<spawn>().history.Count <=1)
         {
-                direction = false;
-                transform.localScale =new Vector3(-1, transform.localScale.y, 1);
+            direction = false;
+            transform.localScale =new Vector3(-1, transform.localScale.y, 1);
+            Generator.transform.localScale =new Vector3(-1, transform.localScale.y, 1);
         }
     }
 

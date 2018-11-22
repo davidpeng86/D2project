@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 212160690528257716}
   - component: {fileID: 61549804219782578}
   - component: {fileID: 114211013133240782}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: Door
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -78,8 +78,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9a0f33f285313546971e68e09dfa094, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  o_Player: {fileID: 0}
+  generator: {fileID: 0}
+  s_Databae: {fileID: 0}
+  cubeLayer:
+    serializedVersion: 2
+    m_Bits: 0
   DoorSwitch:
   - {fileID: 0}
+  s_CameraFollow: {fileID: 0}
 --- !u!212 &212160690528257716
 SpriteRenderer:
   m_ObjectHideFlags: 1

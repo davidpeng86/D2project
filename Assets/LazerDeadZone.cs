@@ -1,9 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
-public class Trap : MonoBehaviour {
+public class LazerDeadZone : MonoBehaviour {
 	public GameObject o_Player;
 	public spawn generator;
 	public DataBase s_Database;
@@ -12,17 +11,18 @@ public class Trap : MonoBehaviour {
 	public Sprite DeadSprite;
 	public RuntimeAnimatorController A_Controller;
 	private bool check;
+	// Use this for initialization
 	void Start () {
 		
 	}
 	
+	// Update is called once per frame
 	void Update () {
 		theMostCloseSavePoint = s_Database.theMostCloseSavePoint.GetComponent<SavePoint>();
-
 	}
-	void OnCollisionStay2D(Collision2D col)
+	void OnTriggerEnter2D(Collider2D col)
 	{
-		if(col.collider.tag == "Player")
+		if(col.tag == "Player")
 		{
 			if(!check)
 			{
@@ -37,6 +37,12 @@ public class Trap : MonoBehaviour {
 				}
 				generator.ThrowCube(new Vector2 (0,0));
 				generator.DestroyCube();
+				if(o_Player.GetComponent<Player>()._state == Player.PlayerState.s_movingTolastCube)
+				{
+					generator.StopAllCoroutines();
+					generator.AtLastCube();
+				}
+
 				StartCoroutine(wait(0.5f));
 			}
 		}

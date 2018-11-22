@@ -7,7 +7,7 @@ public class DeathZone : MonoBehaviour {
 
 	public GameObject o_Player;
 	public spawn generator;
-	public DataBase s_Databae;
+	public DataBase s_Database;
 	public CameraFollow s_CameraFollow = null;
 	SavePoint theMostCloseSavePoint;
 	void Start () {
@@ -15,7 +15,7 @@ public class DeathZone : MonoBehaviour {
 	}
 	
 	void Update () {
-		theMostCloseSavePoint = s_Databae.theMostCloseSavePoint.GetComponent<SavePoint>();
+		theMostCloseSavePoint = s_Database.theMostCloseSavePoint.GetComponent<SavePoint>();
 
 	}
 	void OnTriggerEnter2D(Collider2D col)
@@ -40,20 +40,20 @@ public class DeathZone : MonoBehaviour {
 		o_Player.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
 		o_Player.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeRotation;
 		o_Player.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-		o_Player.transform.position = s_Databae.SavePoint;
+		o_Player.transform.position = s_Database.SavePoint;
 		if(theMostCloseSavePoint!=null)
 		{
-			s_Databae.maxCube = theMostCloseSavePoint.maxCube;
-			s_Databae.maxUsedcube = theMostCloseSavePoint.maxUsedcube;
-			s_Databae.UsedCube = theMostCloseSavePoint.UsedCube;
-			s_Databae.CrownCount =theMostCloseSavePoint.CrownCount;
+			s_Database.maxCube = theMostCloseSavePoint.maxCube;
+			s_Database.maxUsedcube = theMostCloseSavePoint.maxUsedcube;
+			s_Database.UsedCube = theMostCloseSavePoint.UsedCube;
+			s_Database.CrownCount =theMostCloseSavePoint.CrownCount;
 
-			for(int i =0;i<s_Databae.CrownCheck.Length;i++)
+			for(int i =0;i<s_Database.CrownCheck.Length;i++)
 			{
-				s_Databae.CrownCheck[i] = theMostCloseSavePoint.CrownCheck[i];
+				s_Database.CrownCheck[i] = theMostCloseSavePoint.CrownCheck[i];
 				if(theMostCloseSavePoint.CrownCheck[i])
 				{
-					s_Databae.Crown[i].SetActive(true);
+					s_Database.Crown[i].SetActive(true);
 				}
 			}
 		}
