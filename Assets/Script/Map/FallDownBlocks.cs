@@ -13,6 +13,9 @@ public class FallDownBlocks : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		rb.velocity = new Vector2(0,-5);
-		
+		if(rb.velocity.y>=-1)
+		{
+			rb.velocity = new Vector2(0,0);
+		}
 	}
 }

@@ -8,6 +8,7 @@ TagManager:
   - Blocks
   - FallDownBlock
   - Crown
+  - Laser
   layers:
   - Default
   - TransparentFX

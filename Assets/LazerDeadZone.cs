@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class LazerDeadZone : MonoBehaviour {
+	public DataBase s_Database;
 	public GameObject o_Player;
 	public spawn generator;
-	public DataBase s_Database;
 	public CameraFollow s_CameraFollow;
 	SavePoint theMostCloseSavePoint;
 	public Sprite DeadSprite;

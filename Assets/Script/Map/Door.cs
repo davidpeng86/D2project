@@ -21,8 +21,8 @@ public class Door : MonoBehaviour {
 	{
 		get
 		{
-			Vector2 start = new Vector2 (transform.position.x-0.65f,transform.position.y-2.7f);
-			Vector2 end = new Vector2 (transform.position.x +0.65f,start.y);
+			Vector2 start = new Vector2 (transform.position.x-0.6f,transform.position.y-2.7f);
+			Vector2 end = new Vector2 (transform.position.x +0.6f,start.y);
 			Debug.DrawLine(start,end,Color.red);
 			if(Physics2D.Linecast(start,end,cubeLayer))
 			{

@@ -163,8 +163,8 @@ public class Player : MonoBehaviour
             Vector2 end2 = Vector2.zero;
             if (rb.gravityScale > 0)
             {
-                start = new Vector2(this.transform.position.x - 0.6f, this.transform.position.y - 0.61f);
-                start2 = new Vector2(this.transform.position.x + 0.6f, this.transform.position.y - 0.61f);
+                start = new Vector2(this.transform.position.x - 0.59f, this.transform.position.y - 0.61f);
+                start2 = new Vector2(this.transform.position.x + 0.59f, this.transform.position.y - 0.61f);
                 end = new Vector2(start.x, start.y - distance);
                 end2 = new Vector2(start2.x, start.y - distance);
             }
@@ -344,7 +344,11 @@ public class Player : MonoBehaviour
     void MovementX()
     {
         horizontalDirection = Input.GetAxisRaw("Horizontal");
-        if (Leftwallchecker == true && horizontalDirection == 1 || OnBlocksCheck == 2 && horizontalDirection == 1)
+        if(!Generator.GetComponent<spawn>().MovingTolastCubeGroundCheck)
+        {
+            rb.velocity = new Vector2(0, rb.velocity.y);
+        }
+        else if (Leftwallchecker == true && horizontalDirection == 1 || OnBlocksCheck == 2 && horizontalDirection == 1)
         {
             rb.velocity = new Vector2(maxSpeedX * horizontalDirection , rb.velocity.y);
         }
@@ -356,11 +360,7 @@ public class Player : MonoBehaviour
         {
             rb.velocity = new Vector2(maxSpeedX * horizontalDirection, rb.velocity.y);
         }
-        else if(!Generator.GetComponent<spawn>().MovingTolastCubeGroundCheck)
-        {
-            rb.velocity = new Vector2(0, rb.velocity.y);
-        }
-        else if(OnBlocksCheck == 3 && Generator.GetComponent<spawn>().cubeCheck)
+        else if(OnBlocksCheck == 3 && Generator.GetComponent<spawn>().cubeCheck && Rightwallchecker == false && Leftwallchecker == false)
         {
             rb.velocity = new Vector2(maxSpeedX * horizontalDirection, rb.velocity.y);
         }

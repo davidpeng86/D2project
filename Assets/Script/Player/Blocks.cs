@@ -32,7 +32,6 @@ public class Blocks : MonoBehaviour {
 				}
 				
 			}
-			Debug.Log("123123");
 			Destroy(this.gameObject);
 			destory = false;
 		}
