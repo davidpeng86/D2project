@@ -348,6 +348,10 @@ public class Player : MonoBehaviour
         {
             rb.velocity = new Vector2(0, rb.velocity.y);
         }
+        else if(Leftwallchecker == true && Rightwallchecker == true || Leftwallchecker == true && OnBlocksCheck == 1 || Rightwallchecker == true && OnBlocksCheck == 2 )
+        {
+            rb.velocity = new Vector2(0, rb.velocity.y);
+        }
         else if (Leftwallchecker == true && horizontalDirection == 1 || OnBlocksCheck == 2 && horizontalDirection == 1)
         {
             rb.velocity = new Vector2(maxSpeedX * horizontalDirection , rb.velocity.y);

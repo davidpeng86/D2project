@@ -21,8 +21,8 @@ public class Door : MonoBehaviour {
 	{
 		get
 		{
-			Vector2 start = new Vector2 (transform.position.x-0.6f,transform.position.y-2.7f);
-			Vector2 end = new Vector2 (transform.position.x +0.6f,start.y);
+			Vector2 start = new Vector2 (transform.position.x-0.32f,transform.position.y-2.7f);
+			Vector2 end = new Vector2 (transform.position.x +0.32f,start.y);
 			Debug.DrawLine(start,end,Color.red);
 			if(Physics2D.Linecast(start,end,cubeLayer))
 			{
@@ -38,6 +38,9 @@ public class Door : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
+		if(PlayerContact){
+
+		}
 		theMostCloseSavePoint = s_Databae.theMostCloseSavePoint.GetComponent<SavePoint>();
 		ChangeDoorState ();
 		if(open)

@@ -24,7 +24,6 @@ public class AudioManager : MonoBehaviour {
 		foreach (Sound s in sounds) {
 			s.source = gameObject.AddComponent<AudioSource> ();
 			s.source.clip = s.clip;
-
 			s.source.volume = s.volume;
 			s.source.pitch = s.pitch;
 			s.source.loop = s.loop;
@@ -48,7 +47,7 @@ public class AudioManager : MonoBehaviour {
 			Debug.Log ("sound doesn't exist!!!");
 			return;
 		}
-		s.source.Play ();
+		s.source.Play();
 		//Debug.Log("playing" + name);
 	}
 }

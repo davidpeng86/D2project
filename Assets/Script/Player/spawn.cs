@@ -186,6 +186,7 @@ public class spawn : MonoBehaviour {
 				DeleteCube ();
 				break;
 			case Player.PlayerState.s_jumping:
+				ClearArrowSign ();
 				DeleteCube ();
 				Throw();
 				break;
