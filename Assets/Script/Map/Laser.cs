@@ -40,8 +40,8 @@ public class Laser : MonoBehaviour {
 								{
 									if((Cubes[i].transform.position.x-this.transform.position.x)/1.28f < distance)
 									{
-										distance = (Cubes[i].transform.position.x - 0.64f - this.transform.position.x)/1.28f;
-										if(distance<=-0.1f)
+										distance = (Cubes[i].transform.position.x - 0.62f - this.transform.position.x)/1.28f;
+										 if(distance<=-0.2f)
 										{
 											distance = length;
 										}
@@ -51,9 +51,10 @@ public class Laser : MonoBehaviour {
 								{
 									if((this.transform.position.x - Cubes[i].transform.position.x)/1.28f<distance)
 									{
-										distance = ((this.transform.position.x-Cubes[i].transform.position.x-0.64f))/1.28f;
-										if(distance<=-0.1f)
+										distance = ((this.transform.position.x-Cubes[i].transform.position.x-0.62f))/1.28f;
+										if(distance<=-0.2f)
 										{
+											Debug.Log(" ");
 											distance = length;
 										}
 									}
@@ -76,7 +77,7 @@ public class Laser : MonoBehaviour {
 									if((Cubes[i].transform.position.y-this.transform.position.y)/1.28f < distance)
 									{
 										distance = (Cubes[i].transform.position.y - 0.64f - this.transform.position.y)/1.28f;
-										if(distance<=-0.1f)
+										if(distance<=-0.2f)
 										{
 											distance = length;
 										}
@@ -87,7 +88,7 @@ public class Laser : MonoBehaviour {
 									if((this.transform.position.y - Cubes[i].transform.position.y)/1.28f<distance)
 									{
 										distance = ((this.transform.position.y-Cubes[i].transform.position.y-0.64f))/1.28f;
-										if(distance<=-0.1f)
+										if(distance<=-0.2f)
 										{
 											distance = length;
 										}

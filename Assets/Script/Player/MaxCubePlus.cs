@@ -25,6 +25,7 @@ public class MaxCubePlus : MonoBehaviour {
 			generator.SpawningCube = new SpawningBlocks[(int)s_Database.maxCube];
 			for(int i = 0;i<lasers.Length;i++)
 			{
+				if(lasers[i]!=null)
 				lasers[i].GetComponent<Laser>().AddLength();
 			}
 			Destroy(this.gameObject);

@@ -69,7 +69,7 @@ public class Player : MonoBehaviour
         {
 			Vector2 start = new Vector2(this.transform.position.x,this.transform.position.y-0.6f);
             Vector2 end = new Vector2(start.x, start.y-distance);
-            Debug.DrawLine(start, end, Color.red);
+            Debug.DrawLine(start, end, Color.green);
             if(Generator.GetComponent<spawn>().history.Count>1)
             {
                 for(int i = 0; i <= Generator.GetComponent<spawn>().history.Count-2;i++)
@@ -284,6 +284,7 @@ public class Player : MonoBehaviour
     }
     void Update()
     {
+        
         ChangeState();
         switch (_state)
         {

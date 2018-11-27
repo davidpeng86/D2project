@@ -23,31 +23,30 @@ public class CameraFollow : MonoBehaviour {
     public GameObject Player;
 	public GameObject Generator;
     Scene m_scene;
-    string SceneName;
 
 
     // Use this for initialization
 
 	void Start () {
         m_scene = SceneManager.GetActiveScene();
-		SceneName =m_scene.name;
+		
 	}
 	
 	// Update is called once per frame
 	public void FixedUpdate ()
     {
         CameraBorder();
-        if(SceneName =="Tutorial")
+        if(m_scene.name =="Tutorial")
         {
             CameraMove(1000,-2.76f,-27.4f,160.5f);
         }
-        else if(SceneName == "Stage1")
+        else if(m_scene.name == "Stage1")
         {
             CameraMove(1000,0,0.8f,1000);
         }
         else
         {
-            CameraMove(6,-2,-1.8f,1000);
+            CameraMove(6,-2,-1.8f,318.0f);
         }
         SpawningCamera();
     }

@@ -424,6 +424,7 @@ public class spawn : MonoBehaviour {
 			}
 			group.GetComponent<Rigidbody2D> ().freezeRotation = true;
 			group.GetComponent<Rigidbody2D> ().gravityScale = 3;
+			group.GetComponent<Rigidbody2D> ().mass = 1.8f;
 			group.tag = "Blocks";
 			for (int i = history.Count - 1; i > 0; i--) {
 				history.RemoveAt (i);
@@ -589,6 +590,7 @@ public class spawn : MonoBehaviour {
 		is_spawning = false;
 
 		if (cube_exist == true) {
+			if(T!=null)
 			Destroy (T.gameObject);
 			cube_exist = false;
 		}
@@ -629,6 +631,7 @@ public class spawn : MonoBehaviour {
 
 	//可生成方向指示
 	private void ArrowSign () {
+		//向上生成指示 正常重力
 		if (rb.gravityScale > 0) {
 			if (is_spawning == false && upCubecheck == false && (history.Count - 1) < s_Database.maxCube && player.GetComponent<Player> ().Downwallchecker == false && Downwallchecker == false && spawnCheck ||
 				is_spawning == false && upCubecheck == false && (history.Count - 1) < s_Database.maxCube && Upwallchecker == false && spawnCheck ||
@@ -637,7 +640,7 @@ public class spawn : MonoBehaviour {
 			} else {
 				UpSign.SetActive (false);
 			}
-		} else {
+		} else {//向上生成指示 反向重力
 			if (is_spawning == false && upCubecheck == false && history.Count > 1 && (history.Count - 1) < s_Database.maxCube && player.GetComponent<Player> ().Downwallchecker == false && Downwallchecker == false && spawnCheck ||
 				is_spawning == false && upCubecheck == false && history.Count > 1 && (history.Count - 1) < s_Database.maxCube && Upwallchecker == false && spawnCheck ||
 				is_spawning == false && upCubecheck && history.ElementAt (history.Count - 1).direction == "down" && spawnCheck) {
@@ -646,6 +649,7 @@ public class spawn : MonoBehaviour {
 				UpSign.SetActive (false);
 			}
 		}
+	//向下生成指示 正常重力
 		if (rb.gravityScale > 0) {
 			if (is_spawning == false && downCubecheck == false && history.Count > 1 && (history.Count - 1) < s_Database.maxCube && player.GetComponent<Player> ().Upwallchecker == false && Upwallchecker == false && spawnCheck ||
 				is_spawning == false && downCubecheck == false && history.Count > 1 && (history.Count - 1) < s_Database.maxCube && Downwallchecker == false && spawnCheck ||
@@ -654,7 +658,7 @@ public class spawn : MonoBehaviour {
 			} else {
 				DownSign.SetActive (false);
 			}
-		} else {
+		} else {//向下生成指示 反向重力
 			if (is_spawning == false && downCubecheck == false && (history.Count - 1) < s_Database.maxCube && player.GetComponent<Player> ().Upwallchecker == false && Upwallchecker == false && spawnCheck ||
 				is_spawning == false && downCubecheck == false && (history.Count - 1) < s_Database.maxCube && Downwallchecker == false && spawnCheck ||
 				is_spawning == false && downCubecheck && history.ElementAt (history.Count - 1).direction == "up" && spawnCheck) {
