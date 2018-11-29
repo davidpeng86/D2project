@@ -18,7 +18,7 @@ public class Laser : MonoBehaviour {
 	private Renderer rd;
 
 	void Start () {
-		rd = GetComponentInChildren<Renderer>();
+		rd = lazer.GetComponentInChildren<Renderer>();
 		Cubes = new GameObject[(int)s_Database.maxCube];
 	}
 	void FixedUpdate () {

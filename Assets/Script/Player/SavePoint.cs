@@ -6,7 +6,6 @@ public class SavePoint : MonoBehaviour {
 	public DataBase s_Database;
  	public float CrownCount;
  	public float maxCube = 4;
- 	public float maxUsedcube;
  	public float UsedCube;
 	public bool[] CrownCheck;
 	void Start () {
@@ -24,7 +23,6 @@ public class SavePoint : MonoBehaviour {
 			s_Database.SavePoint =this.transform.position;
 			CrownCount = s_Database.CrownCount;
 			maxCube = s_Database.maxCube;
-			maxUsedcube = s_Database.maxUsedcube;
 			UsedCube = s_Database.UsedCube;
 			s_Database.theMostCloseSavePoint = this.gameObject;
 			for(int i=0 ; i<CrownCheck.Length;i++)
@@ -32,5 +30,6 @@ public class SavePoint : MonoBehaviour {
 				CrownCheck[i]=s_Database.CrownCheck[i];
 			}
 		}
+		
 	}
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class SpawningBlocks : MonoBehaviour {
-	float distance = 0.2f;
+	float distance = 0.1f;
 	public LayerMask groundLayer = 8;
 	public bool Upwallchecker {
 		get {

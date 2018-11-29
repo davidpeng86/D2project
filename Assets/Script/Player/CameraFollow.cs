@@ -20,7 +20,7 @@ public class CameraFollow : MonoBehaviour {
     public float posYU;
     [System.NonSerialized]
     public float posYD;
-    public GameObject Player;
+    public GameObject o_player;
 	public GameObject Generator;
     Scene m_scene;
 
@@ -42,7 +42,7 @@ public class CameraFollow : MonoBehaviour {
         }
         else if(m_scene.name == "Stage1")
         {
-            CameraMove(1000,0,0.8f,1000);
+            CameraMove(1000,0,0.8f,218.1f);
         }
         else
         {
@@ -56,10 +56,10 @@ public class CameraFollow : MonoBehaviour {
 		Debug.DrawLine(transform.position + new Vector3(-distanceXL, distanceYU, 0),transform.position + new Vector3(-distanceXL, -distanceYD, 0), Color.green);
         Debug.DrawLine(transform.position + new Vector3(-distanceXL, -distanceYD, 0),transform.position + new Vector3(distanceXR, -distanceYD, 0), Color.red);
         Debug.DrawLine(transform.position + new Vector3(-distanceXL, distanceYU, 0),transform.position + new Vector3(distanceXR, distanceYU, 0), Color.red);
-        posXR = Mathf.SmoothDamp(transform.position.x, Player.transform.position.x-distanceXR, ref velocity.x, smoothTimeX);
-        posXL = Mathf.SmoothDamp(transform.position.x, Player.transform.position.x+distanceXL , ref velocity.x, smoothTimeX);
-        posYU = Mathf.SmoothDamp(transform.position.y, Player.transform.position.y-distanceYU, ref velocity.y, smoothTimeY);
-        posYD = Mathf.SmoothDamp(transform.position.y, Player.transform.position.y+distanceYD, ref velocity.y, smoothTimeY);
+        posXR = Mathf.SmoothDamp(transform.position.x, o_player.transform.position.x-distanceXR, ref velocity.x, smoothTimeX);
+        posXL = Mathf.SmoothDamp(transform.position.x, o_player.transform.position.x+distanceXL , ref velocity.x, smoothTimeX);
+        posYU = Mathf.SmoothDamp(transform.position.y, o_player.transform.position.y-distanceYU, ref velocity.y, smoothTimeY);
+        posYD = Mathf.SmoothDamp(transform.position.y, o_player.transform.position.y+distanceYD, ref velocity.y, smoothTimeY);
 
     }
     void CameraMove(float up,float down,float left,float right)
@@ -71,7 +71,7 @@ public class CameraFollow : MonoBehaviour {
         else
         {
             //上方邊界
-            if (Player.transform.position.y > transform.position.y + distanceYU)
+            if (o_player.transform.position.y > transform.position.y + distanceYU)
             {
                 transform.position = new Vector3(transform.position.x, posYU, transform.position.z);
             }
@@ -83,7 +83,7 @@ public class CameraFollow : MonoBehaviour {
         }
         else
         {
-            if (Player.transform.position.y < transform.position.y-distanceYD)
+            if (o_player.transform.position.y < transform.position.y-distanceYD)
             {
                 transform.position = new Vector3(transform.position.x,posYD, transform.position.z);
             } 
@@ -95,7 +95,7 @@ public class CameraFollow : MonoBehaviour {
         }
         else
         {
-            if (Player.transform.position.x > transform.position.x + distanceXR)
+            if (o_player.transform.position.x > transform.position.x + distanceXR)
             {
                 transform.position = new Vector3(posXR, transform.position.y, transform.position.z);
             }
@@ -107,7 +107,7 @@ public class CameraFollow : MonoBehaviour {
         }
         else
         {
-            if (Player.transform.position.x < transform.position.x - distanceXL)
+            if (o_player.transform.position.x < transform.position.x - distanceXL)
             {
                 transform.position = new Vector3(posXL, transform.position.y, transform.position.z);
             }
@@ -119,7 +119,7 @@ public class CameraFollow : MonoBehaviour {
     {
         if (Input.GetKey(KeyCode.Z) && Generator.GetComponent<spawn>().spawnCheck)
         {
-            if(Player.GetComponent<Player>().direction)
+            if(o_player.GetComponent<Player>().direction)
             {
                 distanceXL = 4;
                 distanceXR =-4;
@@ -130,9 +130,9 @@ public class CameraFollow : MonoBehaviour {
                 distanceXR = 4;
             }
         }
-        if (Input.GetKeyUp (KeyCode.Z))
+        if (o_player.GetComponent<Player>()._state != Player.PlayerState.s_spawning)
         {
-            distanceXL = 4;
+            distanceXL = 0;
             distanceXR = 0;
         }
     }

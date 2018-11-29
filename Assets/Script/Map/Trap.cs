@@ -56,7 +56,6 @@ public class Trap : MonoBehaviour {
 		if (theMostCloseSavePoint!=null)
 		{
 			s_Database.maxCube = theMostCloseSavePoint.maxCube;
-			s_Database.maxUsedcube = theMostCloseSavePoint.maxUsedcube;
 			s_Database.UsedCube = theMostCloseSavePoint.UsedCube;
 			s_Database.CrownCount =theMostCloseSavePoint.CrownCount;
 			for(int i =0;i<s_Database.CrownCheck.Length;i++)
