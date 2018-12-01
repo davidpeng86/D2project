@@ -7,6 +7,8 @@ using UnityEngine.SceneManagement;
 public class showData : MonoBehaviour {
 	public Text cube;
 	public Text crown;
+
+	public sceneManager sceneManager;
     public DataBase s_Database;
 	Scene scene;
 
@@ -22,16 +24,26 @@ public class showData : MonoBehaviour {
 	}
 	
 	public void restart(){
-		SceneManager.LoadScene(scene.name);
+		sceneManager.sceneChange(scene.name);
 	}
 	public void exit(){
-		SceneManager.LoadScene("Start");
+		sceneManager.sceneChange("Start");
 	}
 	public void nextScene(){
-		SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+		sceneManager.sceneChange(
+			NameFromIndex(SceneManager.GetActiveScene().buildIndex + 1));
 	}
 
 	public void disablethis(){
 		this.gameObject.SetActive(false);
+	}
+
+	 private static string NameFromIndex(int BuildIndex)
+	{
+		string path = SceneUtility.GetScenePathByBuildIndex(BuildIndex);
+		int slash = path.LastIndexOf('/');
+		string name = path.Substring(slash + 1);
+		int dot = name.LastIndexOf('.');
+		return name.Substring(0, dot);
 	}
 }
