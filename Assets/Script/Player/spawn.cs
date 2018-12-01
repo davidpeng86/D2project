@@ -583,7 +583,7 @@ public class spawn : MonoBehaviour {
 			F += spawn_speed;
 			if(T!=null)
 			T.position += V3;
-			yield return new WaitForSeconds (0.01f);
+			yield return new WaitForSeconds (0.001f);
 		}
 		if(T!=null)
 		T.position = transform.position;

@@ -222,7 +222,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 9225352}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -283, y: 171.96494, z: 0}
+  m_LocalPosition: {x: 67, y: -3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2134122764}
@@ -11359,23 +11359,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3bafbea863d1d6c409d37de312fab414, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  s_Database: {fileID: 0}
-  generator: {fileID: 0}
+  s_Database: {fileID: 1915823208}
+  generator: {fileID: 383018953}
   SavePoint:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 1960949399}
+  - {fileID: 1346604751}
+  - {fileID: 2005429505}
+  - {fileID: 474966879}
+  - {fileID: 1970615716}
+  - {fileID: 752972222}
+  - {fileID: 1902332398}
+  - {fileID: 541664070}
+  - {fileID: 628735509}
+  - {fileID: 1159127106}
+  - {fileID: 1655734184}
 --- !u!4 &146391331
 Transform:
   m_ObjectHideFlags: 0
@@ -13520,7 +13517,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 752972222}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 33.67, y: 0.45, z: 0}
+  m_LocalPosition: {x: 33.94, y: 0.63, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 866995227}
@@ -15242,7 +15239,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1242460653}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -0.9, y: -0.45, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 110640897}
@@ -17244,7 +17241,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &2134122761
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17309,8 +17306,8 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2134122760}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 713, y: 401, z: 0}
-  m_LocalScale: {x: 1.7825, y: 1.7825, z: 1.7825}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 9225353}
   - {fileID: 1324362397}

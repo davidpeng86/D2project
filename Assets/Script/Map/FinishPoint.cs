@@ -21,21 +21,6 @@ public class FinishPoint : MonoBehaviour {
 		if(col.tag == "Player")
 		{
 			endMenu.SetActive(true);
-			// if(m_scene.name =="Tutorial")
-			// {
-			// 	//s_database.Save();
-			// 	SceneManager.LoadScene("Stage1");
-			// }
-			// else if(m_scene.name =="Stage1")
-			// {
-			// 	//s_database.Save();
-			// 	SceneManager.LoadScene("Stage2");
-			// }
-			// else
-			// {
-			// 	//s_database.Save();
-			// 	SceneManager.LoadScene("Start");
-			// }
 		}
 	}
 }
