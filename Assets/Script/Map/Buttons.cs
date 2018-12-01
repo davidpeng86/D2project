@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class Buttons : MonoBehaviour {
-
+	public sceneManager scene;
 	public GameObject fadeOut;
 	// Use this for initialization
 	void Start () {
@@ -17,8 +17,9 @@ public class Buttons : MonoBehaviour {
 	}
 
 	public void StartButtonClick(){
-		fadeOut.SetActive(true);
-		StartCoroutine(wait(0.5f));
+		scene.sceneChange("Tutorial");
+		// fadeOut.SetActive(true);
+		// StartCoroutine(wait(0.5f));
 		
 	}
 

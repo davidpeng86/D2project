@@ -20,8 +20,6 @@ public class showData : MonoBehaviour {
 		cube.text = "Cubes used: " + s_Database.UsedCube;
 		crown.text = s_Database.CrownCount.ToString() + "   /  " + s_Database.Crown.Length;
 	}
-
-	public void resume(){}
 	
 	public void restart(){
 		SceneManager.LoadScene(scene.name);
@@ -29,6 +27,8 @@ public class showData : MonoBehaviour {
 	public void exit(){
 		SceneManager.LoadScene("Start");
 	}
-	public void nextScene(){}
+	public void nextScene(){
+		SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+	}
 
 }
