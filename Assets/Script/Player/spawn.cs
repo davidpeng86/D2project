@@ -667,8 +667,6 @@ public class spawn : MonoBehaviour {
 				DownSign.SetActive (false);
 			}
 		}
-
-
 		if (is_spawning == false && leftCubecheck == false && (history.Count - 1) < s_Database.maxCube && player.GetComponent<Player> ().Rightwallchecker == false && Rightwallchecker == false && spawnCheck ||
 			is_spawning == false && leftCubecheck == false && (history.Count - 1) < s_Database.maxCube && Leftwallchecker == false && spawnCheck ||
 			is_spawning == false && leftCubecheck && history.ElementAt (history.Count - 1).direction == "right" && spawnCheck) {

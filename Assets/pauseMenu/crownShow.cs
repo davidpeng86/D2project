@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class crownShow : MonoBehaviour {
+public class AchievementShow : MonoBehaviour {
 	public Text text;
     public DataBase s_Database;
 
@@ -14,6 +14,6 @@ public class crownShow : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		text.text = s_Database.CrownCount.ToString() + "   /  " + s_Database.Crown.Length;
+		text.text = s_Database.AchievementCount.ToString() + "   /  " + s_Database.Achievement.Length;
 	}
 }

@@ -11,29 +11,48 @@ public class DataBase : MonoBehaviour {
     [Header("記錄點位置")]
     public Vector3 SavePoint  = Vector3.zero;
     [Header("成就數")]
-    public float CrownCount;
+    public float AchievementCount;
     [Header("方塊伸出數量限制")]
     public float maxCube = 4;
     [Header("方塊總使用次數")]
     public float UsedCube;
+    [Header("死亡次數")]
+    public float DeathCount;
     public GameObject theMostCloseSavePoint =null;
-    public GameObject[] Crown;
+    public GameObject[] Achievement;
     [System.NonSerialized]    
-    public bool[] CrownCheck;
+    public bool[] AchievementCheck;
     private Scene m_scene;
     void Start () {
-        CrownCheck =new bool[Crown.Length];
-        for(int i=0;i<Crown.Length;i++)
+        AchievementCheck =new bool[Achievement.Length];
+        for(int i=0;i<Achievement.Length;i++)
         {
-            CrownCheck[i] = Crown[i].activeSelf;
+            AchievementCheck[i] = Achievement[i].activeSelf;
         }
 	    SavePoint = o_Player.transform.position + Vector3.up;
         m_scene = SceneManager.GetActiveScene();
 	}
-	void Update () {
-        
-		
+	void Update () {   
+
+        if(Input.GetKeyDown(KeyCode.F3))
+        {
+            load();
+        }
 	}
+    void load()
+    {
+        if(m_scene.name =="Tutorial")
+        {
+            Tutorial_Data old_tutorial_Data =null;
+            if (File.Exists(Application.dataPath +"/Tutorial_Data.json"))
+            {
+                old_tutorial_Data = JsonUtility.FromJson<Tutorial_Data>(File.ReadAllText(Application.dataPath +"/Tutorial_Data.json"));
+            }
+            UsedCube = old_tutorial_Data.UsedCube;
+            AchievementCount = old_tutorial_Data.AchievementCount;
+            DeathCount = old_tutorial_Data.DeathCount;
+        }
+    }
     public void Save()
     {   
         if(m_scene.name =="Tutorial")
@@ -46,19 +65,24 @@ public class DataBase : MonoBehaviour {
             }
             if(old_tutorial_Data !=null)
             {
-                if(CrownCount>=old_tutorial_Data.CrownCount)
-                    tutorial_Data.CrownCount =CrownCount;
+                if(AchievementCount>=old_tutorial_Data.AchievementCount)
+                    tutorial_Data.AchievementCount =AchievementCount;
                 else
-                    tutorial_Data.CrownCount = old_tutorial_Data.CrownCount;
+                    tutorial_Data.AchievementCount = old_tutorial_Data.AchievementCount;
                 if(UsedCube <= old_tutorial_Data.UsedCube)
                     tutorial_Data.UsedCube = UsedCube;
                 else
                     tutorial_Data.UsedCube = old_tutorial_Data.UsedCube;
+                if(DeathCount<=old_tutorial_Data.DeathCount)
+                    tutorial_Data.DeathCount = DeathCount;
+                else
+                    tutorial_Data.DeathCount = old_tutorial_Data.DeathCount;
             }
             else
             {
-                tutorial_Data.CrownCount =CrownCount;
+                tutorial_Data.AchievementCount =AchievementCount;
                 tutorial_Data.UsedCube = UsedCube;
+                tutorial_Data.DeathCount = DeathCount;
             }
             string json = JsonUtility.ToJson(tutorial_Data);
             File.WriteAllText(Application.dataPath + "/Tutorial_Data.json",json);
@@ -73,13 +97,13 @@ public class DataBase : MonoBehaviour {
             }
             if(old_stage1_Data!=null)
             {
-                if(CrownCount>=old_stage1_Data.CrownCount)
+                if(AchievementCount>=old_stage1_Data.AchievementCount)
                 {
-                    stage1_Data.CrownCount = CrownCount;
+                    stage1_Data.AchievementCount = AchievementCount;
                 }
                 else
                 {
-                    stage1_Data.CrownCount = old_stage1_Data.CrownCount;
+                    stage1_Data.AchievementCount = old_stage1_Data.AchievementCount;
                 }
                 if(UsedCube<=old_stage1_Data.UsedCube)
                 {
@@ -89,11 +113,20 @@ public class DataBase : MonoBehaviour {
                 {
                     stage1_Data.UsedCube = old_stage1_Data.UsedCube;
                 }
+                if(DeathCount<=old_stage1_Data.DeathCount)
+                {
+                    stage1_Data.DeathCount = DeathCount;
+                }
+                else
+                {
+                    stage1_Data.DeathCount = old_stage1_Data.DeathCount;
+                }
             }
             else
             {
-                stage1_Data.CrownCount = CrownCount;
+                stage1_Data.AchievementCount = AchievementCount;
                 stage1_Data.UsedCube = UsedCube;
+                stage1_Data.DeathCount = DeathCount;
             }
             string json = JsonUtility.ToJson(stage1_Data);
             File.WriteAllText(Application.dataPath + "/Stage1_Data.json",json);
@@ -108,13 +141,13 @@ public class DataBase : MonoBehaviour {
             }
             if(old_stage2_Data!=null)
             {
-                if(CrownCount>=old_stage2_Data.CrownCount)
+                if(AchievementCount>=old_stage2_Data.AchievementCount)
                 {
-                    stage2_Data.CrownCount =CrownCount;
+                    stage2_Data.AchievementCount =AchievementCount;
                 }
                 else
                 {
-                    stage2_Data.CrownCount =old_stage2_Data.CrownCount;
+                    stage2_Data.AchievementCount =old_stage2_Data.AchievementCount;
                 }
                 if(UsedCube<=old_stage2_Data.UsedCube)
                 {
@@ -124,29 +157,41 @@ public class DataBase : MonoBehaviour {
                 {
                     stage2_Data.UsedCube = old_stage2_Data.UsedCube;
                 }
+                if(DeathCount<=old_stage2_Data.DeathCount)
+                {
+                    stage2_Data.DeathCount = DeathCount;
+                }
+                else
+                {
+                    stage2_Data.DeathCount = old_stage2_Data.DeathCount;
+                }
             }
             else
             {
-                stage2_Data.CrownCount = CrownCount;
+                stage2_Data.AchievementCount = AchievementCount;
                 stage2_Data.UsedCube = UsedCube;
+                stage2_Data.DeathCount = DeathCount;
             }
             string json = JsonUtility.ToJson(stage2_Data);
             File.WriteAllText(Application.dataPath + "/Stage2_Data.json",json);
         }
-    }
+    }   
     private class Tutorial_Data
     {
-        public float CrownCount;
+        public float AchievementCount;
         public float UsedCube;
+        public float DeathCount;
     }
     private class Stage1_Data
     {
-        public float CrownCount;
+        public float AchievementCount;
         public float UsedCube;
+        public float DeathCount;
     }
     private class Stage2_Data
     {
-        public float CrownCount;
+        public float AchievementCount;
         public float UsedCube;
+        public float DeathCount;
     }
 }

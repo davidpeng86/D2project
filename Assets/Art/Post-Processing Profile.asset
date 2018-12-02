@@ -101,8 +101,8 @@ MonoBehaviour:
     m_Settings:
       bloom:
         intensity: 0.8
-        threshold: 1.1
-        softKnee: 0.6
+        threshold: 1.05
+        softKnee: 0.5
         radius: 5
         antiFlicker: 0
       lensDirt:
@@ -112,7 +112,7 @@ MonoBehaviour:
     m_Enabled: 0
     m_Settings:
       tonemapping:
-        tonemapper: 2
+        tonemapper: 0
         neutralBlackIn: 0.081
         neutralWhiteIn: 20
         neutralBlackOut: 0
@@ -123,7 +123,7 @@ MonoBehaviour:
         postExposure: 0
         temperature: -5
         tint: 0
-        hueShift: 0
+        hueShift: 22
         saturation: 1
         contrast: 1
       channelMixer:
@@ -138,9 +138,9 @@ MonoBehaviour:
           power: {r: 0.99555343, g: 1, b: 0.71777296, a: 0}
           offset: {r: 0.9126437, g: 0.87809145, b: 1, a: 0}
         linear:
-          lift: {r: 0, g: 0, b: 0, a: 0}
-          gamma: {r: 0, g: 0, b: 0, a: 0}
-          gain: {r: 0, g: 0, b: 0, a: 0}
+          lift: {r: 1, g: 1, b: 1, a: 0}
+          gamma: {r: 1, g: 1, b: 1, a: 0}
+          gain: {r: 1, g: 1, b: 1, a: 0}
       curves:
         master:
           curve:
@@ -171,18 +171,18 @@ MonoBehaviour:
             - serializedVersion: 2
               time: 0
               value: 0
-              inSlope: 1
+              inSlope: 0
               outSlope: 1
               tangentMode: 0
             - serializedVersion: 2
               time: 1
               value: 1
               inSlope: 1
-              outSlope: 1
+              outSlope: 0
               tangentMode: 0
             m_PreInfinity: 2
             m_PostInfinity: 2
-            m_RotationOrder: 4
+            m_RotationOrder: 0
           m_Loop: 0
           m_ZeroValue: 0
           m_Range: 1
@@ -193,14 +193,14 @@ MonoBehaviour:
             - serializedVersion: 2
               time: 0
               value: 0
-              inSlope: 1
+              inSlope: 0
               outSlope: 1
               tangentMode: 0
             - serializedVersion: 2
               time: 1
               value: 1
               inSlope: 1
-              outSlope: 1
+              outSlope: 0
               tangentMode: 0
             m_PreInfinity: 2
             m_PostInfinity: 2
@@ -276,7 +276,7 @@ MonoBehaviour:
         e_CurveG: 0
         e_CurveB: 0
   userLut:
-    m_Enabled: 0
+    m_Enabled: 1
     m_Settings:
       lut: {fileID: 0}
       contribution: 1

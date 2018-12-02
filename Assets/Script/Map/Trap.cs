@@ -57,13 +57,15 @@ public class Trap : MonoBehaviour {
 		{
 			s_Database.maxCube = theMostCloseSavePoint.maxCube;
 			s_Database.UsedCube = theMostCloseSavePoint.UsedCube;
-			s_Database.CrownCount =theMostCloseSavePoint.CrownCount;
-			for(int i =0;i<s_Database.CrownCheck.Length;i++)
+			s_Database.AchievementCount = theMostCloseSavePoint.AchievementCount;
+			s_Database.DeathCount +=1;
+			for(int i =0;i<s_Database.AchievementCheck.Length;i++)
 			{
-				s_Database.CrownCheck[i] = theMostCloseSavePoint.CrownCheck[i];
-				if(theMostCloseSavePoint.CrownCheck[i])
+				s_Database.AchievementCheck[i] = theMostCloseSavePoint.AchievementCheck[i];
+				if(theMostCloseSavePoint.AchievementCheck[i])
 				{
-					s_Database.Crown[i].SetActive(true);
+					s_Database.Achievement[i].SetActive(true);
+					s_Database.Achievement[i].GetComponent<Achievement>().Reset();
 				}
 			}
 		}

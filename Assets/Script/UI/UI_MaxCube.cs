@@ -14,6 +14,6 @@ public class UI_MaxCube : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        text.text = "方塊數量限制:" + s_Database.maxCube;
+        text.text = "方塊數量限制:" + s_Database.maxCube +","+ s_Database.UsedCube +","+ s_Database.DeathCount + ","+s_Database.AchievementCount;
 	}
 }

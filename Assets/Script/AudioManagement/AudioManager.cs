@@ -9,8 +9,31 @@ public class AudioManager : MonoBehaviour {
 	public Sound[] sounds;
 
 	public static AudioManager instance;
-
-	// Use this for initialization
+	private GameObject[] laser;
+	bool S_Laser
+	{
+		get
+		{
+			for(int i = 0 ; i<laser.Length ; i++)
+			{
+				if(laser[i].GetComponent<SpriteRenderer>().isVisible)
+				{
+					return true;
+				}
+			}
+			return false;
+			
+		}
+		
+	}
+	private void Start()
+	{
+		laser = GameObject.FindGameObjectsWithTag("S_Laser");
+	}
+	private void Update()
+	{
+		Debug.Log(S_Laser);
+	}
 	void Awake () {
 		//the music will continue when loading a new scene
 		DontDestroyOnLoad (gameObject);

@@ -28,6 +28,7 @@ public class MaxCubePlus : MonoBehaviour {
 				if(lasers[i]!=null)
 				lasers[i].GetComponent<Laser>().AddLength();
 			}
+			FindObjectOfType<AudioManager> ().play ("MaxCubePlus");
 			Destroy(this.gameObject);
 		}
 	}

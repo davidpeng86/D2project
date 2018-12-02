@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour {
 	GameObject o_player;
 	public GameObject[] SavePoint;
 	GameObject[] lasers;
+	int count =-1;
 	void Start () {
 		lasers = GameObject.FindGameObjectsWithTag("Laser");
 		o_player = GameObject.FindGameObjectWithTag("Player");
@@ -16,7 +17,7 @@ public class GameManager : MonoBehaviour {
 	void Update () {
 		if(Input.GetKeyDown(KeyCode.F1))
 		{
-			o_player.transform.position = SavePoint[SavePoint.Length-1].transform.position;
+			MoveToSavePoingt();
 		}
 		if(Input.GetKeyDown(KeyCode.F2))
 		{
@@ -33,5 +34,14 @@ public class GameManager : MonoBehaviour {
 			if(lasers[i]!=null)
 			lasers[i].GetComponent<Laser>().AddLength();
 		}
+	}
+	void MoveToSavePoingt()
+	{
+		count+=1;
+		if(count>SavePoint.Length)
+		{
+			count = 0;
+		}
+		o_player.transform.position = SavePoint[count].transform.position;
 	}
 }

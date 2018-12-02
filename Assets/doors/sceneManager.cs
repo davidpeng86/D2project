@@ -24,7 +24,7 @@ public class sceneManager: MonoBehaviour{
 	IEnumerator wait(string s){
 		door.SetBool("transition", true);
 		yield return new WaitForSeconds
-		(door.GetCurrentAnimatorStateInfo(0).length+door.GetCurrentAnimatorStateInfo(0).normalizedTime);
+		(door.GetCurrentAnimatorStateInfo(0).length+door.GetCurrentAnimatorStateInfo(0).normalizedTime -0.5f);
 		SceneManager.LoadScene(s);
 	}
 }

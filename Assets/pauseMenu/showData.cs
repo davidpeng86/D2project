@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class showData : MonoBehaviour {
 	public Text cube;
-	public Text crown;
+	public Text Achievement;
 
 	public sceneManager sceneManager;
     public DataBase s_Database;
@@ -20,7 +20,7 @@ public class showData : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		cube.text = "Cubes used: " + s_Database.UsedCube;
-		crown.text = s_Database.CrownCount.ToString() + "   /  " + s_Database.Crown.Length;
+		Achievement.text = s_Database.AchievementCount.ToString() + "   /  " + s_Database.Achievement.Length;
 	}
 	
 	public void restart(){

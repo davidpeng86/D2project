@@ -10,6 +10,7 @@ TagManager:
   - Crown
   - Laser
   - SavePoint
+  - S_Laser
   layers:
   - Default
   - TransparentFX
