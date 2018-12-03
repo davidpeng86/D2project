@@ -6,6 +6,8 @@ public class MaxCubePlus : MonoBehaviour {
 	public DataBase s_Database;
 	public spawn generator;
 	GameObject[] lasers;
+
+	public Animator ani;
 	// Use this for initialization
 	void Start () {
 		lasers = GameObject.FindGameObjectsWithTag("Laser");
@@ -28,8 +30,16 @@ public class MaxCubePlus : MonoBehaviour {
 				if(lasers[i]!=null)
 				lasers[i].GetComponent<Laser>().AddLength();
 			}
+			ani.SetBool("get",true);
+			StartCoroutine(waitAniEnd());
 			FindObjectOfType<AudioManager> ().play ("MaxCubePlus");
-			Destroy(this.gameObject);
+
 		}
+	}
+
+	IEnumerator waitAniEnd(){
+		yield return new WaitForSeconds(0.1f);
+		ani.SetBool("get",false);
+		Destroy(this.gameObject);
 	}
 }

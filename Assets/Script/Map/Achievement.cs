@@ -7,6 +7,8 @@ public class Achievement : MonoBehaviour {
 	private bool Check;
 	private Vector3 Save;
 	private Vector2 velocity;
+
+	public Animator ani;
 	float x = 30;
 	private bool check2 =false;
 	Transform Particle;
@@ -21,6 +23,10 @@ public class Achievement : MonoBehaviour {
 		Save = transform.position;
 	}
 	
+	IEnumerator waitAniEnd(){
+		yield return new WaitForSeconds(0.4f);
+		ani.SetBool("get",false);
+	}
 	// Update is called once per frame
 	void Update () {
 
@@ -49,9 +55,10 @@ public class Achievement : MonoBehaviour {
 		{
 			if(Col.tag=="Player")
 			{
+				ani.SetBool("get",true);
 				s_Database.AchievementCount +=1;
 				Check = true;
-				//StartCoroutine(Effect());
+				StartCoroutine(waitAniEnd());
 				for(int i =0;i<=s_Database.Achievement.Length-1;i++)
 				{
 					s_Database.AchievementCheck[i] = s_Database.Achievement[i].activeSelf;
