@@ -8,19 +8,24 @@ using UnityEngine.SceneManagement;
 public class DataBase : MonoBehaviour {
     public GameObject o_Player;
     public GameObject o_Generator;
+    [System.NonSerialized]
     [Header("記錄點位置")]
     public Vector3 SavePoint  = Vector3.zero;
+    [System.NonSerialized]
     [Header("成就數")]
     public float AchievementCount;
+    [System.NonSerialized]
     [Header("方塊伸出數量限制")]
     public float maxCube = 4;
+    [System.NonSerialized]
     [Header("方塊總使用次數")]
     public float UsedCube;
+    [System.NonSerialized]
     [Header("死亡次數")]
     public float DeathCount;
     public GameObject theMostCloseSavePoint =null;
     public GameObject[] Achievement;
-    [System.NonSerialized]    
+    [System.NonSerialized]
     public bool[] AchievementCheck;
     private Scene m_scene;
     void Start () {
@@ -176,19 +181,19 @@ public class DataBase : MonoBehaviour {
             File.WriteAllText(Application.dataPath + "/Stage2_Data.json",json);
         }
     }   
-    private class Tutorial_Data
+    public class Tutorial_Data
     {
         public float AchievementCount;
         public float UsedCube;
         public float DeathCount;
     }
-    private class Stage1_Data
+    public class Stage1_Data
     {
         public float AchievementCount;
         public float UsedCube;
         public float DeathCount;
     }
-    private class Stage2_Data
+    public class Stage2_Data
     {
         public float AchievementCount;
         public float UsedCube;

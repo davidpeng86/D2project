@@ -5370,107 +5370,6 @@ Transform:
   m_PrefabParentObject: {fileID: 4394389403981988, guid: 4f15390bffe947b46913f73ccaf3c50a,
     type: 2}
   m_PrefabInternal: {fileID: 1358572634}
---- !u!1 &465596013
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 465596015}
-  - component: {fileID: 465596014}
-  m_Layer: 0
-  m_Name: AudioManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &465596014
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 465596013}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f15aad089531ad4bb3d626d082042f2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sounds:
-  - name: start
-    clip: {fileID: 8300000, guid: 275cf96dc5fc4d3419421bdb3273e931, type: 3}
-    volume: 0.5
-    pitch: 1
-    loop: 0
-    source: {fileID: 0}
-  - name: theme
-    clip: {fileID: 8300000, guid: 8c8b2f0bc04d7f2428f4745c64cfa142, type: 3}
-    volume: 0.5
-    pitch: 1
-    loop: 1
-    source: {fileID: 0}
-  - name: jump
-    clip: {fileID: 8300000, guid: cdf857e1a79c8aa44adfee36c0eaf6cd, type: 3}
-    volume: 0.2
-    pitch: 2
-    loop: 0
-    source: {fileID: 0}
-  - name: cube_born
-    clip: {fileID: 8300000, guid: f90783faee147974bb511f9906f01224, type: 3}
-    volume: 0.2
-    pitch: 2
-    loop: 0
-    source: {fileID: 0}
-  - name: cube_put
-    clip: {fileID: 8300000, guid: c1d815fded5114a44ac22aaf703ad59c, type: 3}
-    volume: 0.2
-    pitch: 2
-    loop: 0
-    source: {fileID: 0}
-  - name: DestroyCube
-    clip: {fileID: 8300000, guid: c1d815fded5114a44ac22aaf703ad59c, type: 3}
-    volume: 0.2
-    pitch: 2
-    loop: 0
-    source: {fileID: 0}
-  - name: Opendoor
-    clip: {fileID: 8300000, guid: c1d815fded5114a44ac22aaf703ad59c, type: 3}
-    volume: 0.2
-    pitch: 2
-    loop: 0
-    source: {fileID: 0}
-  - name: Closedoor
-    clip: {fileID: 8300000, guid: c1d815fded5114a44ac22aaf703ad59c, type: 3}
-    volume: 0.2
-    pitch: 2
-    loop: 0
-    source: {fileID: 0}
-  - name: Achievement
-    clip: {fileID: 8300000, guid: c1d815fded5114a44ac22aaf703ad59c, type: 3}
-    volume: 0.2
-    pitch: 2
-    loop: 0
-    source: {fileID: 0}
-  - name: MaxCubePlus
-    clip: {fileID: 8300000, guid: c1d815fded5114a44ac22aaf703ad59c, type: 3}
-    volume: 0.2
-    pitch: 2
-    loop: 0
-    source: {fileID: 0}
---- !u!4 &465596015
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 465596013}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 9
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &466652991
 GameObject:
   m_ObjectHideFlags: 0
@@ -13792,7 +13691,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 772122843}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 53.12, y: 4.48, z: 0}
+  m_LocalPosition: {x: 53.12, y: 4.6, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1213355859}
@@ -67451,6 +67350,107 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     vectorLabel1_3: W
+--- !u!1 &1909764585
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1909764587}
+  - component: {fileID: 1909764586}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1909764586
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1909764585}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f15aad089531ad4bb3d626d082042f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sounds:
+  - name: start
+    clip: {fileID: 8300000, guid: 275cf96dc5fc4d3419421bdb3273e931, type: 3}
+    volume: 0.5
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: theme
+    clip: {fileID: 8300000, guid: 8c8b2f0bc04d7f2428f4745c64cfa142, type: 3}
+    volume: 0.5
+    pitch: 1
+    loop: 1
+    source: {fileID: 0}
+  - name: jump
+    clip: {fileID: 8300000, guid: cdf857e1a79c8aa44adfee36c0eaf6cd, type: 3}
+    volume: 0.2
+    pitch: 2
+    loop: 0
+    source: {fileID: 0}
+  - name: cube_born
+    clip: {fileID: 8300000, guid: f90783faee147974bb511f9906f01224, type: 3}
+    volume: 0.2
+    pitch: 2
+    loop: 0
+    source: {fileID: 0}
+  - name: cube_put
+    clip: {fileID: 8300000, guid: c1d815fded5114a44ac22aaf703ad59c, type: 3}
+    volume: 0.2
+    pitch: 2
+    loop: 0
+    source: {fileID: 0}
+  - name: DestroyCube
+    clip: {fileID: 8300000, guid: a28efc58616d14b3f9e41251910b5606, type: 3}
+    volume: 0.2
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: Opendoor
+    clip: {fileID: 8300000, guid: c1d815fded5114a44ac22aaf703ad59c, type: 3}
+    volume: 0.2
+    pitch: 2
+    loop: 0
+    source: {fileID: 0}
+  - name: Closedoor
+    clip: {fileID: 8300000, guid: c1d815fded5114a44ac22aaf703ad59c, type: 3}
+    volume: 0.2
+    pitch: 2
+    loop: 0
+    source: {fileID: 0}
+  - name: Achievement
+    clip: {fileID: 8300000, guid: b4d850ea81ec04cb9a8b65c9e8b2e059, type: 3}
+    volume: 0.2
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: MaxCubePlus
+    clip: {fileID: 8300000, guid: 7d332c8febc6343e4aedb39a7a04fdf0, type: 3}
+    volume: 0.2
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+--- !u!4 &1909764587
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1909764585}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1923422667 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4394389403981988, guid: 4f15390bffe947b46913f73ccaf3c50a,

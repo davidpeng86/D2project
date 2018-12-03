@@ -42,7 +42,7 @@ public class Achievement : MonoBehaviour {
 					wait();
 				}
 			}
-			FindObjectOfType<AudioManager> ().play ("Achievement");
+			
 			this.transform.position = new Vector3(transform.position.x,Mathf.SmoothDamp(transform.position.y,Save.y+2.0f,ref velocity.y,0.2f),transform.position.z);
 			this.transform.Rotate(new Vector3(0,x,0));
 			Particle.gameObject.SetActive(false);
@@ -58,6 +58,7 @@ public class Achievement : MonoBehaviour {
 				ani.SetBool("get",true);
 				s_Database.AchievementCount +=1;
 				Check = true;
+				FindObjectOfType<AudioManager> ().play("Achievement");
 				StartCoroutine(waitAniEnd());
 				for(int i =0;i<=s_Database.Achievement.Length-1;i++)
 				{
