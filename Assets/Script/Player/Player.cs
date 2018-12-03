@@ -324,7 +324,7 @@ public class Player : MonoBehaviour
         {
             anim_.SetBool("Move",false);
         }
-        Debug.Log(_state);
+        //Debug.Log(_state);
     }
 
    void jump()

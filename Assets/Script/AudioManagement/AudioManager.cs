@@ -32,7 +32,7 @@ public class AudioManager : MonoBehaviour {
 	}
 	private void Update()
 	{
-		Debug.Log(S_Laser);
+		//Debug.Log(S_Laser);
 	}
 	void Awake () {
 		//the music will continue when loading a new scene

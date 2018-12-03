@@ -3,23 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Blocks : MonoBehaviour {
-	float speed = 50.0f;
-	float amount = 0.08f;
 	private GameObject [] child;
 	public bool destory = false;
-
     private Rigidbody2D rb;
 	bool GroundChecked = false;
 	void Start () {
         child = GameObject.FindGameObjectsWithTag("generated");
         rb =gameObject.GetComponent<Rigidbody2D>();
-        foreach (GameObject cube in child)
-        {
-            cube.GetComponent<BoxCollider2D>().size = new Vector2(1.25f,1.26f);
-        }
+		for(int i=0;i<child.Length;i++)
+		{
+			child[i].GetComponent<BoxCollider2D>().size = new Vector2(1.25f,1.26f);
+		}
     }
-	
-	// Update is called once per frame
 	void Update () {
 		if(destory)
 		{
@@ -36,19 +31,24 @@ public class Blocks : MonoBehaviour {
 			destory = false;
 		}
 		if (Input.GetKey (KeyCode.Z) && rb.velocity.y ==0) {
-			transform.position = new Vector2(this.transform.position.x+Mathf.Sin (Time.time * speed) * amount,transform.position.y);
 			foreach(GameObject cube in child)
 			{
 				if(cube!=null)
-				cube.layer = 0;
+				{
+					cube.layer = 0;
+					cube.GetComponent<Animator>().SetBool("Alpha",true);
+				}
 			}
 		}
 		else if(Input.GetKeyUp(KeyCode.Z) && child[0].layer==0)
 		{
-			foreach(GameObject cube in child)
+			for(int i =0;i<child.Length;i++)
 			{
-				if(cube!=null)
-				cube.layer = 9;
+				if(child[i]!=null)
+				{
+					child[i].layer =9;
+					child[i].GetComponent<Animator>().SetBool("Alpha",false);
+				}
 			}
 		}
         if (this.GetComponent<Rigidbody2D>().velocity.y == 0 ||GroundChecked )

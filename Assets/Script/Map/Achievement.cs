@@ -8,7 +8,7 @@ public class Achievement : MonoBehaviour {
 	private Vector3 Save;
 	private Vector2 velocity;
 	float x = 30;
-	float a =255;
+	private bool check2 =false;
 	Transform Particle;
 	SpriteRenderer rd;
 	Color orginal;
@@ -31,6 +31,10 @@ public class Achievement : MonoBehaviour {
 			{
 				rd.color -= new Color(0,0,0,0.02f);
 				x = 0;
+				if(rd.color.a<=0)
+				{
+					wait();
+				}
 			}
 			FindObjectOfType<AudioManager> ().play ("Achievement");
 			this.transform.position = new Vector3(transform.position.x,Mathf.SmoothDamp(transform.position.y,Save.y+2.0f,ref velocity.y,0.2f),transform.position.z);
@@ -41,27 +45,37 @@ public class Achievement : MonoBehaviour {
 	}
 	void OnTriggerEnter2D(Collider2D Col)
 	{
-
-		if(Col.tag=="Player")
+		if(!check2)
 		{
-			s_Database.AchievementCount +=1;
-			Check = true;
-			StartCoroutine(Effect());
-			for(int i =0;i<=s_Database.Achievement.Length-1;i++)
+			if(Col.tag=="Player")
 			{
-				s_Database.AchievementCheck[i] = s_Database.Achievement[i].activeSelf;
+				s_Database.AchievementCount +=1;
+				Check = true;
+				//StartCoroutine(Effect());
+				for(int i =0;i<=s_Database.Achievement.Length-1;i++)
+				{
+					s_Database.AchievementCheck[i] = s_Database.Achievement[i].activeSelf;
+				}
+				check2 =true;
 			}
 		}
+
 	}
 	public void Reset()
 	{
 		Check = false;
+		check2 =false;
 		this.transform.rotation = Quaternion.Euler(Vector3.zero);
 		this.transform.position = Save;
 		x = 30;
 		rd.color =orginal;
 		Particle.gameObject.SetActive(true);
-		StopCoroutine(Effect());
+		StopAllCoroutines();
+	}
+	void wait()
+	{
+		Reset();
+		this.gameObject.SetActive(false);
 	}
 	IEnumerator Effect()
 	{
