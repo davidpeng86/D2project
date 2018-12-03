@@ -538,7 +538,6 @@ public class spawn : MonoBehaviour {
 		Vector3 V3 = Vector3.zero;
 		// play sound (AudioManager來自start scene,需要從startscene 開始才存取的到)
 		FindObjectOfType<AudioManager> ().play ("cube_born");
-
 		switch (I) {
 			case "up":
 				V3 = Vector3.up * spawn_speed;
@@ -583,12 +582,12 @@ public class spawn : MonoBehaviour {
 			F += spawn_speed;
 			if(T!=null)
 			T.position += V3;
-			yield return new WaitForSeconds (0.001f);
+			yield return new WaitForSeconds (0.01f);
 		}
 		if(T!=null)
 		T.position = transform.position;
 		is_spawning = false;
-
+		
 		if (cube_exist == true) {
 			if(T!=null)
 			Destroy (T.gameObject);
