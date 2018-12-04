@@ -1061,17 +1061,17 @@ Prefab:
         type: 3}
     - target: {fileID: 1412702475092442, guid: be9257721ad9247c392da8a45ecc234e, type: 2}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 224023280327273746, guid: be9257721ad9247c392da8a45ecc234e,
         type: 2}
       propertyPath: m_LocalPosition.y
-      value: -125
+      value: -170
       objectReference: {fileID: 0}
     - target: {fileID: 224023280327273746, guid: be9257721ad9247c392da8a45ecc234e,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -125
+      value: -170
       objectReference: {fileID: 0}
     - target: {fileID: 224023280327273746, guid: be9257721ad9247c392da8a45ecc234e,
         type: 2}
@@ -1481,7 +1481,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sounds:
   - name: start
-    clip: {fileID: 8300000, guid: 275cf96dc5fc4d3419421bdb3273e931, type: 3}
+    clip: {fileID: 8300000, guid: e7aac87026f68564c9ea925bf4541f17, type: 3}
     volume: 0.2
     pitch: 1
     loop: 0
@@ -1514,18 +1514,6 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: db4e578fbbf2b0348842b33af66212a5, type: 3}
     volume: 0.2
     pitch: 1
-    loop: 0
-    source: {fileID: 0}
-  - name: Opendoor
-    clip: {fileID: 8300000, guid: 81d07da7a929f4e4aa3198e28e6c6429, type: 3}
-    volume: 0.2
-    pitch: 1.5
-    loop: 0
-    source: {fileID: 0}
-  - name: Closedoor
-    clip: {fileID: 8300000, guid: 0503d0350a258b64281061bf9b1e4788, type: 3}
-    volume: 0.2
-    pitch: 1.5
     loop: 0
     source: {fileID: 0}
   - name: Achievement
@@ -1918,7 +1906,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &608669366
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1926,7 +1914,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 608669365}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -125, z: 0}
+  m_LocalPosition: {x: 0, y: -170, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1363220871}
@@ -1935,7 +1923,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -125}
+  m_AnchoredPosition: {x: 0, y: -170}
   m_SizeDelta: {x: 150, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &608669367

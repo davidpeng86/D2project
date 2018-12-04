@@ -16,11 +16,11 @@ public class Door : MonoBehaviour {
 	public CameraFollow s_CameraFollow;
 	public Sprite DeadSprite;
 	public RuntimeAnimatorController A_Controller;
-	private SpriteRenderer rd;
+	//private SpriteRenderer rd;
 	bool SoundCheck;
 	// Use this for initialization
 	void Start () {
-		rd  =this.GetComponent<SpriteRenderer>();
+		//rd  =this.GetComponent<SpriteRenderer>();
 		Save = transform.position;
 	}
 	bool PlayerContact
