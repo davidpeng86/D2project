@@ -40,21 +40,21 @@ public class LoadData : DataBase {
 	void Update () {
 		if(old_tutorial_Data!=null)
 		{
-			T_Achievement.text = "AchieveMent:" + old_tutorial_Data.AchievementCount;
-			T_UsedCube.text ="UsedCube:" + old_tutorial_Data.UsedCube;
-			T_DeathCount.text = "Death:" + old_tutorial_Data.DeathCount;
+			T_Achievement.text = old_tutorial_Data.AchievementCount.ToString() + " / 4";
+			T_UsedCube.text = old_tutorial_Data.UsedCube.ToString();
+			T_DeathCount.text = old_tutorial_Data.DeathCount.ToString();
 		}
 		if(old_stgae1_Data!=null)
 		{
-			S1_Achievement.text = "AchieveMent:" + old_stgae1_Data.AchievementCount;
-			S1_UsedCube.text ="UsedCube:" + old_stgae1_Data.UsedCube;
-			S1_DeathCount.text = "Death:" + old_stgae1_Data.DeathCount;
+			S1_Achievement.text = old_stgae1_Data.AchievementCount.ToString() + " / 7";
+			S1_UsedCube.text = old_stgae1_Data.UsedCube.ToString();
+			S1_DeathCount.text = old_stgae1_Data.DeathCount.ToString();
 		}
 		if(old_stgae2_Data!=null)
 		{
-			S2_Achievement.text = "AchieveMent:" + old_stgae2_Data.AchievementCount;
-			S2_UsedCube.text ="UsedCube:" + old_stgae2_Data.UsedCube;
-			S2_DeathCout.text = "Death:" + old_stgae2_Data.DeathCount;
+			S2_Achievement.text = old_stgae2_Data.AchievementCount.ToString() + " / 7";
+			S2_UsedCube.text = old_stgae2_Data.UsedCube.ToString();
+			S2_DeathCout.text = old_stgae2_Data.DeathCount.ToString();
 		}
 		
 	}
