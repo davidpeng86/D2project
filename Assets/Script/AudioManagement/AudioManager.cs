@@ -9,30 +9,13 @@ public class AudioManager : MonoBehaviour {
 	public Sound[] sounds;
 
 	public static AudioManager instance;
-	private GameObject[] laser;
-	bool S_Laser
-	{
-		get
-		{
-			for(int i = 0 ; i<laser.Length ; i++)
-			{
-				if(laser[i].GetComponent<SpriteRenderer>().isVisible)
-				{
-					return true;
-				}
-			}
-			return false;
-			
-		}
-		
-	}
 	private void Start()
 	{
-		laser = GameObject.FindGameObjectsWithTag("S_Laser");
+		//StartCoroutine(playTheme());
+		FindObjectOfType<AudioManager>().play("theme");
 	}
 	private void Update()
 	{
-		//Debug.Log(S_Laser);
 	}
 	void Awake () {
 		//the music will continue when loading a new scene
@@ -43,7 +26,6 @@ public class AudioManager : MonoBehaviour {
 			Destroy (gameObject);
 			return;
 		}
-
 		foreach (Sound s in sounds) {
 			s.source = gameObject.AddComponent<AudioSource> ();
 			s.source.clip = s.clip;
@@ -72,5 +54,21 @@ public class AudioManager : MonoBehaviour {
 		}
 		s.source.Play();
 		//Debug.Log("playing" + name);
+	}
+	public void Stop(string name)
+	{	
+		Sound s = Array.Find (sounds, sound => sound.name == name);
+		if (s == null) {
+			Debug.Log ("sound doesn't exist!!!");
+			return;
+		}
+		s.source.Stop();
+
+	}
+IEnumerator playTheme()
+	{
+		FindObjectOfType<AudioManager>().play("start");
+		yield return new WaitForSeconds(FindObjectOfType<AudioManager>().findAudio("start").clip.length-1.5f);
+		FindObjectOfType<AudioManager>().play("theme");
 	}
 }

@@ -26,6 +26,7 @@ public class LazerDeadZone : MonoBehaviour {
 		{
 			if(!check)
 			{
+				FindObjectOfType<AudioManager> ().play ("Dead");
 				s_CameraFollow.StartCoroutine(s_CameraFollow.CameraShake(0.15f,0.4f));
 				if(o_Player.transform.localScale == new Vector3(1,1,1))
 				{

@@ -23,6 +23,7 @@ public class DeathZone : MonoBehaviour {
 		
 		if(col.tag == "Player")
 		{
+			FindObjectOfType<AudioManager> ().play ("Dead");
 			s_CameraFollow.StartCoroutine(s_CameraFollow.CameraShake(0.15f,0.4f));
 			generator.ThrowCube(new Vector2 (0,0));
 			generator.DestroyCube();

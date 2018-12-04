@@ -16,8 +16,11 @@ public class Door : MonoBehaviour {
 	public CameraFollow s_CameraFollow;
 	public Sprite DeadSprite;
 	public RuntimeAnimatorController A_Controller;
+	private SpriteRenderer rd;
+	bool SoundCheck;
 	// Use this for initialization
 	void Start () {
+		rd  =this.GetComponent<SpriteRenderer>();
 		Save = transform.position;
 	}
 	bool PlayerContact
@@ -46,11 +49,20 @@ public class Door : MonoBehaviour {
 		ChangeDoorState ();
 		if(open)
 		{
-			FindObjectOfType<AudioManager> ().play ("Opendoor");
+			/* if(rd.isVisible &&!SoundCheck)
+			{
+				FindObjectOfType<AudioManager>().play ("Opendoor");
+				SoundCheck = true;
+			}*/
 			this.transform.position = new Vector3(transform.position.x,Mathf.SmoothDamp(transform.position.y,Save.y+4.2f,ref velocity.y,0.2f),transform.position.z);
 		}
 		else
 		{
+			/* if(rd.isVisible && SoundCheck)
+			{
+				FindObjectOfType<AudioManager>().play ("Closedoor");
+				SoundCheck = false;
+			}*/
 			this.transform.position = new Vector3(transform.position.x,Mathf.SmoothDamp(transform.position.y,Save.y,ref velocity.y,0.2f),transform.position.z);
 		}
 		
@@ -78,6 +90,7 @@ public class Door : MonoBehaviour {
 			{
 				if(!check)
 				{
+					FindObjectOfType<AudioManager> ().play ("Dead");
 					check =true;
 					s_CameraFollow.StartCoroutine(s_CameraFollow.CameraShake(0.15f,0.4f));
 					if(o_Player.transform.localScale == new Vector3(1,1,1))

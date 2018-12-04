@@ -44,11 +44,23 @@ public class LoadData : DataBase {
 			T_UsedCube.text = old_tutorial_Data.UsedCube.ToString();
 			T_DeathCount.text = old_tutorial_Data.DeathCount.ToString();
 		}
+		else
+		{
+			T_Achievement.text = "0 / 4";
+			T_UsedCube.text = "0";
+			T_DeathCount.text = "0";
+		}
 		if(old_stgae1_Data!=null)
 		{
 			S1_Achievement.text = old_stgae1_Data.AchievementCount.ToString() + " / 7";
 			S1_UsedCube.text = old_stgae1_Data.UsedCube.ToString();
 			S1_DeathCount.text = old_stgae1_Data.DeathCount.ToString();
+		}
+		else
+		{
+			S1_Achievement.text = "0 / 7";
+			S1_UsedCube.text = "0";
+			S1_DeathCount.text = "0";
 		}
 		if(old_stgae2_Data!=null)
 		{
@@ -56,6 +68,11 @@ public class LoadData : DataBase {
 			S2_UsedCube.text = old_stgae2_Data.UsedCube.ToString();
 			S2_DeathCout.text = old_stgae2_Data.DeathCount.ToString();
 		}
-		
+		else
+		{
+			S2_Achievement.text = " 0 / 7";
+			S2_UsedCube.text = "0";
+			S2_DeathCout.text = "0";
+		}
 	}
 }

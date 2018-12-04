@@ -14,13 +14,13 @@ public class DataBase : MonoBehaviour {
     [System.NonSerialized]
     [Header("成就數")]
     public float AchievementCount;
-    [System.NonSerialized]
+    //[System.NonSerialized]
     [Header("方塊伸出數量限制")]
     public float maxCube = 4;
     [System.NonSerialized]
     [Header("方塊總使用次數")]
     public float UsedCube;
-    [System.NonSerialized]
+    //[System.NonSerialized]
     [Header("死亡次數")]
     public float DeathCount;
     public GameObject theMostCloseSavePoint =null;

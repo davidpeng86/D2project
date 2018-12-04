@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour {
 	GameObject o_player;
 	public GameObject[] SavePoint;
 	GameObject[] lasers;
-	int count =-1;
+	int count =0;
 	void Start () {
 		lasers = GameObject.FindGameObjectsWithTag("Laser");
 		o_player = GameObject.FindGameObjectWithTag("Player");
@@ -37,11 +37,12 @@ public class GameManager : MonoBehaviour {
 	}
 	void MoveToSavePoingt()
 	{
+		o_player.transform.position = SavePoint[count].transform.position;
 		count+=1;
-		if(count>SavePoint.Length)
+		if(count>=SavePoint.Length)
 		{
 			count = 0;
 		}
-		o_player.transform.position = SavePoint[count].transform.position;
+		
 	}
 }

@@ -18,9 +18,11 @@ public class sceneManager: MonoBehaviour{
 
 	public void sceneChange(string sceneName ){
 		StartCoroutine(wait(sceneName));
-		
 	}
-
+	public void Exit()
+	{
+		Application.Quit();
+	}
 	IEnumerator wait(string s){
 		door.SetBool("transition", true);
 		yield return new WaitForSeconds(1.5f);
